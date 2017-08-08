@@ -1,0 +1,3 @@
+npm start build
+cp -r build/* ../tracesapp2015.github.io
+
