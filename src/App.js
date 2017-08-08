@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps";
-
+import AccountDropdown from './menu.js'
 
 const SimpleMapExampleGoogleMap = withGoogleMap(props => (
     <GoogleMap
       ref={props.onMapMounted}      
       defaultZoom={8}
       defaultCenter={{ lat: -34.397, lng: 150.644 }}
+      onClick={props.onMapLeftClick}
+      onRightClick={props.onMapRightClick}
       >
       {props.markers.map((marker, index) => {
 	  const onClick = () => props.onMarkerClick(marker);
@@ -53,11 +55,25 @@ function createMarker(latLng) {
 class App extends Component {
 
     state = {
-	markers: []
+	markers: [],
+	isShow: false,
+	rightClickPosition: {left: 100, top: 100}
     }
 
     handleMapMounted = this.handleMapMounted.bind(this);
     handleMarkerClick = this.handleMarkerClick.bind(this);
+    handleMapRightClick = this.handleMapRightClick.bind(this);
+    handleMapLeftClick = this.handleMapLeftClick.bind(this);
+
+    handleMapLeftClick(e) {
+	this.setState({isShow: false, rightClickPosition: {left: e.pixel.x, top: e.pixel.y}});
+    }
+    
+    handleMapRightClick(e) {
+	
+	this.setState({isShow: true, rightClickPosition: {left: e.pixel.x, top: e.pixel.y}});
+	
+    }
 
     handleMapMounted(map) {
 	window.map = map;
@@ -138,12 +154,16 @@ class App extends Component {
 	return (
 	    <div className='full-height'>
 
+	      <AccountDropdown active={this.state.isShow} position={this.state.rightClickPosition} />
+
 	      <input type="text" id="searchTextField" className='searchBar' />
 	      
 	      <SimpleMapExampleGoogleMap
 		markers={this.state.markers}
 		onMarkerClick={this.handleMarkerClick}
 		onMapMounted={this.handleMapMounted}
+		onMapLeftClick={this.handleMapLeftClick}
+		onMapRightClick={this.handleMapRightClick}
 		containerElement={
 			<div style={{ height: `100%` }} className='container' />
 			}
