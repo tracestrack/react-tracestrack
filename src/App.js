@@ -1,37 +1,38 @@
 import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps";
 import AccountDropdown from './menu.js'
+import CKComponent from './Cloud.js'
 
 const SimpleMapExampleGoogleMap = withGoogleMap(props => (
-    <GoogleMap
-      ref={props.onMapMounted}      
-      defaultZoom={8}
-      defaultCenter={{ lat: -34.397, lng: 150.644 }}
-      onClick={props.onMapLeftClick}
-      onRightClick={props.onMapRightClick}
-      >
-      {props.markers.map((marker, index) => {
-	  const onClick = () => props.onMarkerClick(marker);
+	<GoogleMap
+    ref={props.onMapMounted}      
+    defaultZoom={8}
+    defaultCenter={{ lat: -34.397, lng: 150.644 }}
+    onClick={props.onMapLeftClick}
+    onRightClick={props.onMapRightClick}
+	>
+	{props.markers.map((marker, index) => {
+	    const onClick = () => props.onMarkerClick(marker);
 
-	  return (
-              <Marker
+	    return (
+		    <Marker
 		key={index}
 		position={marker.position}
 		title={(index + 1).toString()}
 		onClick={onClick}
-		>
-		{marker.showInfo && (
-		    <InfoWindow>
-		      <div>
-			<strong>{marker.content}</strong>
-			<br />
-			<em>The contents of this InfoWindow are actually ReactElements.</em>
-		      </div>
-		    </InfoWindow>
-		)}
-              </Marker>
-	  );
-      })}
+		    >
+		    {marker.showInfo && (
+			    <InfoWindow>
+			    <div>
+			    <strong>{marker.content}</strong>
+			    <br />
+			    <em>The contents of this InfoWindow are actually ReactElements.</em>
+			    </div>
+			    </InfoWindow>
+		    )}
+		</Marker>
+	    );
+	})}
     </GoogleMap>
 ));
 const google = window.google;
@@ -117,12 +118,12 @@ class App extends Component {
 		});
 		
 		/*
-		markers.push(new google.maps.Marker({
-		    map: window.map,
-		    icon: icon,
-		    title: place.name,
-		    position: place.geometry.location
-		}));*/
+		  markers.push(new google.maps.Marker({
+		  map: window.map,
+		  icon: icon,
+		  title: place.name,
+		  position: place.geometry.location
+		  }));*/
 
 		if (place.geometry.viewport) {
 		    // Only geocodes have viewport.
@@ -152,26 +153,27 @@ class App extends Component {
     
     render() {
 	return (
-	    <div className='full-height'>
+		<div className='full-height'>
 
-	      <AccountDropdown active={this.state.isShow} position={this.state.rightClickPosition} />
+		<AccountDropdown active={this.state.isShow} position={this.state.rightClickPosition} />
+		<CKComponent />
 
-	      <input type="text" id="searchTextField" className='searchBar' />
-	      
-	      <SimpleMapExampleGoogleMap
-		markers={this.state.markers}
-		onMarkerClick={this.handleMarkerClick}
-		onMapMounted={this.handleMapMounted}
-		onMapLeftClick={this.handleMapLeftClick}
-		onMapRightClick={this.handleMapRightClick}
-		containerElement={
-			<div style={{ height: `100%` }} className='container' />
-			}
-		mapElement={
-			<div style={{ height: `100%` }} />
-			}
-			/>
-	    </div>
+		<input type="text" id="searchTextField" className='searchBar' />
+		
+		<SimpleMapExampleGoogleMap
+	    markers={this.state.markers}
+	    onMarkerClick={this.handleMarkerClick}
+	    onMapMounted={this.handleMapMounted}
+	    onMapLeftClick={this.handleMapLeftClick}
+	    onMapRightClick={this.handleMapRightClick}
+	    containerElement={
+		    <div style={{ height: `100%` }} className='container' />
+	    }
+	    mapElement={
+		    <div style={{ height: `100%` }} />
+	    }
+		/>
+		</div>
 
 	);
     }

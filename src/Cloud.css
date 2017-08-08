@@ -1,0 +1,8 @@
+#apple-sign-in-button {
+    position: absolute;
+    margin: 10px;
+    width:200px;
+    height:40px;
+    top: 40px;
+    z-index: 111;
+}
