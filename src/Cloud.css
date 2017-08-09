@@ -6,3 +6,12 @@
     top: 40px;
     z-index: 111;
 }
+
+.loadStarsButton {
+    position: absolute;
+    margin: 10px;
+    width:200px;
+    height:40px;
+    top: 70px;
+    z-index: 111;
+}

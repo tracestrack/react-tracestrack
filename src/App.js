@@ -37,11 +37,11 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
 ));
 const google = window.google;
 
-function createMarker(latLng) {
+function createMarker(lat, lng) {
 
     const markers = [];
     const position = new google.maps.LatLng(
-	latLng.lat(), latLng.lng()
+	lat, lng
     );
 
     markers.push({
@@ -65,7 +65,26 @@ class App extends Component {
     handleMarkerClick = this.handleMarkerClick.bind(this);
     handleMapRightClick = this.handleMapRightClick.bind(this);
     handleMapLeftClick = this.handleMapLeftClick.bind(this);
+    handleStarsLoad = this.handleStarsLoad.bind(this);
+    
+    handleStarsLoad(re) {
 
+	var markers = this.state.markers;
+
+	console.log(re);
+	
+	for (var it in re) {
+	    var marker = createMarker(re[it].fields.location.value.latitude, re[it].fields.location.value.longitude);
+	    markers.push(marker);	    
+	}
+
+	console.log(markers);
+	this.setState({
+	    markers: marker
+	});
+
+    }
+    
     handleMapLeftClick(e) {
 	this.setState({isShow: false, rightClickPosition: {left: e.pixel.x, top: e.pixel.y}});
     }
@@ -111,7 +130,7 @@ class App extends Component {
 
 		// Create a marker for each place.
 
-		var marker = createMarker(place.geometry.location)
+		var marker = createMarker(place.geometry.location.lat(), place.geometry.location.lng())
 		
 		_this.setState({
 		    markers: marker
@@ -156,7 +175,7 @@ class App extends Component {
 		<div className='full-height'>
 
 		<AccountDropdown active={this.state.isShow} position={this.state.rightClickPosition} />
-		<CKComponent />
+		<CKComponent onStarsLoad={this.handleStarsLoad}/>
 
 		<input type="text" id="searchTextField" className='searchBar' />
 		

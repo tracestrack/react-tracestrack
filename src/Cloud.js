@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import "./Cloud.css";
 
 const CloudKit = window.CloudKit;
@@ -81,97 +81,126 @@ function demoSetUpAuth() {
 	});
 }
 
+
+
 demoSetUpAuth();
 
 
-function demoPerformQuery(
-    databaseScope,zoneName,ownerRecordName,recordType,
-    desiredKeys,sortByField,ascending,latitude,longitude,
-    filters
-) {
-    var container = CloudKit.getDefaultContainer();
-    var database = container.getDatabaseWithDatabaseScope(
-	CloudKit.DatabaseScope[databaseScope]
-    );
-
-    // Set the query parameters.
-    var query = {
-	recordType: recordType
-    };
-
-    if(sortByField) {
-	var sortDescriptor = {
-	    fieldName: sortByField,
-	    ascending: ascending
-	};
-
-	if(!isNaN(latitude) && !isNaN(longitude)) {
-	    sortDescriptor.relativeLocation = {
-		latitude: latitude,
-		longitude: longitude
-	    };
-	}
-
-	query.sortBy = [sortDescriptor];
-    }
-
-    // Convert the filters to the appropriate format.
-    query.filterBy = filters.map(function(filter) {
-	filter.fieldValue = { value: filter.fieldValue };
-	return filter;
-    });
-
-
-    // Set the options.
-    var options = {
-
-	// Restrict our returned fields to this array of keys.
-	desiredKeys: desiredKeys,
-
-	// Fetch 5 results at a time.
-	resultsLimit: 10
-
-    };
-
-    if(zoneName) {
-	options.zoneID = { zoneName: zoneName };
-	if(ownerRecordName) {
-	    options.zoneID.ownerRecordName = ownerRecordName;
-	}
-    }
-
-    // Execute the query.
-    return database.performQuery(query,options)
-	.then(function (response) {
-	    if(response.hasErrors) {
-
-		// Handle them in your app.
-		throw response.errors[0];
-
-	    } else {
-		var records = response.records;
-
-		
-		return renderRecords(records);
-	    }
-	});
-}
-
-var re;
-function renderRecords(record) {
-    re = record;
-
-    for (it in re) {
-	//addTrace(re[it]);
-	console.log(it);
-    }
-}
-
 class CKComponent extends Component {
 
+    demoPerformQuery = this.demoPerformQuery.bind(this);
+    loadStars = this.loadStars.bind(this);
+    
+    demoPerformQuery(
+	databaseScope,zoneName,ownerRecordName,recordType,
+	desiredKeys,sortByField,ascending,latitude,longitude,
+	filters
+    ) {
+
+	var container = CloudKit.getDefaultContainer();
+	var database = container.getDatabaseWithDatabaseScope(
+	    CloudKit.DatabaseScope[databaseScope]
+	);
+	var _this = this;
+
+	// Set the query parameters.
+	var query = {
+	    recordType: recordType
+	};
+
+	if(sortByField) {
+	    var sortDescriptor = {
+		fieldName: sortByField,
+		ascending: ascending
+	    };
+
+	    if(!isNaN(latitude) && !isNaN(longitude)) {
+		sortDescriptor.relativeLocation = {
+		    latitude: latitude,
+		    longitude: longitude
+		};
+	    }
+
+	    query.sortBy = [sortDescriptor];
+	}
+
+	// Convert the filters to the appropriate format.
+	query.filterBy = filters.map(function(filter) {
+	    filter.fieldValue = { value: filter.fieldValue };
+	    return filter;
+	});
+
+
+	// Set the options.
+	var options = {
+
+	    // Restrict our returned fields to this array of keys.
+	    desiredKeys: desiredKeys,
+
+	    // Fetch 5 results at a time.
+	    resultsLimit: 10
+
+	};
+
+	if(zoneName) {
+	    options.zoneID = { zoneName: zoneName };
+	    if(ownerRecordName) {
+		options.zoneID.ownerRecordName = ownerRecordName;
+	    }
+	}
+
+	// Execute the query.
+	return database.performQuery(query,options)
+	    .then(function (response) {
+		if(response.hasErrors) {
+
+		    // Handle them in your app.
+		    throw response.errors[0];
+
+		} else {
+		    var records = response.records;
+		    
+		    return _this.renderRecords(records);
+		}
+	    });
+    }
+    
+    loadStars() {
+
+	var databaseScope = "PRIVATE";
+	var zoneName = "_defaultZone";
+	var ownerRecordName = null;
+	var recordType = "Star";
+	var desiredKeys = ["title", "location"];
+	var sortByField = null;
+	var ascending = null;
+	var latitude = null;
+	var longitude = null;
+	
+	this.demoPerformQuery(
+			 databaseScope,zoneName,ownerRecordName,recordType,
+			 desiredKeys,sortByField,ascending,latitude,longitude,[]);
+    }
+    
+    renderRecords(record) {
+
+	if (typeof this.props.onStarsLoad === 'function') {
+            this.props.onStarsLoad(record);
+        }
+
+    }
+
+    constructor(props){
+	super(props);
+    }
+
+    
     render() {
 	return (<div>
 		<div id='apple-sign-in-button'></div>
+		<div className='loadStarsButton'>
+		<button onClick={this.loadStars}>Load</button>
+		</div>
 		</div>);
     }
     
