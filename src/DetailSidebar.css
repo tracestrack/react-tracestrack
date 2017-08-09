@@ -1,0 +1,23 @@
+.sidebar-right {
+
+    width: 380px;
+    z-index: 111;
+    height: 100%;
+    position: absolute;  
+    right: 0;  
+    top: 0;
+    background-color: white;
+
+}
+
+.marked-area-text-container {
+
+    padding: 10px;
+
+}
+
+.marked-area-text-container textarea {
+
+    height: 200px;
+    width: 100%;
+}

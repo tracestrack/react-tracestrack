@@ -1,55 +1,56 @@
 import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps";
-import AccountDropdown from './menu.js'
-import CKComponent from './Cloud.js'
-import GreenStarImg from './img/star_green.png'
-import RedStarImg from './img/star_red.png'
-import PinImg from './img/pin.png'
+import AccountDropdown from './menu.js';
+import CKComponent from './Cloud.js';
+import DetailSidebar from './DetailSidebar.js';
+import GreenStarImg from './img/star_green.png';
+import RedStarImg from './img/star_red.png';
+import PinImg from './img/pin.png';
 
 const google = window.google;
 
 const SimpleMapExampleGoogleMap = withGoogleMap(props => (
-	<GoogleMap
-    ref={props.onMapMounted}
-    defaultZoom={14}
-    defaultCenter={{ lat: 48.852, lng: 2.350 }}
-    onClick={props.onMapLeftClick}
-    onRightClick={props.onMapRightClick}
-	>
-	{props.markers.map((marker, index) => {
-	    const onClick = () => props.onMarkerClick(marker);
+    <GoogleMap
+      ref={props.onMapMounted}
+      defaultZoom={14}
+      defaultCenter={{ lat: 48.852, lng: 2.350 }}
+      onClick={props.onMapLeftClick}
+      onRightClick={props.onMapRightClick}
+      >
+      {props.markers.map((marker, index) => {
+	  const onClick = () => props.onMarkerClick(marker);
 
-	    var icon;
-	    if (marker.type == Traces.Star.red) {
-		icon = {url: RedStarImg, scaledSize: new google.maps.Size(24, 24)};
-	    }
-	    else if (marker.type == Traces.Star.green) {
-		icon = {url: GreenStarImg, scaledSize: new google.maps.Size(24, 24)};
-	    }
-	    else {
-		icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
-	    }
+	  var icon;
+	  if (marker.type == Traces.Star.red) {
+	      icon = {url: RedStarImg, scaledSize: new google.maps.Size(24, 24)};
+	  }
+	  else if (marker.type == Traces.Star.green) {
+	      icon = {url: GreenStarImg, scaledSize: new google.maps.Size(24, 24)};
+	  }
+	  else {
+	      icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
+	  }
 
-	    return (
-		    <Marker
+	  return (
+	      <Marker
 		key={index}
 		icon={icon}
 		position={marker.position}
 		title={(index + 1).toString()}
 		onClick={onClick}
-		    >
-		    {marker.showInfo && (
-			    <InfoWindow>
-			    <div>
-			    <strong>{marker.content}</strong>
-			    <br />
-			    <em>The contents of this InfoWindow are actually ReactElements.</em>
-			    </div>
-			    </InfoWindow>
-		    )}
-		</Marker>
-	    );
-	})}
+		>
+		{marker.showInfo && (
+		    <InfoWindow>
+		      <div>
+			<strong>{marker.content}</strong>
+			<br />
+			<em>The contents of this InfoWindow are actually ReactElements.</em>
+		      </div>
+		    </InfoWindow>
+		)}
+	      </Marker>
+	  );
+      })}
     </GoogleMap>
 ));
 
@@ -59,7 +60,7 @@ class Traces {
 Traces.Star = class {
     static get red() { return 1; }
     static get green() { return 2; }
-}
+};
 
 
 function createMarker(lat, lng, type) {
@@ -194,27 +195,28 @@ class App extends Component {
     
     render() {
 	return (
-		<div className='full-height'>
+	    <div className='full-height'>
 
-		<AccountDropdown active={this.state.isShow} position={this.state.rightClickPosition} />
-		<CKComponent onStarsLoad={this.handleStarsLoad}/>
+	      <AccountDropdown active={this.state.isShow} position={this.state.rightClickPosition} />
+	      <CKComponent onStarsLoad={this.handleStarsLoad}/>
+	      <DetailSidebar />
 
-		<input type="text" id="searchTextField" className='searchBar' />
-		
-		<SimpleMapExampleGoogleMap
-	    markers={this.state.markers}
-	    onMarkerClick={this.handleMarkerClick}
-	    onMapMounted={this.handleMapMounted}
-	    onMapLeftClick={this.handleMapLeftClick}
-	    onMapRightClick={this.handleMapRightClick}
-	    containerElement={
-		    <div style={{ height: `100%` }} className='container' />
-	    }
-	    mapElement={
-		    <div style={{ height: `100%` }} />
-	    }
-		/>
-		</div>
+	      <input type="text" id="searchTextField" className='searchBar' />
+	      
+	      <SimpleMapExampleGoogleMap
+		markers={this.state.markers}
+		onMarkerClick={this.handleMarkerClick}
+		onMapMounted={this.handleMapMounted}
+		onMapLeftClick={this.handleMapLeftClick}
+		onMapRightClick={this.handleMapRightClick}
+		containerElement={
+			<div style={{ height: `100%` }} className='container' />
+			}
+			mapElement={
+				<div style={{ height: `100%` }} />
+				}
+				/>
+	    </div>
 
 	);
     }
