@@ -2,21 +2,38 @@ import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps";
 import AccountDropdown from './menu.js'
 import CKComponent from './Cloud.js'
+import GreenStarImg from './img/star_green.png'
+import RedStarImg from './img/star_red.png'
+import PinImg from './img/pin.png'
+
+const google = window.google;
 
 const SimpleMapExampleGoogleMap = withGoogleMap(props => (
 	<GoogleMap
-    ref={props.onMapMounted}      
-    defaultZoom={8}
-    defaultCenter={{ lat: -34.397, lng: 150.644 }}
+    ref={props.onMapMounted}
+    defaultZoom={14}
+    defaultCenter={{ lat: 48.852, lng: 2.350 }}
     onClick={props.onMapLeftClick}
     onRightClick={props.onMapRightClick}
 	>
 	{props.markers.map((marker, index) => {
 	    const onClick = () => props.onMarkerClick(marker);
 
+	    var icon;
+	    if (marker.type == Traces.Star.red) {
+		icon = {url: RedStarImg, scaledSize: new google.maps.Size(24, 24)};
+	    }
+	    else if (marker.type == Traces.Star.green) {
+		icon = {url: GreenStarImg, scaledSize: new google.maps.Size(24, 24)};
+	    }
+	    else {
+		icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
+	    }
+
 	    return (
 		    <Marker
 		key={index}
+		icon={icon}
 		position={marker.position}
 		title={(index + 1).toString()}
 		onClick={onClick}
@@ -35,22 +52,28 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
 	})}
     </GoogleMap>
 ));
-const google = window.google;
 
-function createMarker(lat, lng) {
+class Traces {
+    
+}
+Traces.Star = class {
+    static get red() { return 1; }
+    static get green() { return 2; }
+}
 
-    const markers = [];
+
+function createMarker(lat, lng, type) {
+
     const position = new google.maps.LatLng(
 	lat, lng
     );
 
-    markers.push({
+    return {
 	position,
 	content: 'hi',
 	showInfo: false,
-    });
-
-    return markers;
+	type: type
+    };
 }
 
 class App extends Component {
@@ -74,13 +97,12 @@ class App extends Component {
 	console.log(re);
 	
 	for (var it in re) {
-	    var marker = createMarker(re[it].fields.location.value.latitude, re[it].fields.location.value.longitude);
+	    var marker = createMarker(re[it].fields.location.value.latitude, re[it].fields.location.value.longitude, Traces.Star.red);
 	    markers.push(marker);	    
 	}
 
-	console.log(markers);
 	this.setState({
-	    markers: marker
+	    markers: markers
 	});
 
     }
@@ -130,10 +152,10 @@ class App extends Component {
 
 		// Create a marker for each place.
 
-		var marker = createMarker(place.geometry.location.lat(), place.geometry.location.lng())
+		var marker = createMarker(place.geometry.location.lat(), place.geometry.location.lng(), -1);
 		
 		_this.setState({
-		    markers: marker
+		    markers: [marker]
 		});
 		
 		/*
