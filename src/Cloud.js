@@ -138,7 +138,7 @@ class CKComponent extends Component {
 	    desiredKeys: desiredKeys,
 
 	    // Fetch 5 results at a time.
-	    resultsLimit: 10
+	    resultsLimit: 100
 
 	};
 
@@ -198,6 +198,7 @@ class CKComponent extends Component {
     render() {
 	return (<div>
 		<div id='apple-sign-in-button'></div>
+		<div id='apple-sign-out-button'></div>
 		<div className='loadStarsButton'>
 		<button onClick={this.loadStars}>Load</button>
 		</div>

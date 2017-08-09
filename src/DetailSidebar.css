@@ -7,17 +7,20 @@
     right: 0;  
     top: 0;
     background-color: white;
+    overflow-y: scroll;
 
 }
 
 .marked-area-text-container {
 
-    padding: 10px;
+    padding: 0px;
 
 }
 
 .marked-area-text-container textarea {
 
+    display: none;
     height: 200px;
     width: 100%;
 }
+

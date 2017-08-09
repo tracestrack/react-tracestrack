@@ -7,11 +7,21 @@
     z-index: 111;
 }
 
+#apple-sign-out-button {
+    position: absolute;
+    margin: 10px;
+    width:200px;
+    height:40px;
+    top: 80px;
+    z-index: 111;
+}
+
 .loadStarsButton {
     position: absolute;
     margin: 10px;
     width:200px;
     height:40px;
-    top: 70px;
+    top: 10px;
+    left: 550px;
     z-index: 111;
 }

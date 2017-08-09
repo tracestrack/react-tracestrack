@@ -9,7 +9,7 @@ body {
 }
 
 .container {
-    position:absolute; top:0; bottom:0; width:calc(100% - 380px);
+    position:absolute; top:0; bottom:0; width:calc(100%);
     background: red;
 }
 

@@ -12,6 +12,16 @@ const google = window.google;
 const SimpleMapExampleGoogleMap = withGoogleMap(props => (
     <GoogleMap
       ref={props.onMapMounted}
+      defaultOptions={{
+	  mapTypeControlOptions: {
+              style: google.maps.MapTypeControlStyle.DEFAULT,
+              position: google.maps.ControlPosition.TOP_LEFT
+	  },
+	  zoomControl: false,
+	  streetViewControlOptions: {
+              position: google.maps.ControlPosition.BOTTOM_CENTER
+	  }
+      }}
       defaultZoom={14}
       defaultCenter={{ lat: 48.852, lng: 2.350 }}
       onClick={props.onMapLeftClick}
@@ -22,10 +32,10 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
 
 	  var icon;
 	  if (marker.type == Traces.Star.red) {
-	      icon = {url: RedStarImg, scaledSize: new google.maps.Size(24, 24)};
+	      icon = {url: RedStarImg, scaledSize: new google.maps.Size(16, 16)};
 	  }
 	  else if (marker.type == Traces.Star.green) {
-	      icon = {url: GreenStarImg, scaledSize: new google.maps.Size(24, 24)};
+	      icon = {url: GreenStarImg, scaledSize: new google.maps.Size(16, 16)};
 	  }
 	  else {
 	      icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
@@ -40,13 +50,7 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
 		onClick={onClick}
 		>
 		{marker.showInfo && (
-		    <InfoWindow>
-		      <div>
-			<strong>{marker.content}</strong>
-			<br />
-			<em>The contents of this InfoWindow are actually ReactElements.</em>
-		      </div>
-		    </InfoWindow>
+		    <DetailSidebar />
 		)}
 	      </Marker>
 	  );
@@ -127,7 +131,6 @@ class App extends Component {
 	    types: ['(regions)']
 	};
 
-	var markers = [];
 	var _this = this;
 	
 	searchBox.addListener('places_changed', function() {
@@ -137,12 +140,22 @@ class App extends Component {
 		return;
 	    }
 
+	    var markers = [];
+	    for (var it in _this.state.markers) {
+		if (_this.state.markers[it].type != -1) {
+		    markers.push(_this.state.markers[it]);
+		}
+	    }
+
+	    console.log(markers);
+	    
 	    var bounds = new google.maps.LatLngBounds();
 	    places.forEach(function(place) {
 		if (!place.geometry) {
 		    console.log("Returned place contains no geometry");
 		    return;
-		}
+		}		
+		
 		var icon = {
 		    url: place.icon,
 		    size: new google.maps.Size(71, 71),
@@ -154,18 +167,11 @@ class App extends Component {
 		// Create a marker for each place.
 
 		var marker = createMarker(place.geometry.location.lat(), place.geometry.location.lng(), -1);
+		markers.push(marker);
 		
 		_this.setState({
-		    markers: [marker]
+		    markers: markers
 		});
-		
-		/*
-		  markers.push(new google.maps.Marker({
-		  map: window.map,
-		  icon: icon,
-		  title: place.name,
-		  position: place.geometry.location
-		  }));*/
 
 		if (place.geometry.viewport) {
 		    // Only geocodes have viewport.
@@ -199,7 +205,6 @@ class App extends Component {
 
 	      <AccountDropdown active={this.state.isShow} position={this.state.rightClickPosition} />
 	      <CKComponent onStarsLoad={this.handleStarsLoad}/>
-	      <DetailSidebar />
 
 	      <input type="text" id="searchTextField" className='searchBar' />
 	      
