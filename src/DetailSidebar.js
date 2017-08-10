@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {
     MarkedInput,
-    MarkedPreview,
-    Markedtoolbar } from 'react-markdown-area';
+    MarkedPreview } from 'react-markdown-area';
 
 import "./DetailSidebar.css";
 
@@ -78,11 +77,16 @@ class DetailSidebar extends Component {
 	
     }
 
+    isNewStar() {
+	return this.props.star.isNewStar;
+    }
+
     convertProps2State(props) {
 	if (props.star != null) {
-	    if (props.star.isNewStar) {
+	    var data;
+	    if (this.isNewStar()) {
 	    	// new star
-		var data = props.star;
+		data = props.star;
 		
 		return {
 		    title: data.title,
@@ -94,17 +98,18 @@ class DetailSidebar extends Component {
 
 	    }
 	    else {
-		var data = props.star.data.fields;
-
+		data = props.star.data.fields;
+		console.log(data);
 		return {
 		    title: data.title.value,
 		    note: data.note.value,
 		    type: data.type.value,
-		    url: (data.url.value == "http://" ? "": data.url.value),
+		    url: (data.url.value === "http://" ? "": data.url.value),
 		    coordinate: {lat: props.star.position.lat(), lng: props.star.position.lng()}
 		};
 	    }
 	}
+	return null;
     }
 
     enterEditMode = this.enterEditMode.bind(this);
@@ -126,21 +131,30 @@ class DetailSidebar extends Component {
     
     save() {
 
-//	console.log(this.ck.demoSaveRecordZones("traces"));
-//	return;
-
-	var star = this.props.star.data;
+	var star;
+	if (this.isNewStar()) {
+	    star = {};
+	    star.recordName = null;
+	    star.fields = {};
+	    star.recordType = "Star";
+	    star.fields.location = {latitude: this.state.coordinate.lat, longitude: this.state.coordinate.lng};
+	}
+	else {
+	    star = this.props.star.data;
+	    star.fields.location = star.fields.location.value;
+	}	
 	
 	star.fields.title = this.state.title;
-	star.fields.location = star.fields.location.value;
+
 	star.fields.note = this.state.note;
 	star.fields.type = this.state.type;
 	star.fields.url = this.state.url;
-	console.log(star);
 	
 	console.log(this.ck.saveRecord(star));
-	
-//	this.setState({editMode: false});
+
+	this.setState({editMode: false});
+
+
     }
 
     componentWillReceiveProps(props) {
@@ -174,7 +188,7 @@ class DetailSidebar extends Component {
 		<li className='coords'><span className='label'>COORDS</span><span>{this.state.coordinate.lat.toFixed(6)}, {this.state.coordinate.lng.toFixed(6)}</span></li>
 
 	    {
-		    (this.state.editMode == true || this.state.editMode == false && this.state.url != '') &&
+		    (this.state.editMode === true || this.state.editMode === false && this.state.url != '') &&
 			(<li className='url'>
 			 <span className='label'>URL</span><span>{ !this.state.editMode ? this.state.url :		  (<input type='text' placeholder='URL' defaultValue={this.state.url} />) }
 			 </span>
@@ -183,7 +197,7 @@ class DetailSidebar extends Component {
 		}
 	    
 	    </ul>		    
-		<LiveMarkedArea editMode={this.state.editMode} label="Notes" defaultValue={this.state.note} />
+		<LiveMarkedArea editMode={this.state.editMode} label="Notes" defaultValue={this.state.note}  value={this.state.note} />
 
 	    </div>
 	);

@@ -3,6 +3,8 @@ import "./Cloud.css";
 
 const CloudKit = window.CloudKit;
 
+const zoneName = "Traces";
+
 CloudKit.configure({
     locale: 'en-us',
 
@@ -108,6 +110,7 @@ class CKComponent extends Component {
 	// If no zoneName is provided the record will be saved to the default zone.
 	if(zoneName) {
 	    options.zoneID = { zoneName: zoneName };
+
 	    if(ownerRecordName) {
 		options.zoneID.ownerRecordName = ownerRecordName;
 	    }
@@ -181,9 +184,7 @@ class CKComponent extends Component {
 		    throw response.errors[0];
 
 		} else {
-
-		    return _this.renderRecords(response.records);
-
+		    return _this.renderNewRecord(response.records);
 		}
 	    });
     }
@@ -270,6 +271,7 @@ class CKComponent extends Component {
 	return privateDB.saveRecordZones({zoneName: zoneName}).then(function(response) {
 	    if(response.hasErrors) {
 
+		console.log("error creating zone");
 		// Handle any errors.
 		throw response.errors[0];
 
@@ -330,7 +332,6 @@ class CKComponent extends Component {
 	var parentRecordName = null;
 	var fields = re.fields;
 	var createShortGUID = false;
-	var zoneName = "traces";
 	var recordType = re.recordType;
 	
 	this.demoSaveRecords(databaseScope,recordName,recordChangeTag,recordType,zoneName,
@@ -342,7 +343,6 @@ class CKComponent extends Component {
     removeRecord(re) {
 	var databaseScope = "PRIVATE";
 	var recordName = re.recordName;
-	var zoneName = "traces";
 	var ownerRecordName = re.zoneID.ownerRecordName;
 	this.demoDeleteRecord(
 	    databaseScope,recordName,zoneName,ownerRecordName
@@ -353,7 +353,6 @@ class CKComponent extends Component {
     loadStars() {
 
 	var databaseScope = "PRIVATE";
-	var zoneName = "traces";
 	var ownerRecordName = null;
 	var recordType = "Star";
 	var desiredKeys = ["title", "location", "note", "type", "url"];
@@ -367,18 +366,28 @@ class CKComponent extends Component {
 	    desiredKeys,sortByField,ascending,latitude,longitude,[]);
     }
     
-    renderRecords(record) {
+    renderRecords(records) {
 
 	if (typeof this.props.onStarsLoad === 'function') {
-	    this.props.onStarsLoad(record);
+	    this.props.onStarsLoad(records);
         }
 
     }
 
-    constructor(props){
-	super(props);
+    renderNewRecord(record) {
+
+	if (typeof this.props.onStarRecordCreated === 'function') {
+	    this.props.onStarRecordCreated(record);
+        }
+
     }
 
+    
+    constructor(props){
+	super(props);
+
+	console.log(this.demoSaveRecordZones(zoneName));
+    }
     
     render() {
 	return (<div>

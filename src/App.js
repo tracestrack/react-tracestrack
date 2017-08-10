@@ -31,6 +31,7 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
 	  const onClick = () => props.onMarkerClick(marker);
 
 	  var icon;
+	  
 	  switch (marker.type) {
 	  case MarkerType.red:
 	      icon = {url: RedStarImg, scaledSize: new google.maps.Size(16, 16)};
@@ -45,7 +46,7 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
 	      icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
 	      break;
 	  }
-
+	  
 	  return (
 	      <Marker
 		key={index}
@@ -61,8 +62,8 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
 ));
 
 class MarkerType {
-    static get red() { return 1; }
-    static get green() { return 2; }
+    static get red() { return 0; }
+    static get green() { return 1; }
     
     static get new() { return -1; }
     static get searchHit() { return -2; }
@@ -98,6 +99,8 @@ class App extends Component {
     handleMapLeftClick = this.handleMapLeftClick.bind(this);
     handleStarsLoad = this.handleStarsLoad.bind(this);
     handleAddStar = this.handleAddStar.bind(this);
+    handleStarSaved = this.handleStarSaved.bind(this);
+    handleStarRecordCreated = this.handleStarRecordCreated.bind(this);
     
     componentDidMount() {
 	this._ck.loadStars();	
@@ -107,11 +110,10 @@ class App extends Component {
 
 	var markers = this.state.markers;
 
-	console.log(markers);
-	
 	for (var it in re) {
 
 	    var fields = re[it].fields;
+	    
 	    var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, fields.type.value, re[it]);
 	    
 	    markers.push(marker);	    
@@ -215,7 +217,7 @@ class App extends Component {
 	var markers = this.state.markers;
 	markers.push(createMarker(loc.lat(), loc.lng(), MarkerType.new));
 
-	var newStar = this.createNewStar("Untitled", {lat: loc.lat(), lng: loc.lng()}, 0, "", "");
+	var newStar = this.createNewStar("Untitled", {lat: loc.lat(), lng: loc.lng()}, 0, "", "note");
 	newStar.isNewStar = true;
 	
 	this.setState({
@@ -228,12 +230,32 @@ class App extends Component {
     }
 
     handleMarkerClick(targetMarker) {
-
 	this.setState({
 	    selectedStar: targetMarker,
 	    showDetailSidebar: true
 	});
+    }
 
+    handleStarSaved() {
+/*	var markers = this.state.markers.filter(x => x.type != MarkerType.new);
+	this.setState({markers: markers});*/
+    }
+
+    handleStarRecordCreated(e) {
+	
+	var markers = this.state.markers.filter(it => it.type != MarkerType.new);
+	
+	var fields = e[0].fields;
+
+	var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, parseInt(fields.type.value), e);
+	markers.push(marker);
+
+	console.log(marker);
+
+	this.setState({
+	    markers: markers
+	});
+	
     }
     
     render() {
@@ -241,11 +263,12 @@ class App extends Component {
 	    <div className='full-height'>
 
 	      <Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
-	      <CKComponent ref={(ck) => {this._ck = ck;}} onStarsLoad={this.handleStarsLoad} />
+	      
+	      <CKComponent ref={(ck) => {this._ck = ck;}} onStarsLoad={this.handleStarsLoad} onStarRecordCreated={this.handleStarRecordCreated} />
 
 	      {
 		  this.state.showDetailSidebar && (
-		      <DetailSidebar star={this.state.selectedStar} ck={this._ck} />
+		      <DetailSidebar star={this.state.selectedStar} ck={this._ck} onStarSaved={this.handleStarSaved} />
 		  )
 	      }	      
 
