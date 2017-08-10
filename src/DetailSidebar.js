@@ -80,15 +80,30 @@ class DetailSidebar extends Component {
 
     convertProps2State(props) {
 	if (props.star != null) {
-	    var data = props.star.data.fields;
+	    if (props.star.isNewStar) {
+	    	// new star
+		var data = props.star;
+		
+		return {
+		    title: data.title,
+		    note: data.note,
+		    type: data.type,
+		    url: data.url,
+		    coordinate: {lat: data.coords.lat, lng: data.coords.lng}
+		};
 
-	    return {
-		title: data.title.value,
-		note: data.note.value,
-		type: data.type.value,
-		url: (data.url.value == "http://" ? "": data.url.value),
-		coordinate: {lat: props.star.position.lat(), lng: props.star.position.lng()}
-	    };
+	    }
+	    else {
+		var data = props.star.data.fields;
+
+		return {
+		    title: data.title.value,
+		    note: data.note.value,
+		    type: data.type.value,
+		    url: (data.url.value == "http://" ? "": data.url.value),
+		    coordinate: {lat: props.star.position.lat(), lng: props.star.position.lng()}
+		};
+	    }
 	}
     }
 

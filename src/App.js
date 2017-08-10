@@ -31,14 +31,19 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
 	  const onClick = () => props.onMarkerClick(marker);
 
 	  var icon;
-	  if (marker.type == Traces.Star.red) {
+	  switch (marker.type) {
+	  case MarkerType.red:
 	      icon = {url: RedStarImg, scaledSize: new google.maps.Size(16, 16)};
-	  }
-	  else if (marker.type == Traces.Star.green) {
+	      break;
+	  case MarkerType.green:
 	      icon = {url: GreenStarImg, scaledSize: new google.maps.Size(16, 16)};
-	  }
-	  else {
+	      break;
+	  case MarkerType.searchHit:
 	      icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
+	      break;
+	  case MarkerType.new:
+	      icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
+	      break;
 	  }
 
 	  return (
@@ -55,14 +60,14 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
     </GoogleMap>
 ));
 
-class Traces {
+class MarkerType {
+    static get red() { return 1; }
+    static get green() { return 2; }
     
+    static get new() { return -1; }
+    static get searchHit() { return -2; }
+    static get wiki() { return -3; }
 }
-Traces.Star = class {
-    static get red() { return 0; }
-    static get green() { return 1; }
-};
-
 
 function createMarker(lat, lng, type, data) {
 
@@ -92,7 +97,8 @@ class App extends Component {
     handleMapRightClick = this.handleMapRightClick.bind(this);
     handleMapLeftClick = this.handleMapLeftClick.bind(this);
     handleStarsLoad = this.handleStarsLoad.bind(this);
-
+    handleAddStar = this.handleAddStar.bind(this);
+    
     componentDidMount() {
 	this._ck.loadStars();	
     }
@@ -124,11 +130,13 @@ class App extends Component {
 	});
 	
     }
-    
+
     handleMapRightClick(e) {
-	
-	this.setState({showContextMenu: true, rightClickPosition: {left: e.pixel.x, top: e.pixel.y}});
-	
+	this.setState({
+	    showContextMenu: true,
+	    rightClickPosition: {left: e.pixel.x, top: e.pixel.y},
+	    rightClickEvent: e
+	});	
     }
 
     handleMapMounted(map) {
@@ -151,13 +159,11 @@ class App extends Component {
 
 	    var markers = [];
 	    for (var it in _this.state.markers) {
-		if (_this.state.markers[it].type != -1) {
+		if (_this.state.markers[it].type != MarkerType.searchHit) {
 		    markers.push(_this.state.markers[it]);
 		}
 	    }
 
-	    console.log(markers);
-	    
 	    var bounds = new google.maps.LatLngBounds();
 	    places.forEach(function(place) {
 		if (!place.geometry) {
@@ -175,7 +181,7 @@ class App extends Component {
 
 		// Create a marker for each place.
 
-		var marker = createMarker(place.geometry.location.lat(), place.geometry.location.lng(), -1);
+		var marker = createMarker(place.geometry.location.lat(), place.geometry.location.lng(), MarkerType.searchHit);
 		markers.push(marker);
 		
 		_this.setState({
@@ -193,6 +199,34 @@ class App extends Component {
 	});
     }
 
+    createNewStar(title, coords, type, url, note) {
+	return {
+	    title: title,
+	    coords: coords,
+	    type: type,
+	    url: url,
+	    note: note
+	};
+    }
+    
+    handleAddStar() {
+
+	let loc = this.state.rightClickEvent.latLng;
+	var markers = this.state.markers;
+	markers.push(createMarker(loc.lat(), loc.lng(), MarkerType.new));
+
+	var newStar = this.createNewStar("Untitled", {lat: loc.lat(), lng: loc.lng()}, 0, "", "");
+	newStar.isNewStar = true;
+	
+	this.setState({
+	    markers: markers,
+	    showContextMenu: false,
+	    selectedStar: newStar,
+	    showDetailSidebar: true	    
+	});
+	
+    }
+
     handleMarkerClick(targetMarker) {
 
 	this.setState({
@@ -206,7 +240,7 @@ class App extends Component {
 	return (
 	    <div className='full-height'>
 
-	      <Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} />
+	      <Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
 	      <CKComponent ref={(ck) => {this._ck = ck;}} onStarsLoad={this.handleStarsLoad} />
 
 	      {

@@ -16,12 +16,6 @@ class Menu extends Component {
 	});	
     }
 
-    addStar = this.addStar.bind(this);
-
-    addStar() {
-	this.setState({active: false});
-    }
-
     render () {
 
 	return (
@@ -29,10 +23,10 @@ class Menu extends Component {
 
                 <DropdownContent>
 
-		<a onClick={this.addStar}>Add Star</a>
-                <a onClick={this.showAttractions}>Show Nearby Attractions</a>
-                <a onClick={this.showRestaurants}>Show Nearby Restaurants</a>		
-                <a onClick={this.showWikis}>Show Nearby Wikis</a>
+		  <a onClick={this.props.onAddStar}>Add Star</a>
+                  <a onClick={this.props.onShowAttractions}>Show Nearby Attractions</a>
+                  <a onClick={this.props.onShowRestaurants}>Show Nearby Restaurants</a>		
+                  <a onClick={this.props.onShowWikis}>Show Nearby Wikis</a>
 		
             </DropdownContent>
 		</Dropdown>
