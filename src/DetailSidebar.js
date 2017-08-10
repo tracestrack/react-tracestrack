@@ -15,10 +15,20 @@ class DetailSidebar extends Component {
 	    url: "https://www.google.com"
 	};
     }
+
+    componentWillReceiveProps(props) {
+
+	if (props.star != null) {
+
+	    this.setState({title: props.star.type})
+	}
+	
+    }
     
     render() {
 	return (
 		<div className='sidebar-right'>
+		<div><a className='close-button' href="javascript:void()">&#10006;</a></div>
 		<h1>{this.state.title}</h1>
 		<ul>
 		<li>{this.state.address} </li>

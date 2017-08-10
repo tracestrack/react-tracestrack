@@ -34,7 +34,7 @@ CloudKit.configure({
 
 
 function displayUserName(name) {
-    window.$("#apple-sign-in-button").text(name);
+    window.$("#apple-sign-in-button").text(name);    
 }
 
 function demoSetUpAuth() {
@@ -59,7 +59,6 @@ function demoSetUpAuth() {
 	    window.showDialogForPersistError();
 	}
 
-	displayUserName('Unauthenticated User');
 	container
 	    .whenUserSignsIn()
 	    .then(gotoAuthenticatedState)

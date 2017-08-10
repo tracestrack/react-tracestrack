@@ -49,9 +49,6 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
 		title={(index + 1).toString()}
 		onClick={onClick}
 		>
-		{marker.showInfo && (
-		    <DetailSidebar />
-		)}
 	      </Marker>
 	  );
       })}
@@ -86,6 +83,7 @@ class App extends Component {
     state = {
 	markers: [],
 	isShow: false,
+	showDetailSidebar: false,
 	rightClickPosition: {left: 100, top: 100}
     }
 
@@ -113,7 +111,10 @@ class App extends Component {
     }
     
     handleMapLeftClick(e) {
-	this.setState({isShow: false, rightClickPosition: {left: e.pixel.x, top: e.pixel.y}});
+	this.setState({
+	    showDetailSidebar: false
+	});
+	
     }
     
     handleMapRightClick(e) {
@@ -185,19 +186,13 @@ class App extends Component {
     }
 
     handleMarkerClick(targetMarker) {
-	this.setState({
-	    markers: this.state.markers.map(marker => {
-		if (marker === targetMarker) {
-		    return {
-			...marker,
-			showInfo: true,
-		    };
-		}
-		return marker;
-	    }),
-	});
-    }
 
+	this.setState({
+	    selectedStar: targetMarker,
+	    showDetailSidebar: true
+	});
+
+    }
     
     render() {
 	return (
@@ -205,6 +200,12 @@ class App extends Component {
 
 	      <AccountDropdown active={this.state.isShow} position={this.state.rightClickPosition} />
 	      <CKComponent onStarsLoad={this.handleStarsLoad}/>
+
+	      {
+		  this.state.showDetailSidebar && (
+		      <DetailSidebar star={this.state.selectedStar} />
+		  )
+	      }	      
 
 	      <input type="text" id="searchTextField" className='searchBar' />
 	      
