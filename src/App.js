@@ -92,14 +92,21 @@ class App extends Component {
     handleMapRightClick = this.handleMapRightClick.bind(this);
     handleMapLeftClick = this.handleMapLeftClick.bind(this);
     handleStarsLoad = this.handleStarsLoad.bind(this);
+
+    componentDidMount() {
+	this._ck.loadStars();	
+    }
     
     handleStarsLoad(re) {
 
 	var markers = this.state.markers;
+
+	console.log(markers);
+	
 	for (var it in re) {
 
 	    var fields = re[it].fields;
-	    var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, fields.type.value, fields);
+	    var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, fields.type.value, re[it]);
 	    
 	    markers.push(marker);	    
 	}
@@ -200,11 +207,11 @@ class App extends Component {
 	    <div className='full-height'>
 
 	      <AccountDropdown active={this.state.showContextMenu} position={this.state.rightClickPosition} />
-	      <CKComponent onStarsLoad={this.handleStarsLoad} />
+	      <CKComponent ref={(ck) => {this._ck = ck;}} onStarsLoad={this.handleStarsLoad} />
 
 	      {
 		  this.state.showDetailSidebar && (
-		      <DetailSidebar star={this.state.selectedStar} />
+		      <DetailSidebar star={this.state.selectedStar} ck={this._ck} />
 		  )
 	      }	      
 

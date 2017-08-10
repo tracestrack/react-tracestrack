@@ -92,6 +92,7 @@ class CKComponent extends Component {
 	forRecordName,forRecordChangeTag,publicPermission,ownerRecordName,
 	participants,parentRecordName,fields,createShortGUID
     ) {
+	var _this = this;
 	var container = CloudKit.getDefaultContainer();
 	var database = container.getDatabaseWithDatabaseScope(
 	    CloudKit.DatabaseScope[databaseScope]
@@ -181,7 +182,8 @@ class CKComponent extends Component {
 
 		} else {
 
-		    return this.renderRecord(response.records[0],options.zoneID, databaseScope);
+		    return _this.renderRecords(response.records);
+
 		}
 	    });
     }
@@ -260,11 +262,98 @@ class CKComponent extends Component {
 		}
 	    });
     }
+
+    demoSaveRecordZones(zoneName) {
+	var container = CloudKit.getDefaultContainer();
+	var privateDB = container.privateCloudDatabase;
+
+	return privateDB.saveRecordZones({zoneName: zoneName}).then(function(response) {
+	    if(response.hasErrors) {
+
+		// Handle any errors.
+		throw response.errors[0];
+
+	    } else {
+
+		// response.zones is an array of zone objects.
+		console.log(response);
+//		return renderZone(response.zones[0]);
+
+	    }
+	});
+    }
+
+    demoDeleteRecord(
+	databaseScope,recordName,zoneName,ownerRecordName
+    ) {
+	var container = CloudKit.getDefaultContainer();
+	var database = container.getDatabaseWithDatabaseScope(
+	    CloudKit.DatabaseScope[databaseScope]
+	);
+
+	var zoneID,options;
+
+	if(zoneName) {
+	    zoneID = { zoneName: zoneName };
+	    if(ownerRecordName) {
+		zoneID.ownerRecordName = ownerRecordName;
+	    }
+	    options = { zoneID: zoneID };
+	}
+
+	return database.deleteRecords(recordName,options)
+	    .then(function(response) {
+		if(response.hasErrors) {
+
+		    // Handle the errors in your app.
+		    throw response.errors[0];
+
+		} else {
+		    var deletedRecord = response.records[0];
+
+		    // Render the deleted record.
+		    //return renderDeletedRecord(deletedRecord);
+		}
+	    });
+    }
+
+    saveRecord(re) {
+
+	var databaseScope = "PRIVATE";
+	var recordName = re.recordName;
+	var recordChangeTag = null;
+	var forRecordName = null;
+	var forRecordChangeTag = null;
+	var publicPermission = null;
+	var ownerRecordName = null;
+	var participants = null;
+	var parentRecordName = null;
+	var fields = re.fields;
+	var createShortGUID = false;
+	var zoneName = "traces";
+	var recordType = re.recordType;
+	
+	this.demoSaveRecords(databaseScope,recordName,recordChangeTag,recordType,zoneName,
+			     forRecordName,forRecordChangeTag,publicPermission,ownerRecordName,
+			     participants,parentRecordName,fields,createShortGUID);
+
+    }
+
+    removeRecord(re) {
+	var databaseScope = "PRIVATE";
+	var recordName = re.recordName;
+	var zoneName = "traces";
+	var ownerRecordName = re.zoneID.ownerRecordName;
+	this.demoDeleteRecord(
+	    databaseScope,recordName,zoneName,ownerRecordName
+	);
+    }
+
     
     loadStars() {
 
 	var databaseScope = "PRIVATE";
-	var zoneName = "_defaultZone";
+	var zoneName = "traces";
 	var ownerRecordName = null;
 	var recordType = "Star";
 	var desiredKeys = ["title", "location", "note", "type", "url"];
