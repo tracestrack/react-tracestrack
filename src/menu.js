@@ -3,28 +3,36 @@ import './menu.css';
 import PropTypes from 'prop-types';
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 
-class AccountDropdown extends Component {
+class Menu extends Component {
 
     constructor (props) {
 	super(props);
-
-	this.handleLinkClick = this.handleLinkClick.bind(this);
+	this.state = {active: false};
     }
 
-    handleLinkClick () {
-	this.refs.dropdown.hide();
+    componentWillReceiveProps(props) {
+	this.setState({
+	    active: props.active
+	});	
+    }
+
+    addStar = this.addStar.bind(this);
+
+    addStar() {
+	this.setState({active: false});
     }
 
     render () {
 
 	return (
-		<Dropdown active={this.props.active} style={{left: this.props.position.left, top: this.props.position.top}}>
+		<Dropdown active={this.state.active} style={{left: this.props.position.left, top: this.props.position.top}}>
 
                 <DropdownContent>
 
-		<a href="/profile">Add Red Star</a>
-                <a href="/favorites">Add Green Star</a>
-                <a href="/logout">Find Nearby Wikis</a>
+		<a onClick={this.addStar}>Add Star</a>
+                <a onClick={this.showAttractions}>Show Nearby Attractions</a>
+                <a onClick={this.showRestaurants}>Show Nearby Restaurants</a>		
+                <a onClick={this.showWikis}>Show Nearby Wikis</a>
 		
             </DropdownContent>
 		</Dropdown>
@@ -34,4 +42,4 @@ class AccountDropdown extends Component {
 }
 
 
-export default AccountDropdown;
+export default Menu;

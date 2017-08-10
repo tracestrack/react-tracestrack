@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps";
-import AccountDropdown from './menu.js';
+import Menu from './menu.js';
 import CKComponent from './Cloud.js';
 import DetailSidebar from './DetailSidebar.js';
 import GreenStarImg from './img/star_green.png';
@@ -206,7 +206,7 @@ class App extends Component {
 	return (
 	    <div className='full-height'>
 
-	      <AccountDropdown active={this.state.showContextMenu} position={this.state.rightClickPosition} />
+	      <Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} />
 	      <CKComponent ref={(ck) => {this._ck = ck;}} onStarsLoad={this.handleStarsLoad} />
 
 	      {
