@@ -59,12 +59,12 @@ class Traces {
     
 }
 Traces.Star = class {
-    static get red() { return 1; }
-    static get green() { return 2; }
+    static get red() { return 0; }
+    static get green() { return 1; }
 };
 
 
-function createMarker(lat, lng, type) {
+function createMarker(lat, lng, type, data) {
 
     const position = new google.maps.LatLng(
 	lat, lng
@@ -72,9 +72,9 @@ function createMarker(lat, lng, type) {
 
     return {
 	position,
-	content: 'hi',
 	showInfo: false,
-	type: type
+	type: type,
+	data: data
     };
 }
 
@@ -82,7 +82,7 @@ class App extends Component {
 
     state = {
 	markers: [],
-	isShow: false,
+	showContextMenu: false,
 	showDetailSidebar: false,
 	rightClickPosition: {left: 100, top: 100}
     }
@@ -96,11 +96,11 @@ class App extends Component {
     handleStarsLoad(re) {
 
 	var markers = this.state.markers;
-
-	console.log(re);
-	
 	for (var it in re) {
-	    var marker = createMarker(re[it].fields.location.value.latitude, re[it].fields.location.value.longitude, Traces.Star.red);
+
+	    var fields = re[it].fields;
+	    var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, fields.type.value, fields);
+	    
 	    markers.push(marker);	    
 	}
 
@@ -112,14 +112,15 @@ class App extends Component {
     
     handleMapLeftClick(e) {
 	this.setState({
-	    showDetailSidebar: false
+	    showDetailSidebar: false,
+	    showContextMenu: false
 	});
 	
     }
     
     handleMapRightClick(e) {
 	
-	this.setState({isShow: true, rightClickPosition: {left: e.pixel.x, top: e.pixel.y}});
+	this.setState({showContextMenu: true, rightClickPosition: {left: e.pixel.x, top: e.pixel.y}});
 	
     }
 
@@ -198,8 +199,8 @@ class App extends Component {
 	return (
 	    <div className='full-height'>
 
-	      <AccountDropdown active={this.state.isShow} position={this.state.rightClickPosition} />
-	      <CKComponent onStarsLoad={this.handleStarsLoad}/>
+	      <AccountDropdown active={this.state.showContextMenu} position={this.state.rightClickPosition} />
+	      <CKComponent onStarsLoad={this.handleStarsLoad} />
 
 	      {
 		  this.state.showDetailSidebar && (

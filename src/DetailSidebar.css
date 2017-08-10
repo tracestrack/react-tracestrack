@@ -6,9 +6,13 @@
     position: absolute;  
     right: 0;  
     top: 0;
-    background-color: white;
-    overflow-y: scroll;
 
+    overflow-y: scroll;
+    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.3);  
+
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .marked-area-text-container {
@@ -18,9 +22,82 @@
 }
 
 .marked-area-text-container textarea {
-
-    display: none;
+    
     height: 200px;
-    width: 100%;
+    width: 98%;
+    margin: 0;
+    
 }
 
+.show {
+    display:block;
+}
+.hide {
+    display:none;
+}
+
+.name input {
+    width: 100%;
+    height: 28px;
+    font-size: 22px;
+}
+
+.url input {
+    width: 100%;
+    height: 22px;
+    font-size: 12px;
+}
+
+ul {
+    padding: 0;
+}
+
+.controls {
+    text-align: right;
+    margin: 10px;
+}
+
+.marked-area-text-container,
+li.coords,
+li span,
+li.url,
+li.address,
+.marked-area-header,
+h1.name {
+    padding: 0 10px 0 10px;
+
+    
+}
+li {
+    list-style: none;
+    clear: both;
+    display: block;
+    height: 22px;
+}
+
+li span {
+    display: block;
+    float:left;
+    width: calc(100% - 110px);
+}
+
+span.label {
+    font-size: 10px;
+    font-weight: bold;
+    width: 50px;
+    margin-top: 3px;
+}
+
+li.url {
+    word-break:break-all;
+}
+
+.marked-area-text-container img {
+    width: 10%;
+}
+
+.marked-area-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+    clear:both;
+}
