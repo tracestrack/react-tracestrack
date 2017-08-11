@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import {MarkerType} from './App.js';
 import {
     MarkedInput,
     MarkedPreview } from 'react-markdown-area';
 
 import "./DetailSidebar.css";
 
+
+const google = window.google;
 
 export class LiveMarkedArea extends React.Component {
     constructor(props) {
@@ -102,15 +105,32 @@ class DetailSidebar extends Component {
 
 	    }
 	    else {
-		data = props.star.data.fields;
-		console.log(data);
-		return {
-		    title: data.title.value,
-		    note: data.note.value,
-		    type: data.type.value,
-		    url: (data.url.value === "http://" ? "": data.url.value),
-		    coordinate: {lat: props.star.position.lat(), lng: props.star.position.lng()}
-		};
+
+		if (props.star.type == MarkerType.googlePlace) {
+
+		    data = props.star;
+		    this.loadGooglePlace(data.title);
+		    return {
+			title: "",
+			note: '',
+			type: data.type,
+			url: '',
+			coordinate: {lat: data.coords.lat, lng: data.coords.lng},
+			editMode: false
+		    };
+		    
+		}
+		else {
+		    data = props.star.data.fields;
+		    console.log(data);
+		    return {
+			title: data.title.value,
+			note: data.note.value,
+			type: data.type.value,
+			url: (data.url.value === "http://" ? "": data.url.value),
+			coordinate: {lat: props.star.position.lat(), lng: props.star.position.lng()}
+		    };
+		}
 	    }
 	}
 	return null;
@@ -121,9 +141,56 @@ class DetailSidebar extends Component {
     cancel = this.cancel.bind(this);
     save = this.save.bind(this);
 
+    loadGooglePlace = this.loadGooglePlace.bind(this);
+    
     titleChange = this.titleChange.bind(this);
     urlChange = this.urlChange.bind(this);
-    noteChange = this.noteChange.bind(this);
+    noteChange = this.noteChange.bind(this);    
+
+    loadGooglePlace(id) {
+	var request = {
+	    placeId: id
+	};
+
+	let _this = this;
+	let MAP = '__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED';
+	var service = new google.maps.places.PlacesService(window.map.context[MAP]);
+	service.getDetails(request, callback);
+
+	function createNoteFromGooglePlace(place) {
+
+	    var photo = place.photos[0];
+
+	    let $ = window.$;
+
+	    var el = $(photo.html_attributions[0]);
+	    window.el = el;
+	    return `![](`+photo.getUrl({maxWidth:300})+`)
+
+Photo credit: [`+el.text()+`](`+el.prop('href')+`)
+
+[View on Google Maps](`+place.url+`)
+`;
+    
+	}
+
+	function callback(place, status) {
+	    if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+		let state = {
+		    title: place.name,
+		    address: {__html: place.adr_address},
+		    url: place.website,
+		    note: createNoteFromGooglePlace(place)
+		};
+
+		_this.setState(state);
+		
+		console.log(place);
+	    }
+	}
+
+    }
     
     enterEditMode() {
 	this.setState({editMode: true});
@@ -210,7 +277,7 @@ class DetailSidebar extends Component {
 		}
 	    </h1>
 		<ul>
-		<li className='address'><span className='label'>ADD</span><span>{this.state.address}</span></li>
+		<li className='address'><span className='label'>ADD</span><span dangerouslySetInnerHTML={this.state.address} /></li>
 
 		<li className='coords'><span className='label'>COORDS</span><span>{this.state.coordinate.lat.toFixed(6)}, {this.state.coordinate.lng.toFixed(6)}</span></li>
 

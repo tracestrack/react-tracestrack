@@ -61,13 +61,14 @@ const SimpleMapExampleGoogleMap = withGoogleMap(props => (
     </GoogleMap>
 ));
 
-class MarkerType {
+export class MarkerType {
     static get red() { return 0; }
     static get green() { return 1; }
     
     static get new() { return -1; }
     static get searchHit() { return -2; }
     static get wiki() { return -3; }
+    static get googlePlace() { return -4; }
 }
 
 function createMarker(lat, lng, type, data) {
@@ -126,10 +127,22 @@ class App extends Component {
     }
     
     handleMapLeftClick(e) {
-	this.setState({
-	    showDetailSidebar: false,
-	    showContextMenu: false
-	});
+
+	if (e.placeId) {
+	    var newStar = this.createNewStar(e.placeId, {lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace);
+	    this.setState({
+		selectedStar: newStar,
+		showDetailSidebar: true,
+		showContextMenu: false
+	    });
+	    
+	}
+	else {
+	    this.setState({
+		showDetailSidebar: false,
+		showContextMenu: false
+	    });
+	}
 	
     }
 
@@ -142,6 +155,7 @@ class App extends Component {
     }
 
     handleMapMounted(map) {
+	console.log(map);
 	window.map = map;
 
 	var input = document.getElementById('searchTextField');
@@ -294,6 +308,5 @@ class App extends Component {
     }
 
 }
-
 
 export default App;
