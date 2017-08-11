@@ -15,7 +15,7 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: '1e5877d9b251239cac11938e2d79d7d48a49a8021707e793b7b4e36c24eba053',
+	    apiToken: '2dad75004c8ba61e9e396d5fb3e715ae791d49d6a7f1dceade60b33a60927ffc',
 
 	    persist: true, // Sets a cookie.
 
@@ -76,6 +76,7 @@ function demoSetUpAuth() {
 	    // userIdentity is the signed-in user or null.
 	    if(userIdentity) {
 		gotoAuthenticatedState(userIdentity);
+		demoSaveRecordZones(zoneName);
 	    } else {
 		gotoUnauthenticatedState();
 	    }
@@ -83,6 +84,27 @@ function demoSetUpAuth() {
 }
 
 demoSetUpAuth();
+
+function demoSaveRecordZones(zoneName) {
+    var container = CloudKit.getDefaultContainer();
+    var privateDB = container.privateCloudDatabase;
+
+    return privateDB.saveRecordZones({zoneName: zoneName}).then(function(response) {
+	if(response.hasErrors) {
+
+	    console.log("error creating zone");
+	    // Handle any errors.
+	    throw response.errors[0];
+
+	} else {
+
+	    // response.zones is an array of zone objects.
+	    console.log(response);
+	    //return renderZone(response.zones[0]);
+
+	}
+    });
+}
 
 class CKComponent extends Component {
 
@@ -252,38 +274,18 @@ class CKComponent extends Component {
 	return database.performQuery(query,options)
 	    .then(function (response) {
 		if(response.hasErrors) {
-
+		    console.log(response.errors);
 		    // Handle them in your app.
 		    throw response.errors[0];
 
 		} else {
-		    var records = response.records;
-		    
+
+		    var records = response.records;		    
 		    return _this.renderRecords(records);
 		}
 	    });
     }
 
-    demoSaveRecordZones(zoneName) {
-	var container = CloudKit.getDefaultContainer();
-	var privateDB = container.privateCloudDatabase;
-
-	return privateDB.saveRecordZones({zoneName: zoneName}).then(function(response) {
-	    if(response.hasErrors) {
-
-		console.log("error creating zone");
-		// Handle any errors.
-		throw response.errors[0];
-
-	    } else {
-
-		// response.zones is an array of zone objects.
-		console.log(response);
-//		return renderZone(response.zones[0]);
-
-	    }
-	});
-    }
 
     demoDeleteRecord(
 	databaseScope,recordName,zoneName,ownerRecordName
@@ -319,11 +321,12 @@ class CKComponent extends Component {
 	    });
     }
 
+    
     saveRecord(re) {
 
 	var databaseScope = "PRIVATE";
 	var recordName = re.recordName;
-	var recordChangeTag = null;
+
 	var forRecordName = null;
 	var forRecordChangeTag = null;
 	var publicPermission = null;
@@ -333,10 +336,41 @@ class CKComponent extends Component {
 	var fields = re.fields;
 	var createShortGUID = false;
 	var recordType = re.recordType;
+
+	var zoneID = { zoneName: zoneName };
+	var options = { zoneID: zoneID };
+
+	var _this = this;
+
+	var container = CloudKit.getDefaultContainer();
+	var database = container.getDatabaseWithDatabaseScope(
+	    CloudKit.DatabaseScope[databaseScope]
+	);
+
+	function xx(recordChangeTag) {
+	    _this.demoSaveRecords(databaseScope,recordName,recordChangeTag,recordType,zoneName,
+				  forRecordName,forRecordChangeTag,publicPermission,ownerRecordName,
+				  participants,parentRecordName,fields,createShortGUID);
+	}
+
+	if (recordName) {
+	    database.fetchRecords(recordName,options)
+		.then(function(response) {
+		    if(response.hasErrors) {
+
+			// Handle the errors in your app.
+			throw response.errors[0];
+
+		    } else {
+			var record = response.records[0];
+			xx(record.recordChangeTag);
+		    }
+		});
+	}
+	else {
+	    xx(null);
+	}
 	
-	this.demoSaveRecords(databaseScope,recordName,recordChangeTag,recordType,zoneName,
-			     forRecordName,forRecordChangeTag,publicPermission,ownerRecordName,
-			     participants,parentRecordName,fields,createShortGUID);
 
     }
 
@@ -364,6 +398,7 @@ class CKComponent extends Component {
 	this.demoPerformQuery(
 	    databaseScope,zoneName,ownerRecordName,recordType,
 	    desiredKeys,sortByField,ascending,latitude,longitude,[]);
+
     }
     
     renderRecords(records) {
@@ -375,18 +410,13 @@ class CKComponent extends Component {
     }
 
     renderNewRecord(record) {
-
 	if (typeof this.props.onStarRecordCreated === 'function') {
 	    this.props.onStarRecordCreated(record);
         }
-
     }
-
     
     constructor(props){
 	super(props);
-
-	console.log(this.demoSaveRecordZones(zoneName));
     }
     
     render() {

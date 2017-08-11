@@ -35,6 +35,8 @@ export class LiveMarkedArea extends React.Component {
     handleTextChange = (e) => {
 	this.setState({value: e.target.value});
     };
+
+    
     
     render() {
 	let {id, label, classNames, placeholder} = this.props;
@@ -116,6 +118,10 @@ class DetailSidebar extends Component {
     remove = this.remove.bind(this);    
     cancel = this.cancel.bind(this);
     save = this.save.bind(this);
+
+    titleChange = this.titleChange.bind(this);
+    urlChange = this.urlChange.bind(this);
+    noteChange = this.noteChange.bind(this);
     
     enterEditMode() {
 	this.setState({editMode: true});
@@ -134,21 +140,23 @@ class DetailSidebar extends Component {
 	var star;
 	if (this.isNewStar()) {
 	    star = {};
-	    star.recordName = null;
 	    star.fields = {};
 	    star.recordType = "Star";
 	    star.fields.location = {latitude: this.state.coordinate.lat, longitude: this.state.coordinate.lng};
 	}
 	else {
-	    star = this.props.star.data;
-	    star.fields.location = star.fields.location.value;
+	    star = {};
+	    star.fields = {};
+	    star.recordName = this.props.star.data.recordName;
+	    star.recordType = this.props.star.data.recordType;
 	}	
 	
 	star.fields.title = this.state.title;
-
 	star.fields.note = this.state.note;
 	star.fields.type = this.state.type;
 	star.fields.url = this.state.url;
+
+	console.log(star);
 	
 	console.log(this.ck.saveRecord(star));
 
@@ -159,6 +167,22 @@ class DetailSidebar extends Component {
 
     componentWillReceiveProps(props) {
 	this.setState(this.convertProps2State(props));	
+    }
+
+    titleChange(e) {
+	this.setState({
+	    title: e.target.value
+	});
+    }
+    urlChange(e) {
+	this.setState({
+	    url: e.target.value
+	});
+    }
+    noteChange(e) {
+	this.setState({
+	    note: e.target.value
+	});
     }
     
     render() {
@@ -179,7 +203,7 @@ class DetailSidebar extends Component {
 		<h1 className='name'>
 		{ !this.state.editMode ?
 		  this.state.title :
-		  (<input type='text' placeholder='Name' defaultValue={this.state.title} />)
+		  (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
 		}
 	    </h1>
 		<ul>
@@ -190,14 +214,14 @@ class DetailSidebar extends Component {
 	    {
 		    (this.state.editMode === true || this.state.editMode === false && this.state.url != '') &&
 			(<li className='url'>
-			 <span className='label'>URL</span><span>{ !this.state.editMode ? this.state.url :		  (<input type='text' placeholder='URL' defaultValue={this.state.url} />) }
+			 <span className='label'>URL</span><span>{ !this.state.editMode ? this.state.url :		  (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange}/>) }
 			 </span>
 			 
 			 </li>)
 		}
 	    
 	    </ul>		    
-		<LiveMarkedArea editMode={this.state.editMode} label="Notes" defaultValue={this.state.note}  value={this.state.note} />
+		<LiveMarkedArea editMode={this.state.editMode} label="Notes" defaultValue={this.state.note}  value={this.state.note} onChange={this.noteChange}/>
 
 	    </div>
 	);
