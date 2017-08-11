@@ -34,9 +34,11 @@ export class LiveMarkedArea extends React.Component {
 
     handleTextChange = (e) => {
 	this.setState({value: e.target.value});
-    };
 
-    
+	if (typeof this.props.onChange === 'function') {
+	    this.props.onChange(e);
+	}
+    };    
     
     render() {
 	let {id, label, classNames, placeholder} = this.props;
@@ -73,7 +75,6 @@ class DetailSidebar extends Component {
 	super(props);
 
 	var state = this.convertProps2State(props);
-	state.editMode = false;
 	this.state = state;
 	this.ck = props.ck;
 	
@@ -95,7 +96,8 @@ class DetailSidebar extends Component {
 		    note: data.note,
 		    type: data.type,
 		    url: data.url,
-		    coordinate: {lat: data.coords.lat, lng: data.coords.lng}
+		    coordinate: {lat: data.coords.lat, lng: data.coords.lng},
+		    editMode: true
 		};
 
 	    }
@@ -166,7 +168,7 @@ class DetailSidebar extends Component {
     }
 
     componentWillReceiveProps(props) {
-	this.setState(this.convertProps2State(props));	
+	this.setState(this.convertProps2State(props));
     }
 
     titleChange(e) {
@@ -180,6 +182,7 @@ class DetailSidebar extends Component {
 	});
     }
     noteChange(e) {
+	console.log(e);
 	this.setState({
 	    note: e.target.value
 	});

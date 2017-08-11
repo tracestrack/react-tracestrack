@@ -347,7 +347,7 @@ class CKComponent extends Component {
 	    CloudKit.DatabaseScope[databaseScope]
 	);
 
-	function xx(recordChangeTag) {
+	function doSave(recordChangeTag) {
 	    _this.demoSaveRecords(databaseScope,recordName,recordChangeTag,recordType,zoneName,
 				  forRecordName,forRecordChangeTag,publicPermission,ownerRecordName,
 				  participants,parentRecordName,fields,createShortGUID);
@@ -363,12 +363,12 @@ class CKComponent extends Component {
 
 		    } else {
 			var record = response.records[0];
-			xx(record.recordChangeTag);
+			doSave(record.recordChangeTag);
 		    }
 		});
 	}
 	else {
-	    xx(null);
+	    doSave();
 	}
 	
 

@@ -247,13 +247,14 @@ class App extends Component {
 	
 	var fields = e[0].fields;
 
-	var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, parseInt(fields.type.value), e);
+	var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, parseInt(fields.type.value), e[0]);
 	markers.push(marker);
 
 	console.log(marker);
 
 	this.setState({
-	    markers: markers
+	    markers: markers,
+	    selectedStar: marker
 	});
 	
     }
