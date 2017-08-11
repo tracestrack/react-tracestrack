@@ -206,7 +206,9 @@ class CKComponent extends Component {
 		    throw response.errors[0];
 
 		} else {
-		    return _this.renderNewRecord(response.records);
+		    if (typeof _this.props.onStarRecordCreated === 'function') {
+			_this.props.onStarRecordCreated(record);
+		    }
 		}
 	    });
     }
@@ -290,6 +292,7 @@ class CKComponent extends Component {
     demoDeleteRecord(
 	databaseScope,recordName,zoneName,ownerRecordName
     ) {
+	var _this = this;
 	var container = CloudKit.getDefaultContainer();
 	var database = container.getDatabaseWithDatabaseScope(
 	    CloudKit.DatabaseScope[databaseScope]
@@ -316,7 +319,7 @@ class CKComponent extends Component {
 		    var deletedRecord = response.records[0];
 
 		    // Render the deleted record.
-		    //return renderDeletedRecord(deletedRecord);
+		    return _this.props.onStarRemoved(deletedRecord);
 		}
 	    });
     }
@@ -402,16 +405,8 @@ class CKComponent extends Component {
     }
     
     renderRecords(records) {
-
 	if (typeof this.props.onStarsLoad === 'function') {
 	    this.props.onStarsLoad(records);
-        }
-
-    }
-
-    renderNewRecord(record) {
-	if (typeof this.props.onStarRecordCreated === 'function') {
-	    this.props.onStarRecordCreated(record);
         }
     }
     

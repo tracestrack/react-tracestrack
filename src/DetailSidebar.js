@@ -84,27 +84,13 @@ class DetailSidebar extends Component {
     }
 
     isNewStar() {
-	return this.props.star.isNewStar;
+	return this.props.star.isNewStar === true;
     }
 
     convertProps2State(props) {
 	if (props.star != null) {
 	    var data;
 	    if (this.isNewStar()) {
-	    	// new star
-		data = props.star;
-		
-		return {
-		    title: data.title,
-		    note: data.note,
-		    type: data.type,
-		    url: data.url,
-		    coordinate: {lat: data.coords.lat, lng: data.coords.lng},
-		    editMode: true
-		};
-
-	    }
-	    else {
 
 		if (props.star.type == MarkerType.googlePlace) {
 
@@ -117,20 +103,36 @@ class DetailSidebar extends Component {
 			url: '',
 			coordinate: {lat: data.coords.lat, lng: data.coords.lng},
 			editMode: false
-		    };
-		    
+		    };		    
 		}
-		else {
-		    data = props.star.data.fields;
-		    console.log(data);
+		else {		    
+	    	    // new star
+		    data = props.star;
+		    console.log('error');
 		    return {
-			title: data.title.value,
-			note: data.note.value,
-			type: data.type.value,
-			url: (data.url.value === "http://" ? "": data.url.value),
-			coordinate: {lat: props.star.position.lat(), lng: props.star.position.lng()}
+			title: data.title,
+			note: data.note,
+			type: data.type,
+			url: data.url,
+			coordinate: {lat: data.coords.lat, lng: data.coords.lng},
+			editMode: true
 		    };
+
 		}
+	    }
+	    else {
+
+		data = props.star.data.fields;
+		console.log(data);
+		return {
+		    title: data.title.value,
+		    note: data.note.value,
+		    type: data.type.value,
+		    url: (data.url != null ? (data.url.value === "http://" ? "": data.url.value) : ""),
+		    coordinate: {lat: props.star.position.lat(), lng: props.star.position.lng()},
+		    editMode: false
+		};
+
 	    }
 	}
 	return null;
@@ -206,37 +208,31 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
     }
     remove() {
 	var star = this.props.star.data;
-	console.log(this.ck.removeRecord(star));
+	this.ck.removeRecord(star);
     }
     
     save() {
 
-	var star;
-	if (this.isNewStar()) {
-	    star = {};
-	    star.fields = {};
-	    star.recordType = "Star";
-	    star.fields.location = {latitude: this.state.coordinate.lat, longitude: this.state.coordinate.lng};
-	}
-	else {
-	    star = {};
-	    star.fields = {};
+	var star = {};
+	star.fields = {};
+	if (this.isNewStar() == false) {
 	    star.recordName = this.props.star.data.recordName;
-	    star.recordType = this.props.star.data.recordType;
-	}	
-	
+	}
+
+	star.fields.location = {latitude: this.state.coordinate.lat, longitude: this.state.coordinate.lng};
+	star.recordType = "Star";	
 	star.fields.title = this.state.title;
 	star.fields.note = this.state.note;
+
+	if (this.state.type < 0) {
+	    this.state.type = 0;
+	}
 	star.fields.type = this.state.type;
 	star.fields.url = this.state.url;
-
-	console.log(star);
 	
 	console.log(this.ck.saveRecord(star));
 
 	this.setState({editMode: false});
-
-
     }
 
     componentWillReceiveProps(props) {

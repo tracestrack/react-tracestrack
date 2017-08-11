@@ -102,9 +102,18 @@ class App extends Component {
     handleAddStar = this.handleAddStar.bind(this);
     handleStarSaved = this.handleStarSaved.bind(this);
     handleStarRecordCreated = this.handleStarRecordCreated.bind(this);
+    handleStarRecordRemoved = this.handleStarRecordRemoved.bind(this);    
     
     componentDidMount() {
 	this._ck.loadStars();	
+    }
+
+    handleStarRecordRemoved(re) {
+	var markers = this.state.markers.filter(e => e != this.state.selectedStar);
+	this.setState({
+	    markers: markers,
+	    showDetailSidebar: false
+	});
     }
     
     handleStarsLoad(re) {
@@ -130,6 +139,9 @@ class App extends Component {
 
 	if (e.placeId) {
 	    var newStar = this.createNewStar(e.placeId, {lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace);
+
+	    newStar.isNewStar = true;
+	    
 	    this.setState({
 		selectedStar: newStar,
 		showDetailSidebar: true,
@@ -233,7 +245,7 @@ class App extends Component {
 
 	var newStar = this.createNewStar("Untitled", {lat: loc.lat(), lng: loc.lng()}, 0, "", "note");
 	newStar.isNewStar = true;
-	
+
 	this.setState({
 	    markers: markers,
 	    showContextMenu: false,
@@ -258,17 +270,17 @@ class App extends Component {
     handleStarRecordCreated(e) {
 	
 	var markers = this.state.markers.filter(it => it.type != MarkerType.new);
+	var fields = e.fields;
+
+	var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, parseInt(fields.type.value), e);
 	
-	var fields = e[0].fields;
-
-	var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, parseInt(fields.type.value), e[0]);
 	markers.push(marker);
-
-	console.log(marker);
-
+	let star = this.createNewStar(fields.title.value, {lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, fields.url.value, fields.note.value);
+	star.isNewStar = false;
+	    
 	this.setState({
 	    markers: markers,
-	    selectedStar: marker
+	    selectedStar: star
 	});
 	
     }
@@ -279,7 +291,7 @@ class App extends Component {
 
 	      <Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
 	      
-	      <CKComponent ref={(ck) => {this._ck = ck;}} onStarsLoad={this.handleStarsLoad} onStarRecordCreated={this.handleStarRecordCreated} />
+		<CKComponent ref={(ck) => {this._ck = ck;}} onStarsLoad={this.handleStarsLoad} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved}/>
 
 	      {
 		  this.state.showDetailSidebar && (
