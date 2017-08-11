@@ -16,9 +16,19 @@
 }
 
 .marked-area-text-container {
-
     padding: 0px;
+}
 
+.marked-area-text-container a {
+    padding: 5px;
+    text-decoration: none;
+    color:#555;
+}
+
+.marked-area-text-container a:hover {
+    padding: 5px;
+    background:#fefefe;
+    color:#444;
 }
 
 .marked-area-text-container textarea {
@@ -57,47 +67,62 @@ ul {
     margin: 10px;
 }
 
-.marked-area-text-container,
-li.coords,
-li span,
-li.url,
-li.address,
-.marked-area-header,
+
 h1.name {
     padding: 0 10px 0 10px;
-
-    
-}
-li {
-    list-style: none;
-    clear: both;
-    display: block;
-    height: 22px;
 }
 
-li span {
-    display: block;
-    float:left;
-    width: calc(100% - 110px);
+table.infoBox {
+    margin: 0 10px 0 10px;
+    font-size: 14px;
+    table-layout: fixed;
+    width: 96%;
+    cell-spacing: 5px;
+}
+table.infoBox a{
+    color: #666;
+    padding:3px 0px;
+    text-decoration:none;
+}
+table.infoBox a:hover{
+    color: #444;
 }
 
-span.label {
+.td {
     font-size: 10px;
     font-weight: bold;
     width: 50px;
-    margin-top: 3px;
+    padding-top: 3px;
 }
 
-li.url {
-    word-break:break-all;
+td {
+    vertical-align: top;
+    padding: 1px;
+    word-break: break-word;
+}
+
+.marked-area-text-container p {
+    padding: 5px 10px;
 }
 
 .marked-area-text-container img {
-    width: 100%;
+    width: calc(100% + 20px);
+    margin-left: -10px;
 }
 
 .marked-area-header {
     font-weight: bold;
-    margin-bottom: 5px;
-    clear:both;
+    margin: 20px 10px;
 }
+
+.street-address {
+
+}
+
+.postal-code {
+
+}
+.locality {
+    font-style: italic;
+}
+

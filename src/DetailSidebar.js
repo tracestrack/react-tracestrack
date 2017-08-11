@@ -159,18 +159,23 @@ class DetailSidebar extends Component {
 
 	function createNoteFromGooglePlace(place) {
 
-	    var photo = place.photos[0];
+	    var photo = place.photos;
+	    var md = '';
+	    if (photo && photo.length > 0) {
 
-	    let $ = window.$;
+		photo = photo[0];
+		let $ = window.$;
+		var el = $(photo.html_attributions[0]);
+		window.el = el;
 
-	    var el = $(photo.html_attributions[0]);
-	    window.el = el;
-	    return `![](`+photo.getUrl({maxWidth:300})+`)
+		md = '![]('+photo.getUrl({maxWidth:300})+`)
 
 Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 
-[View on Google Maps](`+place.url+`)
 `;
+		
+	    }	    
+	    return md + `[View on Google Maps](`+place.url+`)`;
     
 	}
 
@@ -276,21 +281,25 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 		  (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
 		}
 	    </h1>
-		<ul>
-		<li className='address'><span className='label'>ADD</span><span dangerouslySetInnerHTML={this.state.address} /></li>
-
-		<li className='coords'><span className='label'>COORDS</span><span>{this.state.coordinate.lat.toFixed(6)}, {this.state.coordinate.lng.toFixed(6)}</span></li>
+		<table className='infoBox'>
+		<tbody>
+		<tr>
+		<td className='td'>ADD</td><td dangerouslySetInnerHTML={this.state.address} />
+		</tr>
+		<tr>
+		<td className='td'>COORDS</td><td>{this.state.coordinate.lat.toFixed(6)}, {this.state.coordinate.lng.toFixed(6)}</td>
+		</tr>
 
 	    {
 		    (this.state.editMode === true || this.state.editMode === false && this.state.url != '') &&
-			(<li className='url'>
-			 <span className='label'>URL</span><span>{ !this.state.editMode ? this.state.url :		  (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange}/>) }
-			 </span>
-			 
-			 </li>)
+			(<tr>
+			 <td className='td'>URL</td>
+			 <td>{ !this.state.editMode ? (<a href={this.state.url}>{this.state.url}</a>) : (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange}/>) }
+			 </td>			 
+			 </tr>)
 		}
-	    
-	    </ul>		    
+	    </tbody>
+	    </table>
 		<LiveMarkedArea editMode={this.state.editMode} label="Notes" defaultValue={this.state.note}  value={this.state.note} onChange={this.noteChange}/>
 
 	    </div>
