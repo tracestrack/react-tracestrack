@@ -45,6 +45,8 @@ function demoSetUpAuth() {
     var container = CloudKit.getDefaultContainer();
 
     function gotoAuthenticatedState(userIdentity) {
+	window.userIdentity = userIdentity;
+	
 	var name = userIdentity.nameComponents;
 	if(name) {
 	    displayUserName(name.givenName + ' ' + name.familyName);
@@ -388,6 +390,10 @@ class CKComponent extends Component {
 
     
     loadStars() {
+
+	if (window.userIdentity) {
+
+	}
 
 	var databaseScope = "PRIVATE";
 	var ownerRecordName = null;

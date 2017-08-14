@@ -1,65 +1,10 @@
 import React, { Component } from 'react';
-import { withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps";
 import Menu from './menu.js';
 import CKComponent from './Cloud.js';
 import DetailSidebar from './DetailSidebar.js';
-import GreenStarImg from './img/star_green.png';
-import RedStarImg from './img/star_red.png';
-import PinImg from './img/pin.png';
+import {Map} from './Map.js';
 
 const google = window.google;
-
-const SimpleMapExampleGoogleMap = withGoogleMap(props => (
-    <GoogleMap
-      ref={props.onMapMounted}
-      defaultOptions={{
-	  mapTypeControlOptions: {
-              style: google.maps.MapTypeControlStyle.DEFAULT,
-              position: google.maps.ControlPosition.TOP_LEFT
-	  },
-	  zoomControl: false,
-	  streetViewControlOptions: {
-              position: google.maps.ControlPosition.BOTTOM_CENTER
-	  }
-      }}
-      defaultZoom={14}
-      defaultCenter={{ lat: 48.852, lng: 2.350 }}
-      onClick={props.onMapLeftClick}
-      onRightClick={props.onMapRightClick}
-      >
-      {props.markers.map((marker, index) => {
-	  const onClick = () => props.onMarkerClick(marker);
-
-	  var icon;
-	  
-	  switch (marker.type) {
-	  case MarkerType.red:
-	      icon = {url: RedStarImg, scaledSize: new google.maps.Size(16, 16)};
-	      break;
-	  case MarkerType.green:
-	      icon = {url: GreenStarImg, scaledSize: new google.maps.Size(16, 16)};
-	      break;
-	  case MarkerType.searchHit:
-	      icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
-	      break;
-	  case MarkerType.new:
-	      icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
-	      break;
-	  }
-	  
-	  return (
-	      <Marker
-		key={index}
-		icon={icon}
-		position={marker.position}
-		title={(index + 1).toString()}
-		onClick={onClick}
-		>
-	      </Marker>
-	  );
-      })}
-    </GoogleMap>
-));
 
 export class MarkerType {
     static get red() { return 0; }
@@ -71,6 +16,7 @@ export class MarkerType {
     static get googlePlace() { return -4; }
 }
 
+/* marker model is used to display anything marker on the map. */
 function createMarker(lat, lng, type, data) {
 
     const position = new google.maps.LatLng(
@@ -140,8 +86,6 @@ class App extends Component {
 	if (e.placeId) {
 	    var newStar = this.createNewStar(e.placeId, {lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace);
 
-	    newStar.isNewStar = true;
-	    
 	    this.setState({
 		selectedStar: newStar,
 		showDetailSidebar: true,
@@ -227,6 +171,7 @@ class App extends Component {
 	});
     }
 
+    /** star model is used to render detailsidebar */
     createNewStar(title, coords, type, url, note) {
 	return {
 	    title: title,
@@ -243,8 +188,7 @@ class App extends Component {
 	var markers = this.state.markers;
 	markers.push(createMarker(loc.lat(), loc.lng(), MarkerType.new));
 
-	var newStar = this.createNewStar("Untitled", {lat: loc.lat(), lng: loc.lng()}, 0, "", "note");
-	newStar.isNewStar = true;
+	var newStar = this.createNewStar("Untitled", {lat: loc.lat(), lng: loc.lng()}, MarkerType.new, "", "");
 
 	this.setState({
 	    markers: markers,
@@ -301,7 +245,7 @@ class App extends Component {
 
 	      <input type="text" id="searchTextField" className='searchBar' />
 	      
-	      <SimpleMapExampleGoogleMap
+	      <Map
 		markers={this.state.markers}
 		onMarkerClick={this.handleMarkerClick}
 		onMapMounted={this.handleMapMounted}

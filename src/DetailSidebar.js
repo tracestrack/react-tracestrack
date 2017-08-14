@@ -90,40 +90,45 @@ class DetailSidebar extends Component {
     convertProps2State(props) {
 	if (props.star != null) {
 	    var data;
-	    if (this.isNewStar()) {
-
-		if (props.star.type == MarkerType.googlePlace) {
-
-		    data = props.star;
-		    this.loadGooglePlace(data.title);
-		    return {
-			title: "",
-			note: '',
-			type: data.type,
-			url: '',
-			coordinate: {lat: data.coords.lat, lng: data.coords.lng},
-			editMode: false
-		    };		    
-		}
-		else {		    
-	    	    // new star
-		    data = props.star;
-		    console.log('error');
-		    return {
-			title: data.title,
-			note: data.note,
-			type: data.type,
-			url: data.url,
-			coordinate: {lat: data.coords.lat, lng: data.coords.lng},
-			editMode: true
-		    };
-
-		}
+	    
+	    if (props.star.type == MarkerType.googlePlace) {
+		// google place
+		data = props.star;
+		this.loadGooglePlace(data.title);
+		return {
+		    title: "",
+		    note: '',
+		    type: data.type,
+		    url: '',
+		    coordinate: {lat: data.coords.lat, lng: data.coords.lng},
+		    editMode: false
+		};		    
+	    }
+	    else if (props.star.type == MarkerType.new) {		    
+	    	// new star
+		data = props.star;
+		console.log('error');
+		var latlng = {lat: data.lat, lng: data.lng};
+		
+		this.loadAddress(latlng);
+		
+		return {
+		    title: data.title,
+		    note: data.note,
+		    type: data.type,
+		    url: data.url,
+		    coordinate: latlng,
+		    editMode: true
+		};
 	    }
 	    else {
 
+		// from cloudkit
 		data = props.star.data.fields;
 		console.log(data);
+		var latlng = {lat: props.star.position.lat(), lng: props.star.position.lng()};
+		this.loadAddress(latlng);
+		
 		return {
 		    title: data.title.value,
 		    note: data.note.value,
@@ -135,8 +140,11 @@ class DetailSidebar extends Component {
 
 	    }
 	}
+
 	return null;
     }
+
+    
 
     enterEditMode = this.enterEditMode.bind(this);
     remove = this.remove.bind(this);    
@@ -144,10 +152,34 @@ class DetailSidebar extends Component {
     save = this.save.bind(this);
 
     loadGooglePlace = this.loadGooglePlace.bind(this);
+    loadAddress = this.loadAddress.bind(this);
     
     titleChange = this.titleChange.bind(this);
     urlChange = this.urlChange.bind(this);
-    noteChange = this.noteChange.bind(this);    
+    noteChange = this.noteChange.bind(this);
+
+    loadAddress(latlng) {
+
+	var geocoder = new google.maps.Geocoder;
+	let _this = this;
+	geocoder.geocode({'location': latlng}, function(results, status) {
+	    if (status === 'OK') {
+		if (results[0]) {
+		    console.log(results[0]);
+		    _this.setState({
+			address: results[0].formatted_address
+		    });
+		    
+
+		} else {
+		    window.alert('No results found');
+		}
+	    } else {
+		window.alert('Geocoder failed due to: ' + status);
+	    }
+	});
+
+    }
 
     loadGooglePlace(id) {
 	var request = {
@@ -186,7 +218,7 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 
 		let state = {
 		    title: place.name,
-		    address: {__html: place.adr_address},
+		    address: place.formatted_address,
 		    url: place.website,
 		    note: createNoteFromGooglePlace(place)
 		};
@@ -280,7 +312,7 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 		<table className='infoBox'>
 		<tbody>
 		<tr>
-		<td className='td'>ADD</td><td dangerouslySetInnerHTML={this.state.address} />
+		<td className='td'>ADD</td><td>{this.state.address} </td>
 		</tr>
 		<tr>
 		<td className='td'>COORDS</td><td>{this.state.coordinate.lat.toFixed(6)}, {this.state.coordinate.lng.toFixed(6)}</td>

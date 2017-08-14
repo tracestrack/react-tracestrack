@@ -101,6 +101,10 @@ td {
     word-break: break-word;
 }
 
+td input {
+    width: 100%;
+}
+
 .marked-area-text-container p {
     padding: 5px 10px;
 }
