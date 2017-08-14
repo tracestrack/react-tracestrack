@@ -29,30 +29,32 @@ class DetailSidebar extends Component {
 	    data = props.star;
 
 	    var ret = {
-		    title: data.title,
-		    note: data.note,
-		    type: data.type,
-		    url: data.url,
-		    coordinate: data.coord,
-		    editMode: false
-		};
+		title: data.title,
+		note: data.note,
+		type: data.type,
+		url: data.url,
+		coordinate: data.coord,
+		editMode: false,
+		address: data.address
+	    };
 
-	    if (props.star.type == MarkerType.googlePlace) {
-		// google place
+	    if (!ret.address) {
+		console.log('no add');
+		this.loadAddress(data.coord);
+	    }
 
+	    switch (props.star.type) {
+	    case MarkerType.googlePlace:
 		this.loadGooglePlace(data.title);
-
-	    }
-	    else if (props.star.type == MarkerType.new) {		    
-	    	// new star
-		this.loadAddress(data.coord);
+		break;
+	    case MarkerType.new:
 		ret.editMode = true;
-		
-	    }
-	    else {
+		break;
+	    case MarkerType.searchHit:
 
-		// from cloudkit
-		this.loadAddress(data.coord);
+		break;
+	    default:
+
 		
 	    }
 	    return ret;

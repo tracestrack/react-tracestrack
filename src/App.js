@@ -17,13 +17,14 @@ export class MarkerType {
 }
 
 /** star model is used to render detailsidebar */
-function createNewStar(title, coord, type, url, note) {
+function createNewStar(title, coord, type, url, note, address) {
     return {
 	title: title,
 	coord: coord,
 	type: type,
 	url: url,
-	note: note ? note : ''
+	note: note ? note : '',
+	address: address ? address : null
     };
 }
 
@@ -142,18 +143,10 @@ class App extends Component {
 		    console.log("Returned place contains no geometry");
 		    return;
 		}		
+
+		console.log(place);
 		
-		var icon = {
-		    url: place.icon,
-		    size: new google.maps.Size(71, 71),
-		    origin: new google.maps.Point(0, 0),
-		    anchor: new google.maps.Point(17, 34),
-		    scaledSize: new google.maps.Size(25, 25)
-		};
-
-		// Create a marker for each place.
-
-		var marker = createNewStar('', Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', '');
+		var marker = createNewStar(place.name, Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', '', place.formatted_address);
 
 		markers.push(marker);
 		
