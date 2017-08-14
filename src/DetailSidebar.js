@@ -90,57 +90,37 @@ class DetailSidebar extends Component {
     convertProps2State(props) {
 	if (props.star != null) {
 	    var data;
-	    
-	    if (props.star.type == MarkerType.googlePlace) {
-		// google place
-		data = props.star;
-		this.loadGooglePlace(data.title);
-		return {
-		    title: "",
-		    note: '',
-		    type: data.type,
-		    url: '',
-		    coordinate: {lat: data.coords.lat, lng: data.coords.lng},
-		    editMode: false
-		};		    
-	    }
-	    else if (props.star.type == MarkerType.new) {		    
-	    	// new star
-		data = props.star;
-		console.log('error');
-		var latlng = {lat: data.lat, lng: data.lng};
-		
-		this.loadAddress(latlng);
-		
-		return {
+	    data = props.star;
+
+	    var ret = {
 		    title: data.title,
 		    note: data.note,
 		    type: data.type,
 		    url: data.url,
-		    coordinate: latlng,
-		    editMode: true
+		    coordinate: data.coord,
+		    editMode: false
 		};
+
+	    if (props.star.type == MarkerType.googlePlace) {
+		// google place
+
+		this.loadGooglePlace(data.title);
+
+	    }
+	    else if (props.star.type == MarkerType.new) {		    
+	    	// new star
+		this.loadAddress(data.coord);
+		ret.editMode = true;
+		
 	    }
 	    else {
 
 		// from cloudkit
-		data = props.star.data.fields;
-		console.log(data);
-		var latlng = {lat: props.star.position.lat(), lng: props.star.position.lng()};
-		this.loadAddress(latlng);
+		this.loadAddress(data.coord);
 		
-		return {
-		    title: data.title.value,
-		    note: data.note.value,
-		    type: data.type.value,
-		    url: (data.url != null ? (data.url.value === "http://" ? "": data.url.value) : ""),
-		    coordinate: {lat: props.star.position.lat(), lng: props.star.position.lng()},
-		    editMode: false
-		};
-
 	    }
+	    return ret;
 	}
-
 	return null;
     }
 

@@ -29,6 +29,10 @@ export const Map = withGoogleMap(props => (
       {props.markers.map((marker, index) => {
 	  const onClick = () => props.onMarkerClick(marker);
 
+	  let position = new google.maps.LatLng(
+	      marker.coord.lat, marker.coord.lng
+	  );
+
 	  var icon;
 	  
 	  switch (marker.type) {
@@ -50,7 +54,7 @@ export const Map = withGoogleMap(props => (
 	      <Marker
 		key={index}
 		icon={icon}
-		position={marker.position}
+		position={position}
 		title={(index + 1).toString()}
 		onClick={onClick}
 		>

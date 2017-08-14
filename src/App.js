@@ -16,19 +16,19 @@ export class MarkerType {
     static get googlePlace() { return -4; }
 }
 
-/* marker model is used to display anything marker on the map. */
-function createMarker(lat, lng, type, data) {
-
-    const position = new google.maps.LatLng(
-	lat, lng
-    );
-
+/** star model is used to render detailsidebar */
+function createNewStar(title, coord, type, url, note) {
     return {
-	position,
-	showInfo: false,
+	title: title,
+	coord: coord,
 	type: type,
-	data: data
+	url: url,
+	note: note ? note : ''
     };
+}
+
+function Coord(lat, lng) {
+    return {lat: lat, lng: lng};
 }
 
 class App extends Component {
@@ -70,9 +70,9 @@ class App extends Component {
 
 	    var fields = re[it].fields;
 	    
-	    var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, fields.type.value, re[it]);
-	    
-	    markers.push(marker);	    
+	    var marker = createNewStar(fields.title.value, {lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, fields.url ? fields.url.value : '', fields.type.note);
+
+	    markers.push(marker);
 	}
 
 	this.setState({
@@ -84,7 +84,7 @@ class App extends Component {
     handleMapLeftClick(e) {
 
 	if (e.placeId) {
-	    var newStar = this.createNewStar(e.placeId, {lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace);
+	    var newStar = createNewStar(e.placeId, {lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace);
 
 	    this.setState({
 		selectedStar: newStar,
@@ -153,7 +153,8 @@ class App extends Component {
 
 		// Create a marker for each place.
 
-		var marker = createMarker(place.geometry.location.lat(), place.geometry.location.lng(), MarkerType.searchHit);
+		var marker = createNewStar('', Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', '');
+
 		markers.push(marker);
 		
 		_this.setState({
@@ -171,24 +172,15 @@ class App extends Component {
 	});
     }
 
-    /** star model is used to render detailsidebar */
-    createNewStar(title, coords, type, url, note) {
-	return {
-	    title: title,
-	    coords: coords,
-	    type: type,
-	    url: url,
-	    note: note
-	};
-    }
     
     handleAddStar() {
 
 	let loc = this.state.rightClickEvent.latLng;
 	var markers = this.state.markers;
-	markers.push(createMarker(loc.lat(), loc.lng(), MarkerType.new));
 
-	var newStar = this.createNewStar("Untitled", {lat: loc.lat(), lng: loc.lng()}, MarkerType.new, "", "");
+	var newStar = createNewStar("Untitled", Coord(loc.lat(), loc.lng()), MarkerType.new, "", "");
+
+	markers.push(newStar);
 
 	this.setState({
 	    markers: markers,
@@ -216,11 +208,8 @@ class App extends Component {
 	var markers = this.state.markers.filter(it => it.type != MarkerType.new);
 	var fields = e.fields;
 
-	var marker = createMarker(fields.location.value.latitude, fields.location.value.longitude, parseInt(fields.type.value), e);
-	
-	markers.push(marker);
-	let star = this.createNewStar(fields.title.value, {lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, fields.url.value, fields.note.value);
-	star.isNewStar = false;
+	let star = createNewStar(fields.title.value, {lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, fields.url.value, fields.note.value);
+	markers.push(star);
 	    
 	this.setState({
 	    markers: markers,
