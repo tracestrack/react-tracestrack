@@ -82,11 +82,13 @@ class DetailSidebar extends Component {
     setRedStar = this.setRedStar.bind(this);
 
     setGreenStar() {
-
+	this.state.type = MarkerType.green;
+	this.save();
     }
 
     setRedStar() {
-
+	this.state.type = MarkerType.red;
+	this.save();
     }
     
     loadAddress(latlng) {
