@@ -130,3 +130,25 @@ td input {
     font-style: italic;
 }
 
+.starSet {
+    width: 16px;
+    height: 16px;
+}
+
+.star-type {
+    float: left;
+    margin: 10px;
+}
+
+.star-type a {
+    padding: 5px 5px 2px 5px;
+    border-radius: 15px;
+    height: 14px;
+}
+
+.star-type a:hover {
+    background: #fefefe;
+    cursor:pointer;
+}
+
+    

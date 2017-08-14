@@ -379,10 +379,10 @@ class CKComponent extends Component {
 
     }
 
-    removeRecord(re) {
+    removeRecord(rn) {
 	var databaseScope = "PRIVATE";
-	var recordName = re.recordName;
-	var ownerRecordName = re.zoneID.ownerRecordName;
+	var recordName = rn;
+	var ownerRecordName = null;//re.zoneID.ownerRecordName;
 	this.demoDeleteRecord(
 	    databaseScope,recordName,zoneName,ownerRecordName
 	);

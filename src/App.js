@@ -17,14 +17,15 @@ export class MarkerType {
 }
 
 /** star model is used to render detailsidebar */
-function createNewStar(title, coord, type, url, note, address) {
+function createNewStar(title, coord, type, url, note, address, recordName) {
     return {
 	title: title,
 	coord: coord,
 	type: type,
 	url: url,
 	note: note ? note : '',
-	address: address ? address : null
+	address: address ? address : null,
+	recordName: recordName
     };
 }
 
@@ -71,7 +72,7 @@ class App extends Component {
 
 	    var fields = re[it].fields;
 	    
-	    var marker = createNewStar(fields.title.value, {lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, fields.url ? fields.url.value : '', fields.type.note);
+	    var marker = createNewStar(fields.title.value, {lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, fields.url ? fields.url.value : '', fields.type.note, null, re[it].recordName);
 
 	    markers.push(marker);
 	}

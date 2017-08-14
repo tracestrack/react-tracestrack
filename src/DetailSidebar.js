@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {MarkerType} from './App.js';
 import {LiveMarkedArea} from './LiveMarkedArea.js';
+import GreenStarImg from './img/star_green.png';
+import RedStarImg from './img/star_red.png';
 
 import "./DetailSidebar.css";
 
@@ -76,6 +78,17 @@ class DetailSidebar extends Component {
     urlChange = this.urlChange.bind(this);
     noteChange = this.noteChange.bind(this);
 
+    setGreenStar = this.setGreenStar.bind(this);
+    setRedStar = this.setRedStar.bind(this);
+
+    setGreenStar() {
+
+    }
+
+    setRedStar() {
+
+    }
+    
     loadAddress(latlng) {
 
 	var geocoder = new google.maps.Geocoder;
@@ -157,8 +170,11 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 	this.setState({editMode: false});
     }
     remove() {
-	var star = this.props.star.data;
-	this.ck.removeRecord(star);
+
+	var rn = this.props.star.recordName;
+	console.log(rn);
+	
+	this.ck.removeRecord(rn);
     }
     
     save() {
@@ -166,7 +182,7 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 	var star = {};
 	star.fields = {};
 	if (this.isNewStar() == false) {
-	    star.recordName = this.props.star.data.recordName;
+	    star.recordName = this.props.star.recordName;
 	}
 
 	star.fields.location = {latitude: this.state.coordinate.lat, longitude: this.state.coordinate.lng};
@@ -208,7 +224,11 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
     
     render() {
 	return (
-	    <div className='sidebar-right'>
+		<div className='sidebar-right'>
+		<div className='star-type'>
+		<a onClick={this.setRedStar}><img src={RedStarImg} className='starSet' /></a>
+		<a onClick={this.setGreenStar}><img src={GreenStarImg} className='starSet' /></a>
+	    </div>
 	      <div className='controls'>
 		{ !this.state.editMode ?
 		    (<button onClick={this.enterEditMode}>Edit</button>):
