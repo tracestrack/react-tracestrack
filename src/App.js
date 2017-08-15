@@ -16,7 +16,7 @@ export class MarkerType {
     static get googlePlace() { return -4; }
 }
 
-/** star model is used to render detailsidebar */
+/** Star model is used to render detailsidebar */
 function createNewStar(title, coord, type, url, note, address, recordName) {
     return {
 	title: title,
@@ -29,6 +29,15 @@ function createNewStar(title, coord, type, url, note, address, recordName) {
     };
 }
 
+/** Trace Model */
+function createTrace(title, detail, recordName) {
+    return {
+	title: title,
+	detail: detail,
+	recordName: recordName
+    };
+}
+
 function Coord(lat, lng) {
     return {lat: lat, lng: lng};
 }
@@ -37,6 +46,7 @@ class App extends Component {
 
     state = {
 	markers: [],
+	traces: [],
 	showContextMenu: false,
 	showDetailSidebar: false,
 	rightClickPosition: {left: 100, top: 100}
@@ -44,24 +54,46 @@ class App extends Component {
 
     handleMapMounted = this.handleMapMounted.bind(this);
     handleMarkerClick = this.handleMarkerClick.bind(this);
+    handleTraceClick = this.handleTraceClick.bind(this);    
     handleMapRightClick = this.handleMapRightClick.bind(this);
     handleMapLeftClick = this.handleMapLeftClick.bind(this);
     handleStarsLoad = this.handleStarsLoad.bind(this);
+    handleTracesLoad = this.handleTracesLoad.bind(this);    
     handleAddStar = this.handleAddStar.bind(this);
     handleStarSaved = this.handleStarSaved.bind(this);
     handleStarRecordCreated = this.handleStarRecordCreated.bind(this);
     handleStarRecordRemoved = this.handleStarRecordRemoved.bind(this);    
+    handleLoginSucess = this.handleLoginSucess.bind(this);
     
     componentDidMount() {
-	this._ck.loadStars();	
+	
     }
 
+    handleLoginSucess() {
+	if (window.userIdentity) {
+	    this._ck.loadStars();
+	    this._ck.loadTraces();
+	}
+	
+    }
+    
     handleStarRecordRemoved(re) {
 	var markers = this.state.markers.filter(e => e != this.state.selectedStar);
 	this.setState({
 	    markers: markers,
 	    showDetailSidebar: false
 	});
+    }
+
+    handleTracesLoad(re) {
+	console.log(re);
+
+	var traces = [];
+	for (var it in re) {
+	    traces.push(createTrace(re[it].fields.title.value, re[it].fields.detail.value, re[it].recordName));
+	}
+
+	this.setState({traces: traces});
     }
     
     handleStarsLoad(re) {
@@ -185,6 +217,10 @@ class App extends Component {
 	
     }
 
+    handleTraceClick(trace) {
+	console.log(trace);
+    }
+    
     handleMarkerClick(targetMarker) {
 	this.setState({
 	    selectedStar: targetMarker,
@@ -193,8 +229,8 @@ class App extends Component {
     }
 
     handleStarSaved() {
-/*	var markers = this.state.markers.filter(x => x.type != MarkerType.new);
-	this.setState({markers: markers});*/
+	/*	var markers = this.state.markers.filter(x => x.type != MarkerType.new);
+		this.setState({markers: markers});*/
     }
 
     handleStarRecordCreated(e) {
@@ -204,7 +240,7 @@ class App extends Component {
 
 	let star = createNewStar(fields.title.value, {lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, fields.url.value, fields.note.value);
 	markers.push(star);
-	    
+	
 	this.setState({
 	    markers: markers,
 	    selectedStar: star
@@ -218,30 +254,32 @@ class App extends Component {
 
 	      <Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
 	      
-		<CKComponent ref={(ck) => {this._ck = ck;}} onStarsLoad={this.handleStarsLoad} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved}/>
+	      <CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSucess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved}/>
 
-	      {
-		  this.state.showDetailSidebar && (
-		      <DetailSidebar star={this.state.selectedStar} ck={this._ck} onStarSaved={this.handleStarSaved} />
-		  )
+		{
+		    this.state.showDetailSidebar && (
+			<DetailSidebar star={this.state.selectedStar} ck={this._ck} onStarSaved={this.handleStarSaved} />
+		    )
 	      }	      
 
-	      <input type="text" id="searchTextField" className='searchBar' />
-	      
-	      <Map
-		markers={this.state.markers}
-		onMarkerClick={this.handleMarkerClick}
-		onMapMounted={this.handleMapMounted}
-		onMapLeftClick={this.handleMapLeftClick}
-		onMapRightClick={this.handleMapRightClick}
-		containerElement={
-			<div style={{ height: `100%` }} className='container' />
-			}
-			mapElement={
-				<div style={{ height: `100%` }} />
-				}
-				/>
-	    </div>
+		<input type="text" id="searchTextField" className='searchBar' />
+		
+		<Map
+	    markers={this.state.markers}
+	    traces={this.state.traces}
+	    onMarkerClick={this.handleMarkerClick}
+	    onTraceClick={this.handleTraceClick}
+	    onMapMounted={this.handleMapMounted}
+	    onMapLeftClick={this.handleMapLeftClick}
+	    onMapRightClick={this.handleMapRightClick}
+	    containerElement={
+		    <div style={{ height: `100%` }} className='container' />
+	    }
+	    mapElement={
+		    <div style={{ height: `100%` }} />
+	    }
+		/>
+		</div>
 
 	);
     }

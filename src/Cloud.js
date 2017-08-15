@@ -39,54 +39,6 @@ function displayUserName(name) {
     window.$("#apple-sign-in-button").text(name);    
 }
 
-function demoSetUpAuth() {
-
-    // Get the container.
-    var container = CloudKit.getDefaultContainer();
-
-    function gotoAuthenticatedState(userIdentity) {
-	window.userIdentity = userIdentity;
-	
-	var name = userIdentity.nameComponents;
-	if(name) {
-	    displayUserName(name.givenName + ' ' + name.familyName);
-	} else {
-	    displayUserName('User record name: ' + userIdentity.userRecordName);
-	}
-	container
-	    .whenUserSignsOut()
-	    .then(gotoUnauthenticatedState);
-    }
-    function gotoUnauthenticatedState(error) {
-
-	if(error && error.ckErrorCode === 'AUTH_PERSIST_ERROR') {
-	    window.showDialogForPersistError();
-	}
-
-	container
-	    .whenUserSignsIn()
-	    .then(gotoAuthenticatedState)
-	    .catch(gotoUnauthenticatedState);
-    }
-
-    // Check a user is signed in and render the appropriate button.
-    return container.setUpAuth()
-	.then(function(userIdentity) {
-
-	    // Either a sign-in or a sign-out button was added to the DOM.
-
-	    // userIdentity is the signed-in user or null.
-	    if(userIdentity) {
-		gotoAuthenticatedState(userIdentity);
-		demoSaveRecordZones(zoneName);
-	    } else {
-		gotoUnauthenticatedState();
-	    }
-	});
-}
-
-demoSetUpAuth();
-
 function demoSaveRecordZones(zoneName) {
     var container = CloudKit.getDefaultContainer();
     var privateDB = container.privateCloudDatabase;
@@ -112,7 +64,62 @@ class CKComponent extends Component {
 
     demoPerformQuery = this.demoPerformQuery.bind(this);
     loadStars = this.loadStars.bind(this);
+    loadTraces = this.loadTraces.bind(this);    
+    demoSetUpAuth = this.demoSetUpAuth.bind(this);
 
+    demoSetUpAuth() {
+
+	// Get the container.
+	var container = CloudKit.getDefaultContainer();
+	let _this = this;
+
+	function gotoAuthenticatedState(userIdentity) {
+	    window.userIdentity = userIdentity;
+	    
+	    var name = userIdentity.nameComponents;
+	    if(name) {
+		displayUserName(name.givenName + ' ' + name.familyName);
+	    } else {
+		displayUserName('User record name: ' + userIdentity.userRecordName);
+	    }
+
+	    _this.props.onLoginSuccess();
+	    
+	    container
+		.whenUserSignsOut()
+		.then(gotoUnauthenticatedState);
+	}
+	function gotoUnauthenticatedState(error) {
+
+	    if(error && error.ckErrorCode === 'AUTH_PERSIST_ERROR') {
+		window.showDialogForPersistError();
+	    }
+
+	    container
+		.whenUserSignsIn()
+		.then(gotoAuthenticatedState)
+		.catch(gotoUnauthenticatedState);
+	}
+
+	// Check a user is signed in and render the appropriate button.
+	return container.setUpAuth()
+	    .then(function(userIdentity) {
+
+		// Either a sign-in or a sign-out button was added to the DOM.
+
+		// userIdentity is the signed-in user or null.
+		if(userIdentity) {
+		    gotoAuthenticatedState(userIdentity);
+		    demoSaveRecordZones(zoneName);
+		} else {
+		    gotoUnauthenticatedState();
+		}
+	    });
+    }
+
+
+
+    
     demoSaveRecords(
 	databaseScope,recordName,recordChangeTag,recordType,zoneName,
 	forRecordName,forRecordChangeTag,publicPermission,ownerRecordName,
@@ -219,7 +226,7 @@ class CKComponent extends Component {
     demoPerformQuery(
 	databaseScope,zoneName,ownerRecordName,recordType,
 	desiredKeys,sortByField,ascending,latitude,longitude,
-	filters
+	filters, callback
     ) {
 
 	var container = CloudKit.getDefaultContainer();
@@ -285,7 +292,8 @@ class CKComponent extends Component {
 		} else {
 
 		    var records = response.records;		    
-		    return _this.renderRecords(records);
+		    callback(records);
+
 		}
 	    });
     }
@@ -391,10 +399,6 @@ class CKComponent extends Component {
     
     loadStars() {
 
-	if (window.userIdentity) {
-
-	}
-
 	var databaseScope = "PRIVATE";
 	var ownerRecordName = null;
 	var recordType = "Star";
@@ -403,21 +407,40 @@ class CKComponent extends Component {
 	var ascending = null;
 	var latitude = null;
 	var longitude = null;
+	var _this = this;
+
+	this.demoPerformQuery(
+	    databaseScope,zoneName,ownerRecordName,recordType,
+	    desiredKeys,sortByField,ascending,latitude,longitude,[], function(records) {
+		_this.props.onStarsLoad(records);
+	    });
+
+    }
+
+    loadTraces() {
+
+	var databaseScope = "PRIVATE";
+	var ownerRecordName = null;
+	var recordType = "Trace";
+	var desiredKeys = ["title", "detail"];
+	var sortByField = null;
+	var ascending = null;
+	var latitude = null;
+	var longitude = null;
+	var _this = this;
 	
 	this.demoPerformQuery(
 	    databaseScope,zoneName,ownerRecordName,recordType,
-	    desiredKeys,sortByField,ascending,latitude,longitude,[]);
+	    desiredKeys,sortByField,ascending,latitude,longitude,[], function(records) {
+		_this.props.onTracesLoad(records);
+	    });
 
     }
-    
-    renderRecords(records) {
-	if (typeof this.props.onStarsLoad === 'function') {
-	    this.props.onStarsLoad(records);
-        }
-    }
+
     
     constructor(props){
 	super(props);
+	this.demoSetUpAuth();
     }
     
     render() {

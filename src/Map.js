@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps";
+import { withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 import { MarkerType } from './App.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
@@ -61,5 +61,34 @@ export const Map = withGoogleMap(props => (
 	      </Marker>
 	  );
       })}
+    
+    {props.traces.map((trace, index) => {
+	const onClick = () => props.onTraceClick(trace);
+	
+	var coords = [];
+
+	for (var it in trace.detail) {
+
+	    coords.push({
+		lat: trace.detail[it].latitude,
+		lng: trace.detail[it].longitude
+	    });
+	}
+
+	var opt = {
+	    strokeColor: '#FF0000',
+	    strokeOpacity: 1.0,
+	    strokeWeight: 2
+	};
+
+	return (
+	    <Polyline
+	      key={index}
+	      path={coords}
+	      options={opt}
+	      onClick={onClick}
+	      />
+	);
+    })}
     </GoogleMap>
 ));
