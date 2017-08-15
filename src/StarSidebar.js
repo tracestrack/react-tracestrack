@@ -4,13 +4,13 @@ import {LiveMarkedArea} from './LiveMarkedArea.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
 
-import "./DetailSidebar.css";
+import "./Sidebar.css";
 
 
 const google = window.google;
 
 
-class DetailSidebar extends Component {
+class StarSidebar extends Component {
 
     constructor(props) {
 	super(props);
@@ -19,10 +19,6 @@ class DetailSidebar extends Component {
 	this.state = state;
 	this.ck = props.ck;
 	
-    }
-
-    isNewStar() {
-	return this.props.star.isNewStar === true;
     }
 
     convertProps2State(props) {
@@ -276,4 +272,4 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 
 }
 
-export default DetailSidebar;
+export default StarSidebar;

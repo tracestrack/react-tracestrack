@@ -422,7 +422,7 @@ class CKComponent extends Component {
 	var databaseScope = "PRIVATE";
 	var ownerRecordName = null;
 	var recordType = "Trace";
-	var desiredKeys = ["title", "detail"];
+	var desiredKeys = ["title", "detail", 'type', 'averageSpeed', 'note', 'startDate'];
 	var sortByField = null;
 	var ascending = null;
 	var latitude = null;

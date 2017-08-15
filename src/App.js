@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Menu from './menu.js';
 import CKComponent from './Cloud.js';
-import DetailSidebar from './DetailSidebar.js';
+import StarSidebar from './StarSidebar.js';
+import TraceSidebar from './TraceSidebar.js';
 import {Map} from './Map.js';
 
 const google = window.google;
@@ -48,7 +49,7 @@ class App extends Component {
 	markers: [],
 	traces: [],
 	showContextMenu: false,
-	showDetailSidebar: false,
+	showStarSidebar: false,
 	rightClickPosition: {left: 100, top: 100}
     }
 
@@ -81,7 +82,7 @@ class App extends Component {
 	var markers = this.state.markers.filter(e => e != this.state.selectedStar);
 	this.setState({
 	    markers: markers,
-	    showDetailSidebar: false
+	    showStarSidebar: false
 	});
     }
 
@@ -122,14 +123,14 @@ class App extends Component {
 
 	    this.setState({
 		selectedStar: newStar,
-		showDetailSidebar: true,
+		showStarSidebar: true,
 		showContextMenu: false
 	    });
 	    
 	}
 	else {
 	    this.setState({
-		showDetailSidebar: false,
+		showStarSidebar: false,
 		showContextMenu: false
 	    });
 	}
@@ -212,7 +213,7 @@ class App extends Component {
 	    markers: markers,
 	    showContextMenu: false,
 	    selectedStar: newStar,
-	    showDetailSidebar: true	    
+	    showStarSidebar: true	    
 	});
 	
     }
@@ -224,7 +225,7 @@ class App extends Component {
     handleMarkerClick(targetMarker) {
 	this.setState({
 	    selectedStar: targetMarker,
-	    showDetailSidebar: true
+	    showStarSidebar: true
 	});
     }
 
@@ -257,8 +258,8 @@ class App extends Component {
 	      <CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSucess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved}/>
 
 		{
-		    this.state.showDetailSidebar && (
-			<DetailSidebar star={this.state.selectedStar} ck={this._ck} onStarSaved={this.handleStarSaved} />
+		    this.state.showStarSidebar && (
+			<StarSidebar star={this.state.selectedStar} ck={this._ck} onStarSaved={this.handleStarSaved} />
 		    )
 	      }	      
 

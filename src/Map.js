@@ -22,7 +22,7 @@ export const Map = withGoogleMap(props => (
 	  }
       }}
       defaultZoom={14}
-      defaultCenter={{ lat: 48.852, lng: 2.350 }}
+      defaultCenter={{ lat: 51.447698, lng: 5.487497 }}
       onClick={props.onMapLeftClick}
       onRightClick={props.onMapRightClick}
       >
