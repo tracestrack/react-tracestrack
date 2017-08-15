@@ -95,6 +95,13 @@ table.infoBox a:hover{
     padding-top: 3px;
 }
 
+.td-trace {
+    font-size: 14px;
+    font-weight: bold;
+    width: 120px;
+    padding-top: 3px;
+}
+
 td {
     vertical-align: top;
     padding: 1px;

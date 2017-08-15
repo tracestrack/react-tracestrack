@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {MarkerType} from './App.js';
 import {LiveMarkedArea} from './LiveMarkedArea.js';
-
+import {formatDistance, formatSpeed, formatDate, formatDuration} from './Formatter.js';
 
 const google = window.google;
 
@@ -12,16 +12,37 @@ class TraceSidebar extends Component {
 	super(props);
 
 	var state = this.convertProps2State(props);
+	state.editMode = false;
+	
 	this.state = state;
 	this.ck = props.ck;
 	
     }
 
     convertProps2State(props) {
-
+	let data = props.trace;
+	console.log(data);
+	if (data) {
+	    return {
+		title: data.title,
+		distance: formatDistance(data.distance),
+		averageSpeed: formatSpeed(data.averageSpeed),
+		duration: formatDuration(data.duration),
+		type: data.type,
+		startDate: formatDate(new Date(data.startDate)),
+		note: data.note ? data.note : '',
+		elevation: data.elevation
+	    };
+	}
+	return {
+	    note: ""
+	};
     }
 
-    
+    componentWillReceiveProps(props) {
+	this.setState(this.convertProps2State(props));
+    }
+
     render() {
 	return (
 		<div className='sidebar-right'>
@@ -47,20 +68,22 @@ class TraceSidebar extends Component {
 		<table className='infoBox'>
 		<tbody>
 		<tr>
-		<td className='td'>ADD</td><td>{this.state.address} </td>
-		</tr>
-		<tr>
-		<td className='td'>COORDS</td><td>{this.state.coordinate.lat.toFixed(6)}, {this.state.coordinate.lng.toFixed(6)}</td>
+		<td className='td-trace'>Distance</td><td>{this.state.distance}</td>
 		</tr>
 
-	    {
-		    (this.state.editMode === true || this.state.editMode === false && this.state.url != '') &&
-			(<tr>
-			 <td className='td'>URL</td>
-			 <td>{ !this.state.editMode ? (<a href={this.state.url}>{this.state.url}</a>) : (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange}/>) }
-			 </td>			 
-			 </tr>)
-		}
+		<tr>
+		<td className='td-trace'>Average Speed</td><td>{this.state.averageSpeed}</td>
+		</tr>
+		<tr>
+		<td className='td-trace'>Date</td><td>{this.state.startDate}</td>
+		</tr>
+		<tr>
+		<td className='td-trace'>Elevation</td><td>{this.state.elevation}</td>
+		</tr>
+		<tr>
+		<td className='td-trace'>Duration</td><td>{this.state.duration}</td>
+		</tr>
+
 	    </tbody>
 	    </table>
 		<LiveMarkedArea editMode={this.state.editMode} label="Notes" defaultValue={this.state.note}  value={this.state.note} onChange={this.noteChange}/>

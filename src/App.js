@@ -31,11 +31,16 @@ function createNewStar(title, coord, type, url, note, address, recordName) {
 }
 
 /** Trace Model */
-function createTrace(title, detail, recordName) {
+function createTrace(title, detail, recordName, type, distance, averageSpeed, duration, startDate, note, elevation) {
     return {
 	title: title,
 	detail: detail,
-	recordName: recordName
+	recordName: recordName,
+	distance: distance,
+	averageSpeed: averageSpeed,
+	duration: duration,
+	elevation: elevation,
+	startDate: startDate
     };
 }
 
@@ -67,7 +72,9 @@ class App extends Component {
     handleLoginSucess = this.handleLoginSucess.bind(this);
     
     componentDidMount() {
-	
+	this.setState({
+
+	});		      
     }
 
     handleLoginSucess() {
@@ -91,10 +98,13 @@ class App extends Component {
 
 	var traces = [];
 	for (var it in re) {
-	    traces.push(createTrace(re[it].fields.title.value, re[it].fields.detail.value, re[it].recordName));
+	    let f = re[it].fields;
+	    let trace = createTrace(re[it].fields.title.value, re[it].fields.detail.value, re[it].recordName, f.type.value, f.distance.value, f.averageSpeed.value, f.duration.value, f.startDate.value, f.note.value, f.elevation.value);
+	    traces.push(trace);
 	}
 
-	this.setState({traces: traces});
+	this.setState({traces: traces
+		      });
     }
     
     handleStarsLoad(re) {
@@ -220,6 +230,11 @@ class App extends Component {
 
     handleTraceClick(trace) {
 	console.log(trace);
+	this.setState({
+	    selectedTrace: trace,
+	    showTraceSidebar: true	    
+	});
+
     }
     
     handleMarkerClick(targetMarker) {
@@ -260,6 +275,11 @@ class App extends Component {
 		{
 		    this.state.showStarSidebar && (
 			<StarSidebar star={this.state.selectedStar} ck={this._ck} onStarSaved={this.handleStarSaved} />
+		    )
+	      }	      
+		{
+		    this.state.showTraceSidebar && (
+			<TraceSidebar trace={this.state.selectedTrace} ck={this._ck} onStarSaved={this.handleStarSaved} />
 		    )
 	      }	      
 
