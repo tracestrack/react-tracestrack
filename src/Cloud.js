@@ -15,7 +15,7 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: '2dad75004c8ba61e9e396d5fb3e715ae791d49d6a7f1dceade60b33a60927ffc',
+	    apiToken: '6b9e74116c6fda0d630b430b113508ba51cb2bd2faf78e6661eae0631a30facc',
 
 	    persist: true, // Sets a cookie.
 
@@ -402,7 +402,8 @@ class CKComponent extends Component {
 	var databaseScope = "PRIVATE";
 	var ownerRecordName = null;
 	var recordType = "Star";
-	var desiredKeys = ["title", "location", "note", "type", "url"];
+	var desiredKeys = ["type", "location"];
+//	var desiredKeys = ["title", "location", "note", "type", "url"];
 	var sortByField = null;
 	var ascending = null;
 	var latitude = null;
@@ -422,7 +423,8 @@ class CKComponent extends Component {
 	var databaseScope = "PRIVATE";
 	var ownerRecordName = null;
 	var recordType = "Trace";
-	var desiredKeys = ["title", "detail", 'type', 'averageSpeed', 'note', 'startDate', 'distance', 'duration', 'elevation'];
+	var desiredKeys = ["medium"];
+	//var desiredKeys = ["title", "detail", 'type', 'averageSpeed', 'note', 'startDate', 'distance', 'duration', 'elevation'];
 	var sortByField = null;
 	var ascending = null;
 	var latitude = null;

@@ -18,29 +18,21 @@ export class MarkerType {
 }
 
 /** Star model is used to render detailsidebar */
-function createNewStar(title, coord, type, url, note, address, recordName) {
+function createNewStar(coord, type, recordName, address, data) {
     return {
-	title: title,
 	coord: coord,
 	type: type,
-	url: url,
-	note: note ? note : '',
-	address: address ? address : null,
-	recordName: recordName
+	recordName: recordName,
+	address: address,
+	data: data
     };
 }
 
 /** Trace Model */
-function createTrace(title, detail, recordName, type, distance, averageSpeed, duration, startDate, note, elevation) {
+function createTrace(detail, recordName) {
     return {
-	title: title,
 	detail: detail,
-	recordName: recordName,
-	distance: distance,
-	averageSpeed: averageSpeed,
-	duration: duration,
-	elevation: elevation,
-	startDate: startDate
+	recordName: recordName
     };
 }
 
@@ -98,8 +90,8 @@ class App extends Component {
 
 	var traces = [];
 	for (var it in re) {
-	    let f = re[it].fields;
-	    let trace = createTrace(re[it].fields.title.value, re[it].fields.detail.value, re[it].recordName, f.type.value, f.distance.value, f.averageSpeed.value, f.duration.value, f.startDate.value, f.note.value, f.elevation.value);
+	    let trace = createTrace(re[it].fields.medium.value, re[it].recordName);
+	    //createTrace(re[it].fields.title., re[it].fields.detail.value, re[it].recordName, f.type.value, f.distance.value, f.averageSpeed.value, f.duration.value, f.startDate.value, f.note.value, f.elevation.value);
 	    traces.push(trace);
 	}
 
@@ -115,7 +107,7 @@ class App extends Component {
 
 	    var fields = re[it].fields;
 	    
-	    var marker = createNewStar(fields.title.value, {lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, fields.url ? fields.url.value : '', fields.type.note, null, re[it].recordName);
+	    var marker = createNewStar({lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, re[it].recordName);
 
 	    markers.push(marker);
 	}
@@ -129,7 +121,7 @@ class App extends Component {
     handleMapLeftClick(e) {
 
 	if (e.placeId) {
-	    var newStar = createNewStar(e.placeId, {lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace);
+	    var newStar = createNewStar({lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace, '', '', e.placeId);
 
 	    this.setState({
 		selectedStar: newStar,
@@ -156,7 +148,7 @@ class App extends Component {
     }
 
     handleMapMounted(map) {
-	console.log(map);
+
 	window.map = map;
 
 	var input = document.getElementById('searchTextField');
@@ -190,7 +182,7 @@ class App extends Component {
 
 		console.log(place);
 		
-		var marker = createNewStar(place.name, Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', '', place.formatted_address);
+		var marker = createNewStar(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place.formatted_address, place.name);
 
 		markers.push(marker);
 		
@@ -215,7 +207,7 @@ class App extends Component {
 	let loc = this.state.rightClickEvent.latLng;
 	var markers = this.state.markers;
 
-	var newStar = createNewStar("Untitled", Coord(loc.lat(), loc.lng()), MarkerType.new, "", "");
+	var newStar = createNewStar(Coord(loc.lat(), loc.lng()), MarkerType.new);
 
 	markers.push(newStar);
 
@@ -254,7 +246,7 @@ class App extends Component {
 	var markers = this.state.markers.filter(it => it.type != MarkerType.new);
 	var fields = e.fields;
 
-	let star = createNewStar(fields.title.value, {lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, fields.url.value, fields.note.value);
+	let star = createNewStar({lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value);
 	markers.push(star);
 	
 	this.setState({

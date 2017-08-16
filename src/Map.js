@@ -67,13 +67,14 @@ export const Map = withGoogleMap(props => (
 	
 	var coords = [];
 
-	for (var it in trace.detail) {
+	for (var i = 0; i < trace.detail.length; i += 2) {
 
 	    coords.push({
-		lat: trace.detail[it].latitude,
-		lng: trace.detail[it].longitude
+		lat: trace.detail[i]/1000000,
+		lng: trace.detail[i + 1]/1000000
 	    });
 	}
+	console.log(coords);
 
 	var opt = {
 	    strokeColor: '#FF0000',

@@ -16,6 +16,7 @@ class StarSidebar extends Component {
 	super(props);
 
 	var state = this.convertProps2State(props);
+
 	this.state = state;
 	this.ck = props.ck;
 	
@@ -27,10 +28,10 @@ class StarSidebar extends Component {
 	    data = props.star;
 
 	    var ret = {
-		title: data.title,
-		note: data.note,
+		title: '',
+		note: '',
 		type: data.type,
-		url: data.url,
+		url: '',
 		coordinate: data.coord,
 		editMode: false,
 		address: data.address
@@ -41,9 +42,10 @@ class StarSidebar extends Component {
 		this.loadAddress(data.coord);
 	    }
 
+	    console.log(data);
 	    switch (props.star.type) {
 	    case MarkerType.googlePlace:
-		this.loadGooglePlace(data.title);
+		this.loadGooglePlace(data.data);
 		break;
 	    case MarkerType.new:
 		ret.editMode = true;
@@ -94,7 +96,7 @@ class StarSidebar extends Component {
 	geocoder.geocode({'location': latlng}, function(results, status) {
 	    if (status === 'OK') {
 		if (results[0]) {
-		    console.log(results[0]);
+
 		    _this.setState({
 			address: results[0].formatted_address
 		    });
@@ -154,7 +156,6 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 
 		_this.setState(state);
 		
-		console.log(place);
 	    }
 	}
 
