@@ -11,32 +11,60 @@ class TraceSidebar extends Component {
     constructor(props) {
 	super(props);
 
+	this.ck = props.ck;
 	var state = this.convertProps2State(props);
 	state.editMode = false;
 	
-	this.state = state;
-	this.ck = props.ck;
-	
+	this.state = state;	
     }
 
     convertProps2State(props) {
 	let data = props.trace;
 	console.log(data);
 	if (data) {
+	    this.loadTrace(data);
+	    
 	    return {
-		title: data.title,
-		distance: formatDistance(data.distance),
-		averageSpeed: formatSpeed(data.averageSpeed),
-		duration: formatDuration(data.duration),
+		title: '',
+		distance: '',
+		averageSpeed: '',
+		duration: '',
 		type: data.type,
-		startDate: formatDate(new Date(data.startDate)),
-		note: data.note ? data.note : '',
-		elevation: data.elevation
+		startDate: '',
+		note: '',
+		elevation: ''
+
 	    };
+
 	}
+	
 	return {
 	    note: ""
 	};
+    }
+
+    loadTrace = this.loadTrace.bind(this);
+    
+    loadTrace(trace) {
+
+	let _this = this;
+	
+	this.ck.loadRecord(trace.recordName, function(re) {
+	    let data = re.fields;
+	    console.log('herere');
+	    console.log(data);
+	    var states = {
+		title: data.title.value,
+		distance: formatDistance(data.distance.value),
+		averageSpeed: formatSpeed(data.averageSpeed.value),
+		duration: formatDuration(data.duration.value),
+		startDate: formatDate(new Date(data.startDate.value)),
+		note: data.note.value ? data.note : '',
+		elevation: data.elevation.value
+	    };
+	    _this.setState(states);
+	});	
+
     }
 
     componentWillReceiveProps(props) {

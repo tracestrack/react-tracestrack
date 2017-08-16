@@ -63,7 +63,7 @@ function demoSaveRecordZones(zoneName) {
 class CKComponent extends Component {
 
     demoPerformQuery = this.demoPerformQuery.bind(this);
-    loadStar = this.loadStar.bind(this);
+    loadRecord= this.loadRecord.bind(this);
     loadStars = this.loadStars.bind(this);   
     loadTraces = this.loadTraces.bind(this);    
     demoSetUpAuth = this.demoSetUpAuth.bind(this);
@@ -453,7 +453,7 @@ class CKComponent extends Component {
 
     }
 
-    loadStar(recordName, callback) {
+    loadRecord(recordName, callback) {
 
 	var databaseScope = "PRIVATE";
 	var ownerRecordName = null;
