@@ -63,7 +63,8 @@ function demoSaveRecordZones(zoneName) {
 class CKComponent extends Component {
 
     demoPerformQuery = this.demoPerformQuery.bind(this);
-    loadStars = this.loadStars.bind(this);
+    loadStar = this.loadStar.bind(this);
+    loadStars = this.loadStars.bind(this);   
     loadTraces = this.loadTraces.bind(this);    
     demoSetUpAuth = this.demoSetUpAuth.bind(this);
 
@@ -387,6 +388,40 @@ class CKComponent extends Component {
 
     }
 
+    demoFetchRecord(
+	databaseScope,recordName,zoneName,ownerRecordName, callback
+    ) {
+	var container = CloudKit.getDefaultContainer();
+	var database = container.getDatabaseWithDatabaseScope(
+	    CloudKit.DatabaseScope[databaseScope]
+	);
+
+	var zoneID,options;
+
+	if(zoneName) {
+	    zoneID = { zoneName: zoneName };
+	    if(ownerRecordName) {
+		zoneID.ownerRecordName = ownerRecordName;
+	    }
+	    options = { zoneID: zoneID };
+	}
+
+	return database.fetchRecords(recordName,options)
+	    .then(function(response) {
+		if(response.hasErrors) {
+
+		    // Handle the errors in your app.
+		    throw response.errors[0];
+
+		} else {
+		    var record = response.records[0];
+
+		    // Render the fetched record.
+		    callback(record);
+		}
+	    });
+    }
+    
     removeRecord(rn) {
 	var databaseScope = "PRIVATE";
 	var recordName = rn;
@@ -415,6 +450,17 @@ class CKComponent extends Component {
 	    desiredKeys,sortByField,ascending,latitude,longitude,[], function(records) {
 		_this.props.onStarsLoad(records);
 	    });
+
+    }
+
+    loadStar(recordName, callback) {
+
+	var databaseScope = "PRIVATE";
+	var ownerRecordName = null;
+
+	this.demoFetchRecord(
+	    databaseScope,recordName,zoneName,ownerRecordName, callback
+	);
 
     }
 

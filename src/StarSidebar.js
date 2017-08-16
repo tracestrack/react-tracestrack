@@ -15,13 +15,10 @@ class StarSidebar extends Component {
     constructor(props) {
 	super(props);
 
-	var state = this.convertProps2State(props);
-
-	this.state = state;
 	this.ck = props.ck;
-	
+	this.state = this.convertProps2State(props);
     }
-
+    
     convertProps2State(props) {
 	if (props.star != null) {
 	    var data;
@@ -42,7 +39,6 @@ class StarSidebar extends Component {
 		this.loadAddress(data.coord);
 	    }
 
-	    console.log(data);
 	    switch (props.star.type) {
 	    case MarkerType.googlePlace:
 		this.loadGooglePlace(data.data);
@@ -54,7 +50,8 @@ class StarSidebar extends Component {
 
 		break;
 	    default:
-
+		console.log('here');
+		this.loadStar(data);
 		
 	    }
 	    return ret;
@@ -69,6 +66,7 @@ class StarSidebar extends Component {
     cancel = this.cancel.bind(this);
     save = this.save.bind(this);
 
+    loadStar = this.loadStar.bind(this);    
     loadGooglePlace = this.loadGooglePlace.bind(this);
     loadAddress = this.loadAddress.bind(this);
     
@@ -79,6 +77,22 @@ class StarSidebar extends Component {
     setGreenStar = this.setGreenStar.bind(this);
     setRedStar = this.setRedStar.bind(this);
 
+    loadStar(star) {
+
+	let _this = this;
+	
+	this.ck.loadStar(star.recordName, function(re) {	    
+	    
+    	    var states = {
+		title: re.fields.title.value,
+		note: re.fields.note.value,
+		url: re.fields.url.value
+	    };
+	    _this.setState(states);
+	});
+
+    }
+    
     setGreenStar() {
 	this.state.type = MarkerType.green;
 	this.save();
@@ -180,7 +194,7 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 
 	var star = {};
 	star.fields = {};
-	if (this.isNewStar() == false) {
+	if (this.type == MarkerType.new) {
 	    star.recordName = this.props.star.recordName;
 	}
 
@@ -201,6 +215,7 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
     }
 
     componentWillReceiveProps(props) {
+	this.ck = props.ck;
 	this.setState(this.convertProps2State(props));
     }
 
