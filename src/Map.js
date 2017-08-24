@@ -8,13 +8,32 @@ import PinImg from './img/pin.png';
 
 const google = window.google;
 
+function getColor(type) {
+    switch (type) {
+    case 0:
+	return '#999505';
+    case 1:
+	return '#ae41fb';
+    case 2:
+	return '#ec1313';
+    case 3:
+	return '#008000';
+    case 4:
+	return '#045cc8';
+    case 5:
+	return '#ff8c00';
+    case 6:
+	return '#447F84';
+    }
+}
+
 export const Map = withGoogleMap(props => (
     <GoogleMap
       ref={props.onMapMounted}
       defaultOptions={{
 	  mapTypeControlOptions: {
               style: google.maps.MapTypeControlStyle.DEFAULT,
-              position: google.maps.ControlPosition.TOP_LEFT
+              position: google.maps.ControlPosition.TOP_CENTER
 	  },
 	  zoomControl: false,
 	  streetViewControlOptions: {
@@ -74,11 +93,10 @@ export const Map = withGoogleMap(props => (
 		lng: trace.detail[i + 1]/1000000
 	    });
 	}
-	//	console.log(coords);
-
+	
 	var opt = {
-	    strokeColor: '#FF0000',
-	    strokeOpacity: 1.0,
+	    strokeColor: getColor(trace.type),
+	    strokeOpacity: 0.7,
 	    strokeWeight: 2
 	};
 

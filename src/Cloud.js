@@ -15,7 +15,7 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: '560910dd3d77e9aac5b66ab73a0c4d4b462456fa1fc154bf0711c29a269eb98f',
+	    apiToken: '5348da234d4dd6a9195d4a9ca9502acf0adb5edfb52c35d29fb4b3ff54eef17b',
 
 	    persist: true, // Sets a cookie.
 
@@ -247,13 +247,6 @@ class CKComponent extends Component {
 		ascending: ascending
 	    };
 
-	    if(!isNaN(latitude) && !isNaN(longitude)) {
-		sortDescriptor.relativeLocation = {
-		    latitude: latitude,
-		    longitude: longitude
-		};
-	    }
-
 	    query.sortBy = [sortDescriptor];
 	}
 
@@ -271,7 +264,7 @@ class CKComponent extends Component {
 	    desiredKeys: desiredKeys,
 
 	    // Fetch 5 results at a time.
-	    resultsLimit: 1000
+	    resultsLimit: 100
 
 	};
 
@@ -469,10 +462,10 @@ class CKComponent extends Component {
 	var databaseScope = "PRIVATE";
 	var ownerRecordName = null;
 	var recordType = "Trace";
-	var desiredKeys = ["medium"];
+	var desiredKeys = ["detail", 'type'];
 	//var desiredKeys = ["title", "detail", 'type', 'averageSpeed', 'note', 'startDate', 'distance', 'duration', 'elevation'];
-	var sortByField = null;
-	var ascending = null;
+	var sortByField = 'startDate';
+	var ascending = false;
 	var latitude = null;
 	var longitude = null;
 	var _this = this;

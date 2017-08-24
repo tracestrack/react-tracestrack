@@ -29,10 +29,11 @@ function createNewStar(coord, type, recordName, address, data) {
 }
 
 /** Trace Model */
-function createTrace(detail, recordName) {
+function createTrace(detail, type, recordName) {
     return {
 	detail: detail,
-	recordName: recordName
+	recordName: recordName,
+	type: type
     };
 }
 
@@ -90,7 +91,8 @@ class App extends Component {
 
 	var traces = [];
 	for (var it in re) {
-	    let trace = createTrace(re[it].fields.medium.value, re[it].recordName);
+	    let trace = createTrace(re[it].fields.detail.value, re[it].fields.type.value, re[it].recordName);
+	    //let trace = createTrace(re[it].fields.medium.value, re[it].recordName);
 	    //createTrace(re[it].fields.title., re[it].fields.detail.value, re[it].recordName, f.type.value, f.distance.value, f.averageSpeed.value, f.duration.value, f.startDate.value, f.note.value, f.elevation.value);
 	    traces.push(trace);
 	}

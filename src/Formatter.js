@@ -4,7 +4,8 @@ export function formatDistance(v) {
 }
 
 export function formatSpeed(v) {
-    return v.toFixed(2) + " KM/H";
+    var ret = v * 3.6;
+    return ret.toFixed(2) + " KM/H";
 }
 
 export function formatDate(date) {
