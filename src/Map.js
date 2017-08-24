@@ -74,7 +74,7 @@ export const Map = withGoogleMap(props => (
 		lng: trace.detail[i + 1]/1000000
 	    });
 	}
-	console.log(coords);
+	//	console.log(coords);
 
 	var opt = {
 	    strokeColor: '#FF0000',

@@ -15,7 +15,7 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: '6b9e74116c6fda0d630b430b113508ba51cb2bd2faf78e6661eae0631a30facc',
+	    apiToken: '560910dd3d77e9aac5b66ab73a0c4d4b462456fa1fc154bf0711c29a269eb98f',
 
 	    persist: true, // Sets a cookie.
 
@@ -271,7 +271,7 @@ class CKComponent extends Component {
 	    desiredKeys: desiredKeys,
 
 	    // Fetch 5 results at a time.
-	    resultsLimit: 100
+	    resultsLimit: 1000
 
 	};
 
@@ -495,9 +495,6 @@ class CKComponent extends Component {
 	return (<div>
 		<div id='apple-sign-in-button'></div>
 		<div id='apple-sign-out-button'></div>
-		<div className='loadStarsButton'>
-		<button onClick={this.loadStars}>Load</button>
-		</div>
 		</div>);
     }
     

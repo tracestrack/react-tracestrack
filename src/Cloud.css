@@ -17,16 +17,6 @@
     z-index: 111;
 }
 
-.loadStarsButton {
-    position: absolute;
-    margin: 10px;
-    width:200px;
-    height:40px;
-    top: 10px;
-    left: 450px;
-    z-index: 111;
-}
-
 a.close-button {
     border-radius: 15px;
     background: gray;
@@ -36,4 +26,17 @@ a.close-button {
     text-decoration: none;
     color: black;
     display:block;
+}
+
+.pac-item {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.pac-matched {
+    font-size: 14px;
+}
+
+.pac-item-query	 {
+    font-size: 14px;
 }

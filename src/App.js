@@ -126,15 +126,26 @@ class App extends Component {
 	    this.setState({
 		selectedStar: newStar,
 		showStarSidebar: true,
-		showContextMenu: false
+		showContextMenu: false,
+		showTraceSidebar: false
 	    });
 	    
 	}
 	else {
-	    this.setState({
-		showStarSidebar: false,
-		showContextMenu: false
-	    });
+	    var state = {};
+	    if (this.state.showStarSidebar) {
+		state.showStarSidebar = false;
+	    }
+	    if (this.state.showContextMenu) {
+		state.showContextMenu = false;
+	    }
+	    if (this.state.showTraceSidebar) {
+		state.showTraceSidebar =  false;
+	    }
+
+	    if (Object.keys(state).length > 0) {
+		this.setState(state);
+	    }
 	}
 	
     }
@@ -224,7 +235,9 @@ class App extends Component {
 	console.log(trace);
 	this.setState({
 	    selectedTrace: trace,
-	    showTraceSidebar: true	    
+	    showTraceSidebar: true,
+	    showStarSidebar: false
+	    
 	});
 
     }
@@ -232,7 +245,8 @@ class App extends Component {
     handleMarkerClick(targetMarker) {
 	this.setState({
 	    selectedStar: targetMarker,
-	    showStarSidebar: true
+	    showStarSidebar: true,
+	    showTraceSidebar: false	    
 	});
     }
 
