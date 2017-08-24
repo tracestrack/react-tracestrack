@@ -33,7 +33,7 @@ export const Map = withGoogleMap(props => (
       defaultOptions={{
 	  mapTypeControlOptions: {
               style: google.maps.MapTypeControlStyle.DEFAULT,
-              position: google.maps.ControlPosition.TOP_CENTER
+              position: google.maps.ControlPosition.TOP_LEFT
 	  },
 	  zoomControl: false,
 	  streetViewControlOptions: {
