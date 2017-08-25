@@ -67,7 +67,7 @@ class App extends Component {
     
     componentDidMount() {
 	this.setState({
-
+	    isLoadingTraces: false
 	});
 
 	window.$("#apple-sign-out-button").hide();
@@ -78,18 +78,44 @@ class App extends Component {
     
     handleMapBoundsChanged() {
 
+	let _this = this;
+	if (this.state.isLoadingTraces) {
+	    console.log('loading, skip');
+	    return;
+	}
+
+	this.setState({isLoadingTraces: true});
+
+
 	let bounds = window.map.getBounds();
+	let latDiff =  bounds.getNorthEast().lat() - bounds.getSouthWest().lat();
+	let lngDiff =  bounds.getNorthEast().lng() - bounds.getSouthWest().lng();
+	
 	let maxLat = bounds.getNorthEast().lat();
 	let maxLng = bounds.getNorthEast().lng();
 	let minLat = bounds.getSouthWest().lat();
 	let minLng = bounds.getSouthWest().lng();
 
+	let nMaxLat = bounds.getNorthEast().lat() + latDiff;
+	let nMaxLng = bounds.getNorthEast().lng() + lngDiff;
+	let nMinLat = bounds.getSouthWest().lat() - latDiff;
+	let nMinLng = bounds.getSouthWest().lng() - lngDiff;
+
+	
+	let z = window.map.getZoom();
+	console.log(z);
+	var loadDetail = z > 11;
+
 	if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng)) {
-	    this._ck.loadTraces(maxLat, maxLng, minLat, minLng);
-	    this.loadedAreaManager.addLoaded(maxLat, maxLng, minLat, minLng);
+	    this._ck.loadTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, function() {
+		console.log('finish');
+		_this.setState({isLoadingTraces: false});
+	    });
+	    this.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng);
 	}
 	else {
 	    console.log('loaded');
+	    _this.setState({isLoadingTraces: false});
 	}
     }
 
@@ -116,7 +142,8 @@ class App extends Component {
 	for (var it in re) {
 
 	    if (this.overlayManager.exists(re[it].recordName) == false) {
-		let trace = createTrace(re[it].fields.detail.value, re[it].fields.type.value, re[it].recordName);
+		let pts = re[it].fields.detail == undefined ? re[it].fields.coarse.value : re[it].fields.detail.value;
+		let trace = createTrace(pts, re[it].fields.type.value, re[it].recordName);
 		traces.push(trace);
 		this.overlayManager.add(re[it].recordName);
 	    }
@@ -327,7 +354,9 @@ class App extends Component {
 	    onMapMounted={this.handleMapMounted}
 	    onMapLeftClick={this.handleMapLeftClick}
 	    onMapRightClick={this.handleMapRightClick}
-	    onBoundsChanged={this.handleMapBoundsChanged}
+	    onDragEnd={this.handleMapBoundsChanged}
+	    onZoomChanged={this.handleMapBoundsChanged}
+	    
 	    containerElement={
 		    <div style={{ height: `100%` }} className='container' />
 	    }

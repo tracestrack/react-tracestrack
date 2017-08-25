@@ -232,7 +232,7 @@ class CKComponent extends Component {
     demoPerformQuery(
 	databaseScope,zoneName,ownerRecordName,recordType,
 	desiredKeys,sortByField,ascending,latitude,longitude,
-	filters, callback
+	filters, continuationMarker, callback, finishCallback
     ) {
 
 	var container = CloudKit.getDefaultContainer();
@@ -256,7 +256,9 @@ class CKComponent extends Component {
 	}
 
 	// Convert the filters to the appropriate format.
-	query.filterBy = filters.map(function(filter) {
+	var clonedMap = JSON.parse(JSON.stringify(filters));
+
+	query.filterBy = clonedMap.map(function(filter) {
 	    filter.fieldValue = { value: filter.fieldValue };
 	    return filter;
 	});
@@ -270,8 +272,11 @@ class CKComponent extends Component {
 
 	    // Fetch 5 results at a time.
 	    resultsLimit: 100
-
 	};
+
+	if (continuationMarker != null) {
+	    options.continuationMarker = continuationMarker;
+	}
 
 	if(zoneName) {
 	    options.zoneID = { zoneName: zoneName };
@@ -285,14 +290,28 @@ class CKComponent extends Component {
 	    .then(function (response) {
 		if(response.hasErrors) {
 		    console.log(response.errors);
+		    console.log('eeeeeeeeeeeeeeeeeeeeeee');
 		    // Handle them in your app.
 		    throw response.errors[0];
 
 		} else {
 
-		    var records = response.records;		    
+		    var records = response.records;
+		    console.log('got ' + records.length + ' records');
 		    callback(records);
 
+		    if (response.moreComing) {
+			let cMarker = response.continuationMarker;
+
+			console.log('auto load more');
+			_this.demoPerformQuery(
+			    databaseScope,zoneName,ownerRecordName,recordType,
+			    desiredKeys,sortByField,ascending,latitude,longitude,filters, cMarker, callback, finishCallback);
+
+		    }
+		    else {
+			finishCallback();
+		    }
 		}
 	    });
     }
@@ -436,7 +455,6 @@ class CKComponent extends Component {
 	var ownerRecordName = null;
 	var recordType = "Star";
 	var desiredKeys = ["type", "location"];
-//	var desiredKeys = ["title", "location", "note", "type", "url"];
 	var sortByField = null;
 	var ascending = null;
 	var latitude = null;
@@ -445,7 +463,7 @@ class CKComponent extends Component {
 
 	this.demoPerformQuery(
 	    databaseScope,zoneName,ownerRecordName,recordType,
-	    desiredKeys,sortByField,ascending,latitude,longitude,[], function(records) {
+	    desiredKeys,sortByField,ascending,latitude,longitude,[], null, function(records) {
 		_this.props.onStarsLoad(records);
 	    });
 
@@ -462,13 +480,12 @@ class CKComponent extends Component {
 
     }
 
-    loadTraces(maxLat, maxLng, minLat, minLng) {
+    loadTraces(maxLat, maxLng, minLat, minLng, loadDetail, finishCallback) {
 
 	var databaseScope = "PRIVATE";
 	var ownerRecordName = null;
 	var recordType = "Trace";
-	var desiredKeys = ["detail", 'type'];
-	//var desiredKeys = ["title", "detail", 'type', 'averageSpeed', 'note', 'startDate', 'distance', 'duration', 'elevation'];
+	var desiredKeys = [loadDetail?"detail":"coarse", 'type'];
 	var sortByField = null;
 	var ascending = null;
 	var latitude = null;
@@ -483,7 +500,7 @@ class CKComponent extends Component {
 	let gt = 'GREATER_THAN';
 	let lt = 'LESS_THAN';
 	
-	var filter = [
+	var filters = [
 	    { fieldName: 'maxLat', comparator: gt, fieldValue: minLat },
 	    { fieldName: 'maxLng', comparator: gt, fieldValue: minLng },
 	    { fieldName: 'minLat', comparator: lt, fieldValue: maxLat },
@@ -492,8 +509,10 @@ class CKComponent extends Component {
 	
 	this.demoPerformQuery(
 	    databaseScope,zoneName,ownerRecordName,recordType,
-	    desiredKeys,sortByField,ascending,latitude,longitude,filter, function(records) {
+	    desiredKeys,sortByField,ascending,latitude,longitude,filters, null, function(records) {
 		_this.props.onTracesLoad(records);
+	    }, function() {
+		finishCallback();
 	    });
 
     }
