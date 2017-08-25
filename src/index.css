@@ -14,14 +14,29 @@ body {
 }
 
 .searchBar {
+    font-size: 16px;
+    width: 285px;
+    border: none;
+    border-color: transparent;
+    background-image: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D);
+    outline: none;
+    padding: 5px 5px 15px 15px;
+
+}
+
+.hidden {
+    display: none;
+}
+
+.shadow {
     position: absolute;
     left: calc((100% - 300px)/2);
     width:300px;
-    height:30px;
+    height:35px;
     top:10px;
     z-index: 100;
-    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
-    box-shadow: 3px 3px 5px 6px #ccc;
-    font-size: 16px;
-    padding: 5px 10px;
+    padding: 5px 10px 5px 0px;
+    background: white;
+    -webkit-box-shadow: 1px 1px 1px 1px rgba(100, 100, 100, 0.3);
+    box-shadow: 1px 1px 1px 1px rgba(100, 100, 100, 0.3);
 }

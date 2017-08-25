@@ -48,7 +48,8 @@ class App extends Component {
 	traces: [],
 	showContextMenu: false,
 	showStarSidebar: false,
-	rightClickPosition: {left: 100, top: 100}
+	rightClickPosition: {left: 100, top: 100},
+	isPanoramaView: false
     }
 
     handleMapMounted = this.handleMapMounted.bind(this);
@@ -224,6 +225,21 @@ class App extends Component {
 	};
 
 	var _this = this;
+
+	map.getStreetView().addListener("visible_changed", function(e) {
+	    let v = map.getStreetView().getVisible();
+	    _this.setState({isPanoramaView: v});
+
+	    if (v) {
+		window.$("#apple-sign-in-button").addClass('hidden');
+		window.$("#apple-sign-out-button").addClass('hidden');
+	    }
+	    else {
+		window.$("#apple-sign-in-button").removeClass('hidden');
+		window.$("#apple-sign-out-button").removeClass('hidden');
+	    }
+
+	});
 	
 	searchBox.addListener('places_changed', function() {
 	    var places = searchBox.getPlaces();
@@ -344,7 +360,9 @@ class App extends Component {
 		    )
 	      }	      
 
+		<div className={this.state.isPanoramaView ? 'hidden' : 'shadow' }>
 		<input type="text" id="searchTextField" className='searchBar' />
+		</div>
 		
 		<Map
 	    markers={this.state.markers}
