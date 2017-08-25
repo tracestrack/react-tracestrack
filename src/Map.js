@@ -25,6 +25,46 @@ function getColor(type) {
     case 6:
 	return '#447F84';
     }
+    return '#000000';
+}
+
+export class LoadedAreaManager {
+
+    constructor() {
+	this.bboxes = [];
+    }
+
+    addLoaded(maxLat, maxLng, minLat, minLng) {
+	this.bboxes.push([maxLat, maxLng, minLat, minLng]);
+    }
+    
+    isLoaded(maxLat, maxLng, minLat, minLng) {
+	for (var it in this.bboxes) {
+	    let bit = this.bboxes[it];
+	    if (maxLat <= bit[0] && maxLng <= bit[1] && minLat >= bit[2] && minLng >= bit[3]) {
+		return true;
+	    }
+	}
+	return false;
+    }
+}
+
+export class OverlayManager {
+
+    constructor() {
+	
+	this.overlayDict = {};
+	console.log('constructed');
+    }
+    
+    exists(recordName) {
+	return this.overlayDict[recordName] != null;
+    }
+
+    add(recordName) {
+	this.overlayDict[recordName] = 1;
+    }
+    
 }
 
 export const Map = withGoogleMap(props => (
@@ -43,6 +83,7 @@ export const Map = withGoogleMap(props => (
       defaultZoom={14}
       defaultCenter={{ lat: 51.447698, lng: 5.487497 }}
       onClick={props.onMapLeftClick}
+      onDragEnd={props.onBoundsChanged}
       onRightClick={props.onMapRightClick}
       >
       {props.markers.map((marker, index) => {

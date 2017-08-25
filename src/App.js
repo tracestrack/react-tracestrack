@@ -3,7 +3,7 @@ import Menu from './menu.js';
 import CKComponent from './Cloud.js';
 import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
-import {Map} from './Map.js';
+import {Map, OverlayManager, LoadedAreaManager} from './Map.js';
 
 const google = window.google;
 
@@ -52,6 +52,7 @@ class App extends Component {
     }
 
     handleMapMounted = this.handleMapMounted.bind(this);
+    handleMapBoundsChanged = this.handleMapBoundsChanged.bind(this);    
     handleMarkerClick = this.handleMarkerClick.bind(this);
     handleTraceClick = this.handleTraceClick.bind(this);    
     handleMapRightClick = this.handleMapRightClick.bind(this);
@@ -67,15 +68,36 @@ class App extends Component {
     componentDidMount() {
 	this.setState({
 
-	});		      
+	});
+
+	window.$("#apple-sign-out-button").hide();
+	this.overlayManager = new OverlayManager();
+	this.loadedAreaManager = new LoadedAreaManager();
+	
+    }
+    
+    handleMapBoundsChanged() {
+
+	let bounds = window.map.getBounds();
+	let maxLat = bounds.getNorthEast().lat();
+	let maxLng = bounds.getNorthEast().lng();
+	let minLat = bounds.getSouthWest().lat();
+	let minLng = bounds.getSouthWest().lng();
+
+	if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng)) {
+	    this._ck.loadTraces(maxLat, maxLng, minLat, minLng);
+	    this.loadedAreaManager.addLoaded(maxLat, maxLng, minLat, minLng);
+	}
+	else {
+	    console.log('loaded');
+	}
     }
 
     handleLoginSucess() {
 	if (window.userIdentity) {
 	    this._ck.loadStars();
-	    this._ck.loadTraces();
-	}
-	
+	    this.handleMapBoundsChanged();
+	}	
     }
     
     handleStarRecordRemoved(re) {
@@ -89,16 +111,20 @@ class App extends Component {
     handleTracesLoad(re) {
 	console.log(re);
 
-	var traces = [];
+	var traces = this.state.traces;
+	
 	for (var it in re) {
-	    let trace = createTrace(re[it].fields.detail.value, re[it].fields.type.value, re[it].recordName);
-	    //let trace = createTrace(re[it].fields.medium.value, re[it].recordName);
-	    //createTrace(re[it].fields.title., re[it].fields.detail.value, re[it].recordName, f.type.value, f.distance.value, f.averageSpeed.value, f.duration.value, f.startDate.value, f.note.value, f.elevation.value);
-	    traces.push(trace);
+
+	    if (this.overlayManager.exists(re[it].recordName) == false) {
+		let trace = createTrace(re[it].fields.detail.value, re[it].fields.type.value, re[it].recordName);
+		traces.push(trace);
+		this.overlayManager.add(re[it].recordName);
+	    }
 	}
 
-	this.setState({traces: traces
-		      });
+	this.setState({
+	    traces: traces
+	});
     }
     
     handleStarsLoad(re) {
@@ -301,6 +327,7 @@ class App extends Component {
 	    onMapMounted={this.handleMapMounted}
 	    onMapLeftClick={this.handleMapLeftClick}
 	    onMapRightClick={this.handleMapRightClick}
+	    onBoundsChanged={this.handleMapBoundsChanged}
 	    containerElement={
 		    <div style={{ height: `100%` }} className='container' />
 	    }

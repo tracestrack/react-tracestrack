@@ -21,12 +21,12 @@ CloudKit.configure({
 
 	    signInButton: {
 		id: 'apple-sign-in-button',
-		theme: 'black' // Other options: 'white', 'white-with-outline'.
+		theme: 'white-with-outline' // Other options: 'white', 'white-with-outline'.
 	    },
 
 	    signOutButton: {
 		id: 'apple-sign-out-button',
-		theme: 'black'
+		theme: 'white-with-outline'
 	    }
 	},
 
@@ -85,6 +85,8 @@ class CKComponent extends Component {
 	    }
 
 	    _this.props.onLoginSuccess();
+	    window.$("#apple-sign-in-button").hide();
+	    window.$("#apple-sign-out-button").show();
 	    
 	    container
 		.whenUserSignsOut()
@@ -95,6 +97,9 @@ class CKComponent extends Component {
 	    if(error && error.ckErrorCode === 'AUTH_PERSIST_ERROR') {
 		window.showDialogForPersistError();
 	    }
+
+	    window.$("#apple-sign-in-button").show();
+	    window.$("#apple-sign-out-button").hide();
 
 	    container
 		.whenUserSignsIn()
@@ -457,22 +462,37 @@ class CKComponent extends Component {
 
     }
 
-    loadTraces() {
+    loadTraces(maxLat, maxLng, minLat, minLng) {
 
 	var databaseScope = "PRIVATE";
 	var ownerRecordName = null;
 	var recordType = "Trace";
 	var desiredKeys = ["detail", 'type'];
 	//var desiredKeys = ["title", "detail", 'type', 'averageSpeed', 'note', 'startDate', 'distance', 'duration', 'elevation'];
-	var sortByField = 'startDate';
-	var ascending = false;
+	var sortByField = null;
+	var ascending = null;
 	var latitude = null;
 	var longitude = null;
 	var _this = this;
+
+	maxLat = parseInt(maxLat * 1000000);
+	maxLng = parseInt(maxLng * 1000000);
+	minLat = parseInt(minLat * 1000000);
+	minLng = parseInt(minLng * 1000000);
+
+	let gt = 'GREATER_THAN';
+	let lt = 'LESS_THAN';
+	
+	var filter = [
+	    { fieldName: 'maxLat', comparator: gt, fieldValue: minLat },
+	    { fieldName: 'maxLng', comparator: gt, fieldValue: minLng },
+	    { fieldName: 'minLat', comparator: lt, fieldValue: maxLat },
+	    { fieldName: 'minLng', comparator: lt, fieldValue: maxLng }
+	];
 	
 	this.demoPerformQuery(
 	    databaseScope,zoneName,ownerRecordName,recordType,
-	    desiredKeys,sortByField,ascending,latitude,longitude,[], function(records) {
+	    desiredKeys,sortByField,ascending,latitude,longitude,filter, function(records) {
 		_this.props.onTracesLoad(records);
 	    });
 
