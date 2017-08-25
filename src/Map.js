@@ -4,7 +4,7 @@ import { MarkerType } from './App.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
 import PinImg from './img/pin.png';
-
+import RetroStyle from './mapstyles/retro.json';
 
 const google = window.google;
 
@@ -75,6 +75,7 @@ export const Map = withGoogleMap(props => (
               style: google.maps.MapTypeControlStyle.DEFAULT,
               position: google.maps.ControlPosition.TOP_LEFT
 	  },
+	  styles: RetroStyle,
 	  zoomControl: false,
 	  streetViewControlOptions: {
               position: google.maps.ControlPosition.BOTTOM_CENTER
