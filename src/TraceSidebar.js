@@ -15,13 +15,19 @@ class TraceSidebar extends Component {
 	var state = this.convertProps2State(props);
 	state.editMode = false;
 	
-	this.state = state;	
+	this.state = state;
+	this.lastTraceRN = '';
     }
 
     convertProps2State(props) {
 	let data = props.trace;
-	console.log(data);
+
 	if (data) {
+
+	    if (this.lastTraceRN == data.recordName) {
+		return {};
+	    }
+	    
 	    this.loadTrace(data);
 	    
 	    return {
@@ -51,8 +57,8 @@ class TraceSidebar extends Component {
 	
 	this.ck.loadRecord(trace.recordName, function(re) {
 	    let data = re.fields;
-	    console.log('herere');
-	    console.log(data);
+
+	    _this.lastTraceRN = re.recordName;
 	    var states = {
 		title: data.title.value,
 		distance: formatDistance(data.distance.value),
