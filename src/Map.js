@@ -34,14 +34,14 @@ export class LoadedAreaManager {
 	this.bboxes = [];
     }
 
-    addLoaded(maxLat, maxLng, minLat, minLng) {
-	this.bboxes.push([maxLat, maxLng, minLat, minLng]);
+    addLoaded(maxLat, maxLng, minLat, minLng, loadDetail) {
+	this.bboxes.push([maxLat, maxLng, minLat, minLng, loadDetail]);
     }
     
-    isLoaded(maxLat, maxLng, minLat, minLng) {
+    isLoaded(maxLat, maxLng, minLat, minLng, loadDetail) {
 	for (var it in this.bboxes) {
 	    let bit = this.bboxes[it];
-	    if (maxLat <= bit[0] && maxLng <= bit[1] && minLat >= bit[2] && minLng >= bit[3]) {
+	    if (maxLat <= bit[0] && maxLng <= bit[1] && minLat >= bit[2] && minLng >= bit[3] && (bit[4] || !bit[4] && !loadDetail)) {
 		return true;
 	    }
 	}
@@ -57,12 +57,15 @@ export class OverlayManager {
 	console.log('constructed');
     }
     
-    exists(recordName) {
-	return this.overlayDict[recordName] != null;
+    shouldRedraw(recordName, lod) {
+	if (this.overlayDict[recordName] == null) {
+	    return true;
+	}
+	return lod > this.overlayDict[recordName];
     }
 
-    add(recordName) {
-	this.overlayDict[recordName] = 1;
+    add(recordName, lod) {
+	this.overlayDict[recordName] = lod;
     }
     
 }

@@ -87,10 +87,9 @@ class App extends Component {
 
 	this.setState({isLoadingTraces: true});
 
-
 	let bounds = window.map.getBounds();
-	let latDiff =  bounds.getNorthEast().lat() - bounds.getSouthWest().lat();
-	let lngDiff =  bounds.getNorthEast().lng() - bounds.getSouthWest().lng();
+	let latDiff = bounds.getNorthEast().lat() - bounds.getSouthWest().lat();
+	let lngDiff = bounds.getNorthEast().lng() - bounds.getSouthWest().lng();
 	
 	let maxLat = bounds.getNorthEast().lat();
 	let maxLng = bounds.getNorthEast().lng();
@@ -107,12 +106,12 @@ class App extends Component {
 	console.log(z);
 	var loadDetail = z > 11;
 
-	if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng)) {
+	if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
 	    this._ck.loadTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, function() {
 		console.log('finish');
 		_this.setState({isLoadingTraces: false});
 	    });
-	    this.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng);
+	    this.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
 	}
 	else {
 	    console.log('loaded');
@@ -136,17 +135,32 @@ class App extends Component {
     }
 
     handleTracesLoad(re) {
-	console.log(re);
 
 	var traces = this.state.traces;
+
+	let z = window.map.getZoom();
+	var lod = 1;
+	if (z > 11) {
+	    lod = 2;
+	}
+	else {
+	    lod = 1;
+	}
 	
 	for (var it in re) {
 
-	    if (this.overlayManager.exists(re[it].recordName) == false) {
+	    if (this.overlayManager.shouldRedraw(re[it].recordName, lod)) {
 		let pts = re[it].fields.detail == undefined ? re[it].fields.coarse.value : re[it].fields.detail.value;
 		let trace = createTrace(pts, re[it].fields.type.value, re[it].recordName);
+
+		for (var it2 in traces) {
+		    if (traces[it2].recordName == re[it].recordName) {
+			traces.splice(it2, 1);
+			break;
+		    }
+		}
 		traces.push(trace);
-		this.overlayManager.add(re[it].recordName);
+		this.overlayManager.add(re[it].recordName, lod);
 	    }
 	}
 
