@@ -405,6 +405,42 @@ class CKComponent extends Component {
 
     }
 
+    demoFetchDatabaseChanges(databaseScope,syncToken) {
+	var container = CloudKit.getDefaultContainer();
+	var database = container.getDatabaseWithDatabaseScope(
+	    CloudKit.DatabaseScope[databaseScope]
+	);
+
+	var opts = {
+
+	    // Limit to 5 results.
+	    resultsLimit: 5
+	};
+
+	if(syncToken) {
+	    opts.syncToken = syncToken;
+	}
+
+	return database.fetchDatabaseChanges(opts).then(function(response) {
+	    if(response.hasErrors) {
+
+		// Handle the errors.
+		throw response.errors[0];
+
+	    } else {
+
+		var newSyncToken = response.syncToken;
+
+		var zones = response.zones;
+		var moreComing = response.moreComing;
+
+		//return renderZones(databaseScope,zones,newSyncToken,moreComing);
+
+	    }
+	});
+    }
+
+    
     demoFetchRecord(
 	databaseScope,recordName,zoneName,ownerRecordName, callback
     ) {
@@ -483,6 +519,7 @@ class CKComponent extends Component {
     loadTraces(maxLat, maxLng, minLat, minLng, loadDetail, finishCallback) {
 
 	var databaseScope = "PRIVATE";
+	var databaseSharedScope = "SHARED";
 	var ownerRecordName = null;
 	var recordType = "Trace";
 	var desiredKeys = [loadDetail?"detail":"coarse", 'type'];
@@ -515,7 +552,18 @@ class CKComponent extends Component {
 		finishCallback();
 	    });
 
+	this.demoPerformQuery(
+	    databaseSharedScope,zoneName,'_6aaa94beced6b3274711f6fe1dc6ea37',recordType,
+	    desiredKeys,sortByField,ascending,latitude,longitude,filters, null, function(records) {
+		_this.props.onTracesLoad(records);
+	    }, function() {
+		finishCallback();
+	    });
+
+	
     }
+
+    
 
     
     constructor(props){

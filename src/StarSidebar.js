@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {MarkerType} from './App.js';
+import {Coord, MarkerType} from './App.js';
 import {LiveMarkedArea} from './LiveMarkedArea.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
@@ -16,6 +16,8 @@ class StarSidebar extends Component {
 	super(props);
 
 	this.ck = props.ck;
+	this.lastPoint = Coord(0, 0);
+	this.lastType = -111;
 	this.state = this.convertProps2State(props);
     }
     
@@ -23,6 +25,14 @@ class StarSidebar extends Component {
 	if (props.star != null) {
 	    var data;
 	    data = props.star;
+
+	    if (this.lastPoint.lat == data.coord.lat && this.lastPoint.lng == data.coord.lng && this.lastType == data.type) {
+		return;
+	    }
+	    else {
+		this.lastPoint = data.coord;
+		this.lastType = data.type;
+	    }
 
 	    var ret = {
 		title: '',
@@ -35,10 +45,10 @@ class StarSidebar extends Component {
 	    };
 
 	    if (!ret.address) {
-		console.log('no add');
 		this.loadAddress(data.coord);
 	    }
 
+	    console.log('xxx');
 	    switch (props.star.type) {
 	    case MarkerType.googlePlace:
 		this.loadGooglePlace(data.data);

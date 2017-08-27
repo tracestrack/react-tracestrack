@@ -37,7 +37,7 @@ function createTrace(detail, type, recordName) {
     };
 }
 
-function Coord(lat, lng) {
+export function Coord(lat, lng) {
     return {lat: lat, lng: lng};
 }
 
