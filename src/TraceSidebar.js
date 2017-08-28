@@ -27,7 +27,7 @@ class TraceSidebar extends Component {
 	    if (this.lastTraceRN == data.recordName) {
 		return {};
 	    }
-	    
+
 	    this.loadTrace(data);
 	    
 	    return {
@@ -56,7 +56,7 @@ class TraceSidebar extends Component {
 
 	let _this = this;
 	
-	this.ck.loadRecord(trace.recordName, trace.zoneRecordName, trace.share, function(re) {
+	this.ck.loadRecord(trace.recordName, trace.share, function(re) {
 	    let data = re.fields;
 
 	    _this.lastTraceRN = re.recordName;

@@ -283,31 +283,33 @@ class CKComponent extends Component {
 	    }
 	}
 
+	function handleResponse(response) {
+	    if(response.hasErrors) {
+		console.log(response.errors);
+		// Handle them in your app.
+		throw response.errors[0];
+
+	    } else {
+
+		var records = response.records;
+		console.log('got ' + records.length + ' records');
+
+		callback(records);
+		if (response.moreComing) {
+		    console.log('auto load more');
+		    database.performQuery(response).then(handleResponse);
+		}
+		else {
+		    console.log('end');
+		    if (finishCallback) finishCallback();
+		}
+	    }
+	    return null;
+	}
+	
 	// Execute the query.
 	return database.performQuery(query,options)
-	    .then(function (response) {
-		if(response.hasErrors) {
-		    console.log(response.errors);
-		    // Handle them in your app.
-		    throw response.errors[0];
-
-		} else {
-
-		    var records = response.records;
-		    console.log('got ' + records.length + ' records');
-
-		    callback(records);
-		    if (response.moreComing) {
-			console.log('auto load more');
-			database.performQuery(response);
-		    }
-		    else {
-			console.log('end');
-			if (finishCallback) finishCallback();
-		    }
-		}
-		return null;
-	    });
+	    .then(handleResponse);
     }
 
 
@@ -611,11 +613,14 @@ class CKComponent extends Component {
 
     }
 
-    loadRecord(recordName, zoneRecordName, share, callback) {
+    loadRecord(recordName, share, callback) {
 
 	var databaseScope = share ? "SHARED" : "PRIVATE";
 	var ownerRecordName = share ? share.zoneID.ownerRecordName : null;
 
+	console.log(databaseScope);
+	console.log(ownerRecordName);
+	
 	this.demoFetchRecord(
 	    databaseScope,recordName,zoneName,ownerRecordName, callback
 	);

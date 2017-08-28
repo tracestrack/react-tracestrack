@@ -4,7 +4,8 @@ import { MarkerType } from './App.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
 import PinImg from './img/pin.png';
-import RetroStyle from './mapstyles/retro.json';
+//import RetroStyle from './mapstyles/retro.json';
+import GrayScaleStyle from './mapstyles/grayscale.json';
 
 const google = window.google;
 
@@ -75,11 +76,14 @@ export const Map = withGoogleMap(props => (
       ref={props.onMapMounted}
       defaultOptions={{
 	  mapTypeControlOptions: {
-              style: google.maps.MapTypeControlStyle.DEFAULT,
+              style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
               position: google.maps.ControlPosition.TOP_LEFT
 	  },
-	  styles: RetroStyle,
+	  styles: GrayScaleStyle,
 	  zoomControl: false,
+	  clickableIcons: false,
+	  fullscreenControl: false,
+	  minZoom: 5,
 	  streetViewControlOptions: {
               position: google.maps.ControlPosition.BOTTOM_CENTER
 	  }

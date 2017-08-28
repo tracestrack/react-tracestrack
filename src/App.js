@@ -35,7 +35,7 @@ function createTrace(detail, type, recordName, zoneRecordName, share) {
 	recordName: recordName,
 	zoneRecordName: zoneRecordName,
 	share: share,
-	type: type,
+	type: type
     };
 }
 
@@ -106,7 +106,7 @@ class App extends Component {
 	
 	let z = window.map.getZoom();
 	console.log(z);
-	var loadDetail = z > 11;
+	var loadDetail = z > 12;
 
 	if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
 	    this._ck.loadTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, function() {
@@ -153,15 +153,12 @@ class App extends Component {
 	    lod = 1;
 	}
 
-	console.log(re);
 	for (var it in re) {
 
 	    if (this.overlayManager.shouldRedraw(re[it].recordName, lod)) {
 		let pts = re[it].fields.detail == undefined ? re[it].fields.coarse.value : re[it].fields.detail.value;
 
 		let trace = createTrace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share);
-
-		console.log(trace);
 
 		for (var it2 in traces) {
 		    if (traces[it2].recordName == re[it].recordName) {
@@ -212,6 +209,7 @@ class App extends Component {
 	    
 	}
 	else {
+
 	    var state = {};
 	    if (this.state.showStarSidebar) {
 		state.showStarSidebar = false;
@@ -222,6 +220,10 @@ class App extends Component {
 	    if (this.state.showTraceSidebar) {
 		state.showTraceSidebar =  false;
 	    }
+	    if (this.state.selectedTrace)
+		this.state.selectedTrace.selected = false;
+	    
+	    state.selectedTrace = null;
 
 	    if (Object.keys(state).length > 0) {
 		this.setState(state);
