@@ -128,7 +128,7 @@ class App extends Component {
 
 	    this._ck.fetchDBChanges();
 	    //this._ck.demoDiscoverUserIdentityWithUserRecordName('_7022d50b9d797f3775d0930d397ceaf4');
-	    this._ck.demoDiscoverAllUserIdentities();
+//	    this._ck.demoDiscoverAllUserIdentities();
 	}	
     }
     

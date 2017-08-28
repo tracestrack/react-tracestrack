@@ -260,20 +260,15 @@ class CKComponent extends Component {
 
 	// Convert the filters to the appropriate format.
 	var clonedMap = JSON.parse(JSON.stringify(filters));
-
+	
 	query.filterBy = clonedMap.map(function(filter) {
 	    filter.fieldValue = { value: filter.fieldValue };
 	    return filter;
 	});
 
-
 	// Set the options.
 	var options = {
-
-	    // Restrict our returned fields to this array of keys.
 	    desiredKeys: desiredKeys,
-
-	    // Fetch 5 results at a time.
 	    resultsLimit: 100
 	};
 
@@ -293,7 +288,6 @@ class CKComponent extends Component {
 	    .then(function (response) {
 		if(response.hasErrors) {
 		    console.log(response.errors);
-		    console.log('eeeeeeeeeeeeeeeeeeeeeee');
 		    // Handle them in your app.
 		    throw response.errors[0];
 
@@ -301,21 +295,18 @@ class CKComponent extends Component {
 
 		    var records = response.records;
 		    console.log('got ' + records.length + ' records');
+
 		    callback(records);
-
 		    if (response.moreComing) {
-			let cMarker = response.continuationMarker;
-
 			console.log('auto load more');
-			_this.demoPerformQuery(
-			    databaseScope,zoneName,ownerRecordName,recordType,
-			    desiredKeys,sortByField,ascending,latitude,longitude,filters, cMarker, callback, finishCallback);
-
+			database.performQuery(response);
 		    }
 		    else {
-			finishCallback();
+			console.log('end');
+			if (finishCallback) finishCallback();
 		    }
 		}
+		return null;
 	    });
     }
 
@@ -428,7 +419,6 @@ class CKComponent extends Component {
 
 	return database.fetchDatabaseChanges(opts).then(function(response) {
 
-	    console.log(response);
 	    if(response.hasErrors) {
 
 		// Handle the errors.
@@ -437,23 +427,18 @@ class CKComponent extends Component {
 	    } else {
 
 		var newSyncToken = response.syncToken;
-
 		var zones = response.zones;
 		var moreComing = response.moreComing;
 
 		for (var it in zones) {
-		    //console.log(zones[it]);
-		    let zoneId = zones[it].zoneID;
 
+		    let zoneId = zones[it].zoneID;
 		    //_this.demoFetchRecordZoneChanges("SHARED", zoneId.zoneName, zoneId.ownerRecordName, '');
 
 		    sharedZoneIDs.push(zoneId);
 		}
 
 		_this.refreshTrace();
-
-
-		//return renderZones(databaseScope,zones,newSyncToken,moreComing);
 
 	    }
 	});
@@ -639,6 +624,7 @@ class CKComponent extends Component {
 
     refreshTrace() {
 	let box = this.lastBox;
+	console.log(box);
 	this.loadTraces(box[0], box[1], box[2], box[3], this.lastLoadDetail, this.lastFinishCallback);
 	
     }
@@ -674,7 +660,8 @@ class CKComponent extends Component {
 	    { fieldName: 'minLat', comparator: lt, fieldValue: maxLat },
 	    { fieldName: 'minLng', comparator: lt, fieldValue: maxLng }
 	];
-	
+
+	// private database
 	this.demoPerformQuery(
 	    databaseScope,zoneName,ownerRecordName,recordType,
 	    desiredKeys,sortByField,ascending,latitude,longitude,filters, null, function(records) {
@@ -683,9 +670,12 @@ class CKComponent extends Component {
 		finishCallback();
 	    });
 
+	// shared database
 
+	databaseScope = databaseSharedScope;
+	
 	for (var i = 0; i < sharedZoneIDs.length; i++) {
-	    databaseScope = databaseSharedScope;
+
 	    ownerRecordName = sharedZoneIDs[i].ownerRecordName;
 	    
 	    this.demoPerformQuery(
