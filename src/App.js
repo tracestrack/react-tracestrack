@@ -29,11 +29,13 @@ function createNewStar(coord, type, recordName, address, data) {
 }
 
 /** Trace Model */
-function createTrace(detail, type, recordName) {
+function createTrace(detail, type, recordName, zoneRecordName, share) {
     return {
 	detail: detail,
 	recordName: recordName,
-	type: type
+	zoneRecordName: zoneRecordName,
+	share: share,
+	type: type,
     };
 }
 
@@ -123,6 +125,10 @@ class App extends Component {
 	if (window.userIdentity) {
 	    this._ck.loadStars();
 	    this.handleMapBoundsChanged();
+
+	    this._ck.fetchDBChanges();
+	    //this._ck.demoDiscoverUserIdentityWithUserRecordName('_7022d50b9d797f3775d0930d397ceaf4');
+	    this._ck.demoDiscoverAllUserIdentities();
 	}	
     }
     
@@ -146,12 +152,16 @@ class App extends Component {
 	else {
 	    lod = 1;
 	}
-	
+
+	console.log(re);
 	for (var it in re) {
 
 	    if (this.overlayManager.shouldRedraw(re[it].recordName, lod)) {
 		let pts = re[it].fields.detail == undefined ? re[it].fields.coarse.value : re[it].fields.detail.value;
-		let trace = createTrace(pts, re[it].fields.type.value, re[it].recordName);
+
+		let trace = createTrace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share);
+
+		console.log(trace);
 
 		for (var it2 in traces) {
 		    if (traces[it2].recordName == re[it].recordName) {

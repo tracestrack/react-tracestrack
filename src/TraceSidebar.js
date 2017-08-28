@@ -38,7 +38,8 @@ class TraceSidebar extends Component {
 		type: data.type,
 		startDate: '',
 		note: '',
-		elevation: ''
+		elevation: '',
+		sharedBy: (data.share ? this.ck.getUserNameByRecordName(data.share.zoneID.ownerRecordName) : 'non')
 
 	    };
 
@@ -55,7 +56,7 @@ class TraceSidebar extends Component {
 
 	let _this = this;
 	
-	this.ck.loadRecord(trace.recordName, function(re) {
+	this.ck.loadRecord(trace.recordName, trace.zoneRecordName, trace.share, function(re) {
 	    let data = re.fields;
 
 	    _this.lastTraceRN = re.recordName;
@@ -101,15 +102,22 @@ class TraceSidebar extends Component {
 	    </h1>
 		<table className='infoBox'>
 		<tbody>
+		{ this.state.sharedBy && (
+		    <tr>
+		      <td className='td-trace'>Shared By</td><td>{this.state.sharedBy}</td>
+		    </tr>
+		)}
+
+		<tr>
+		<td className='td-trace'>Date</td><td>{this.state.startDate}</td>
+		</tr>
+
 		<tr>
 		<td className='td-trace'>Distance</td><td>{this.state.distance}</td>
 		</tr>
 
 		<tr>
 		<td className='td-trace'>Average Speed</td><td>{this.state.averageSpeed}</td>
-		</tr>
-		<tr>
-		<td className='td-trace'>Date</td><td>{this.state.startDate}</td>
 		</tr>
 		<tr>
 		<td className='td-trace'>Elevation</td><td>{this.state.elevation}</td>

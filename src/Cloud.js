@@ -60,6 +60,9 @@ function demoSaveRecordZones(zoneName) {
     });
 }
 
+var sharedZoneIDs = [];
+var discoveredUserIdentities = {};
+
 class CKComponent extends Component {
 
     demoPerformQuery = this.demoPerformQuery.bind(this);
@@ -411,6 +414,8 @@ class CKComponent extends Component {
 	    CloudKit.DatabaseScope[databaseScope]
 	);
 
+	let _this = this;
+	
 	var opts = {
 
 	    // Limit to 5 results.
@@ -422,6 +427,8 @@ class CKComponent extends Component {
 	}
 
 	return database.fetchDatabaseChanges(opts).then(function(response) {
+
+	    console.log(response);
 	    if(response.hasErrors) {
 
 		// Handle the errors.
@@ -434,8 +441,122 @@ class CKComponent extends Component {
 		var zones = response.zones;
 		var moreComing = response.moreComing;
 
+		for (var it in zones) {
+		    //console.log(zones[it]);
+		    let zoneId = zones[it].zoneID;
+
+		    //_this.demoFetchRecordZoneChanges("SHARED", zoneId.zoneName, zoneId.ownerRecordName, '');
+
+		    sharedZoneIDs.push(zoneId);
+		}
+
+		_this.refreshTrace();
+
+
 		//return renderZones(databaseScope,zones,newSyncToken,moreComing);
 
+	    }
+	});
+    }
+
+
+    demoDiscoverAllUserIdentities() {
+	var container = CloudKit.getDefaultContainer();
+
+	return container.discoverAllUserIdentities().then(function(response) {
+	    if(response.hasErrors) {
+
+		// Handle the errors in your app.
+		throw response.errors[0];
+
+	    } else {
+		let users = response.users;
+
+		for (var it in users) {
+		    discoveredUserIdentities[users[it].userRecordName] = users[it].nameComponents;
+		}
+		// response.users is an array of UserIdentity objects.
+		//return renderUserIdentities(title, response.users);
+
+	    }
+	});
+    }
+
+    demoDiscoverUserIdentityWithUserRecordName(userRecordName) {
+	var container = CloudKit.getDefaultContainer();
+
+	return container.discoverUserIdentityWithUserRecordName(userRecordName)
+	    .then(function(response) {
+
+		console.log('xxxxx');
+
+		console.log(response);
+		if(response.hasErrors) {
+
+		    // Handle the errors in your app.
+		    throw response.errors[0];
+
+		} else {
+		    var title = 'Discovered users by record name:';
+
+		    //return renderUserIdentity(title, response.users[0]);
+		}
+	    });
+    }
+
+    fetchDBChanges() {
+	this.demoFetchDatabaseChanges("SHARED", "");
+    }
+
+    demoFetchRecordZoneChanges(
+	databaseScope,zoneName,ownerRecordName,syncToken
+    ) {
+	var container = CloudKit.getDefaultContainer();
+	var database = container.getDatabaseWithDatabaseScope(
+	    CloudKit.DatabaseScope[databaseScope]
+	);
+
+	var zoneID = { zoneName: zoneName };
+
+	if(ownerRecordName) {
+	    zoneID.ownerRecordName = ownerRecordName;
+	}
+
+	var args = {
+	    zoneID: zoneID,
+
+	    // Limit to 5 results.
+	    resultsLimit: 5
+	};
+
+	if(syncToken) {
+	    args.syncToken = syncToken;
+	}
+
+	return database.fetchRecordZoneChanges(args).then(function(response) {
+	    if(response.hasErrors) {
+
+		console.log('----------- errro');
+
+		// Handle the errors.
+		throw response.errors[0];
+
+	    } else {
+		var zonesResponse = response.zones[0];
+		var newSyncToken = zonesResponse.syncToken;
+		var records = zonesResponse.records;
+		var moreComing = zonesResponse.moreComing;
+
+		console.log('-------');
+		console.log(records);
+/*		return renderRecords(
+		    databaseScope,
+		    zoneName,
+		    ownerRecordName,
+		    records,
+		    newSyncToken,
+		    moreComing
+		);*/
 	    }
 	});
     }
@@ -505,10 +626,10 @@ class CKComponent extends Component {
 
     }
 
-    loadRecord(recordName, callback) {
+    loadRecord(recordName, zoneRecordName, share, callback) {
 
-	var databaseScope = "PRIVATE";
-	var ownerRecordName = null;
+	var databaseScope = share ? "SHARED" : "PRIVATE";
+	var ownerRecordName = share ? share.zoneID.ownerRecordName : null;
 
 	this.demoFetchRecord(
 	    databaseScope,recordName,zoneName,ownerRecordName, callback
@@ -516,8 +637,18 @@ class CKComponent extends Component {
 
     }
 
+    refreshTrace() {
+	let box = this.lastBox;
+	this.loadTraces(box[0], box[1], box[2], box[3], this.lastLoadDetail, this.lastFinishCallback);
+	
+    }
+    
     loadTraces(maxLat, maxLng, minLat, minLng, loadDetail, finishCallback) {
 
+	this.lastBox = [maxLat, maxLng, minLat, minLng];
+	this.lastLoadDetail = loadDetail;
+	this.lastFinishCallback = finishCallback;
+	
 	var databaseScope = "PRIVATE";
 	var databaseSharedScope = "SHARED";
 	var ownerRecordName = null;
@@ -552,18 +683,32 @@ class CKComponent extends Component {
 		finishCallback();
 	    });
 
-	this.demoPerformQuery(
-	    databaseSharedScope,zoneName,'_6aaa94beced6b3274711f6fe1dc6ea37',recordType,
-	    desiredKeys,sortByField,ascending,latitude,longitude,filters, null, function(records) {
-		_this.props.onTracesLoad(records);
-	    }, function() {
-		finishCallback();
-	    });
+
+	for (var i = 0; i < sharedZoneIDs.length; i++) {
+	    databaseScope = databaseSharedScope;
+	    ownerRecordName = sharedZoneIDs[i].ownerRecordName;
+	    
+	    this.demoPerformQuery(
+		databaseScope,zoneName,ownerRecordName,recordType,
+		desiredKeys,sortByField,ascending,latitude,longitude,filters, null, function(records) {
+		    _this.props.onTracesLoad(records);
+		}, function() {
+		    finishCallback();
+		});
+
+	}
 
 	
     }
 
-    
+    getUserNameByRecordName(userRecordName) {
+
+	console.log(userRecordName);
+	console.log(discoveredUserIdentities);
+	let userRecord = discoveredUserIdentities[userRecordName];
+
+	return userRecord ? userRecord.givenName + " " + userRecord.familyName : userRecordName;
+    }
 
     
     constructor(props){
