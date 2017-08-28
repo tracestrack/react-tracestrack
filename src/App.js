@@ -328,6 +328,18 @@ class App extends Component {
 
     handleTraceClick(trace) {
 	console.log(trace);
+
+	let traces = this.state.traces;
+	
+	for (var it in traces) {
+	    if (this.state.selectedTrace && traces[it].recordName == this.state.selectedTrace.recordName) {
+		traces[it].selected = false;
+	    }
+	    if (traces[it].recordName == trace.recordName) {
+		traces[it].selected = true;
+	    }
+	}
+		
 	this.setState({
 	    selectedTrace: trace,
 	    showTraceSidebar: true,

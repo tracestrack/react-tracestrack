@@ -143,7 +143,7 @@ export const Map = withGoogleMap(props => (
 	var opt = {
 	    strokeColor: getColor(trace.type),
 	    strokeOpacity: 0.7,
-	    strokeWeight: 2
+	    strokeWeight: trace.selected ? 5 : 2
 	};
 
 	return (
