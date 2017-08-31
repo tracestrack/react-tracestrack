@@ -310,6 +310,64 @@ class CKComponent extends Component {
 	    .then(handleResponse);
     }
 
+    shareWithUI(share) {
+
+	var databaseScope = "SHARED";
+	var recordName = share.recordName;
+	var createShortGUID = false;
+	var ownerRecordName = share.created.userRecordName;
+	var shareTitle = "XXX";
+	var supportedAccess = ["PUBLIC", 'PRIVATE'];
+	var supportedPermissions = ["READ_ONLY"];
+
+	this.demoShareWithUI(
+	    databaseScope,recordName,zoneName,ownerRecordName,
+	    shareTitle,supportedAccess,supportedPermissions
+	) ;
+	
+    }
+    
+    demoShareWithUI(
+	databaseScope,recordName,zoneName,ownerRecordName,
+	shareTitle,supportedAccess,supportedPermissions
+    ) {
+	var container = CloudKit.getDefaultContainer();
+	var database = container.getDatabaseWithDatabaseScope(
+	    CloudKit.DatabaseScope[databaseScope]
+	);
+
+	var zoneID = { zoneName: zoneName };
+
+	if(ownerRecordName) {
+	    zoneID.ownerRecordName = ownerRecordName;
+	}
+
+	return database.shareWithUI({
+
+	    record: {
+		recordName: recordName
+	    },
+	    zoneID: zoneID,
+	    
+	    shareTitle: shareTitle,
+
+	    supportedAccess: supportedAccess,
+
+	    supportedPermissions: supportedPermissions
+
+	}).then(function(response) {
+	    if(response.hasErrors) {
+
+		// Handle the errors in your app.
+		throw response.errors[0];
+
+	    } else {
+
+//		return renderShareResponse(response);
+	    }
+	});
+    }
+
 
     demoDeleteRecord(
 	databaseScope,recordName,zoneName,ownerRecordName

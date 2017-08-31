@@ -17,6 +17,7 @@ class TraceSidebar extends Component {
 	
 	this.state = state;
 	this.lastTraceRN = '';
+	this.trace = null;
     }
 
     convertProps2State(props) {
@@ -91,15 +92,21 @@ class TraceSidebar extends Component {
 	});
     }
 
+    share = this.share.bind(this);
+    share(){
+	console.log(this.trace);
+	this.ck.shareWithUI(this.trace);
+    }    
 
-    loadTrace = this.loadTrace.bind(this);
-    
+    loadTrace = this.loadTrace.bind(this);    
     loadTrace(trace) {
 
 	let _this = this;
 	
 	this.ck.loadRecord(trace.recordName, trace.share, function(re) {
 	    let data = re.fields;
+
+	    _this.trace = re;
 
 	    _this.lastTraceRN = re.recordName;
 	    var states = {
@@ -147,7 +154,7 @@ class TraceSidebar extends Component {
 		<tbody>
 		{ this.state.sharedBy && (
 		    <tr>
-		      <td className='td-trace'>Shared By</td><td>{this.state.sharedBy}</td>
+			<td className='td-trace'>Shared By</td><td><button onClick={this.share}>{this.state.sharedBy}</button></td>
 		    </tr>
 		)}
 
