@@ -31,6 +31,7 @@ class TraceSidebar extends Component {
 	    this.loadTrace(data);
 	    
 	    return {
+		recordName: data.recordName,
 		title: '',
 		distance: '',
 		averageSpeed: '',
@@ -54,7 +55,43 @@ class TraceSidebar extends Component {
     enterEditMode() {
 	this.setState({editMode: true});
     }
-    
+
+    save = this.save.bind(this);
+    save() {
+	var trace = {};
+	trace.fields = {};
+	trace.recordName = this.state.recordName;
+	trace.recordType = "Trace";
+	trace.fields.type = this.state.type;
+	trace.fields.title = this.state.title;
+	trace.fields.note = this.state.note;
+	this.ck.saveRecord(trace, function (re) {
+	    console.log(re);
+	});
+    }
+
+    cancel = this.cancel.bind(this);
+    cancel() {
+	this.setState({editMode: false});
+    }
+
+
+    noteChange = this.noteChange.bind(this);
+    noteChange(e) {
+	console.log(e);
+	this.setState({
+	    note: e.target.value
+	});
+    }
+
+    titleChange = this.titleChange.bind(this);    
+    titleChange(e) {
+	this.setState({
+	    title: e.target.value
+	});
+    }
+
+
     loadTrace = this.loadTrace.bind(this);
     
     loadTrace(trace) {
@@ -71,8 +108,9 @@ class TraceSidebar extends Component {
 		averageSpeed: formatSpeed(data.averageSpeed.value),
 		duration: formatDuration(data.duration.value),
 		startDate: formatDate(new Date(data.startDate.value)),
-		note: data.note.value ? data.note : '',
-		elevation: data.elevation.value
+		note: data.note.value ? data.note.value : '',
+		elevation: data.elevation.value,
+		type: data.type.value
 	    };
 	    _this.setState(states);
 	});	

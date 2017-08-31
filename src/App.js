@@ -385,11 +385,11 @@ class App extends Component {
 
 	      <Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
 	      
-	      <CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSucess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved}/>
+	      <CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSucess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad} onStarRemoved={this.handleStarRecordRemoved}/>
 
 		{
 		    this.state.showStarSidebar && (
-			<StarSidebar star={this.state.selectedStar} ck={this._ck} onStarSaved={this.handleStarSaved} />
+			<StarSidebar star={this.state.selectedStar} ck={this._ck} onStarSaved={this.handleStarSaved} onStarRecordCreated={this.handleStarRecordCreated}/>
 		    )
 	      }	      
 		{

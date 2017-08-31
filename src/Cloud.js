@@ -132,7 +132,7 @@ class CKComponent extends Component {
     demoSaveRecords(
 	databaseScope,recordName,recordChangeTag,recordType,zoneName,
 	forRecordName,forRecordChangeTag,publicPermission,ownerRecordName,
-	participants,parentRecordName,fields,createShortGUID
+	participants,parentRecordName,fields,createShortGUID, callback
     ) {
 	var _this = this;
 	var container = CloudKit.getDefaultContainer();
@@ -224,9 +224,7 @@ class CKComponent extends Component {
 		    throw response.errors[0];
 
 		} else {
-		    if (typeof _this.props.onStarRecordCreated === 'function') {
-			_this.props.onStarRecordCreated(record);
-		    }
+		    callback(record);
 		}
 	    });
     }
@@ -349,7 +347,7 @@ class CKComponent extends Component {
     }
 
     
-    saveRecord(re) {
+    saveRecord(re, callback) {
 
 	var databaseScope = "PRIVATE";
 	var recordName = re.recordName;
@@ -374,10 +372,11 @@ class CKComponent extends Component {
 	    CloudKit.DatabaseScope[databaseScope]
 	);
 
+	
 	function doSave(recordChangeTag) {
 	    _this.demoSaveRecords(databaseScope,recordName,recordChangeTag,recordType,zoneName,
 				  forRecordName,forRecordChangeTag,publicPermission,ownerRecordName,
-				  participants,parentRecordName,fields,createShortGUID);
+				  participants,parentRecordName,fields,createShortGUID, callback);
 	}
 
 	if (recordName) {

@@ -219,8 +219,12 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 	star.fields.type = this.state.type;
 	star.fields.url = this.state.url;
 	
-	console.log(this.ck.saveRecord(star));
+	this.ck.saveRecord(star, function(record) {
+	    if (typeof this.props.onStarRecordCreated === 'function') {
+		this.props.onStarRecordCreated(record);
+	    }
 
+	});
 	this.setState({editMode: false});
     }
 
