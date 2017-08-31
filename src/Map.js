@@ -81,7 +81,7 @@ export const Map = withGoogleMap(props => (
 	  },
 	  styles: GrayScaleStyle,
 	  zoomControl: false,
-	  clickableIcons: false,
+	  clickableIcons: true,
 	  fullscreenControl: false,
 	  minZoom: 5,
 	  streetViewControlOptions: {

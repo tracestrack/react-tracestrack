@@ -50,6 +50,11 @@ class TraceSidebar extends Component {
 	};
     }
 
+    enterEditMode = this.enterEditMode.bind(this);
+    enterEditMode() {
+	this.setState({editMode: true});
+    }
+    
     loadTrace = this.loadTrace.bind(this);
     
     loadTrace(trace) {
