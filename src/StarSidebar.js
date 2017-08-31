@@ -91,7 +91,7 @@ class StarSidebar extends Component {
 
 	let _this = this;
 	
-	this.ck.loadRecord(star.recordName, function(re) {	    
+	this.ck.loadRecord(star.recordName, null, function(re) {	    
 	    
     	    var states = {
 		title: re.fields.title.value,

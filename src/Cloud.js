@@ -310,12 +310,12 @@ class CKComponent extends Component {
 	    .then(handleResponse);
     }
 
-    shareWithUI(share) {
+    shareWithUI(trace) {
 
-	var databaseScope = "SHARED";
-	var recordName = share.recordName;
+	var databaseScope = trace.share ? "SHARED" : "PRIVATE";
+	var recordName = trace.recordName;
 	var createShortGUID = false;
-	var ownerRecordName = share.created.userRecordName;
+	var ownerRecordName = trace.created.userRecordName;
 	var shareTitle = "XXX";
 	var supportedAccess = ["PUBLIC", 'PRIVATE'];
 	var supportedPermissions = ["READ_ONLY"];
