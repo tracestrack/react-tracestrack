@@ -5,7 +5,8 @@ import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
 import PinImg from './img/pin.png';
 //import RetroStyle from './mapstyles/retro.json';
-import GrayScaleStyle from './mapstyles/grayscale.json';
+//import GrayScaleStyle from './mapstyles/grayscale.json';
+import AppleStyle from './mapstyles/apple.json';
 
 const google = window.google;
 
@@ -79,12 +80,12 @@ export const Map = withGoogleMap(props => (
               style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
               position: google.maps.ControlPosition.TOP_LEFT
 	  },
-	  styles: GrayScaleStyle,
+	  styles: AppleStyle,
 	  zoomControl: false,
 	  clickableIcons: true,
 	  fullscreenControl: false,
 	  minZoom: 5,
-	  maxZoom: 19,
+	  maxZoom: 17,
 	  streetViewControlOptions: {
               position: google.maps.ControlPosition.BOTTOM_CENTER
 	  }
