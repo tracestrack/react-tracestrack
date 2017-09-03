@@ -89,8 +89,6 @@ class StarSidebar extends Component {
 
 	let _this = this;
 
-	console.log(star.recordName);
-	
 	this.ck.loadRecord(star.recordName, null, function(re) {	    
 	    
     	    var state = {
@@ -140,6 +138,7 @@ class StarSidebar extends Component {
 	var request = {
 	    placeId: id
 	};
+	console.log(id);
 
 	let _this = this;
 	let MAP = '__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED';
@@ -192,12 +191,13 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
     cancel() {
 	this.setState({editMode: false});
     }
+    
     remove() {
-
 	var rn = this.props.star.recordName;
-	console.log(rn);
-	
-	this.ck.removeRecord(rn);
+	let _this = this;
+	this.ck.removeRecord(rn, function(e){
+	    _this.props.onStarRemoved(e)
+	});
     }
     
     save() {
@@ -222,8 +222,6 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 	star.fields.note = this.newNote;
 	star.fields.type = this.state.type >= 0 ? this.state.type : 0;
 	star.fields.url = this.newURL;
-
-	console.log(star);
 	
 	this.ck.saveRecord(star, function(record) {
 

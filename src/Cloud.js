@@ -370,7 +370,7 @@ class CKComponent extends Component {
 
 
     demoDeleteRecord(
-	databaseScope,recordName,zoneName,ownerRecordName
+	databaseScope,recordName,zoneName,ownerRecordName, callback
     ) {
 	var _this = this;
 	var container = CloudKit.getDefaultContainer();
@@ -399,6 +399,8 @@ class CKComponent extends Component {
 		    var deletedRecord = response.records[0];
 
 		    // Render the deleted record.
+
+		    callback(deletedRecord);
 
 		}
 	    });
@@ -640,12 +642,12 @@ class CKComponent extends Component {
 	    });
     }
     
-    removeRecord(rn) {
+    removeRecord(rn, callback) {
 	var databaseScope = "PRIVATE";
 	var recordName = rn;
 	var ownerRecordName = null;//re.zoneID.ownerRecordName;
 	this.demoDeleteRecord(
-	    databaseScope,recordName,zoneName,ownerRecordName
+	    databaseScope,recordName,zoneName,ownerRecordName, callback
 	);
     }
 
