@@ -115,7 +115,7 @@ export const Map = withGoogleMap(props => (
 	      icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
 	      break;
 	  case MarkerType.new:
-	      icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
+	      //icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
 	      break;
 	  }
 	  

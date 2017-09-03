@@ -15,7 +15,7 @@ export class MarkerType {
     static get red() { return 0; }
     static get green() { return 1; }
     
-    static get new() { return -1; }
+    static get newStar() { return -1; }
     static get searchHit() { return -2; }
     static get wiki() { return -3; }
     static get googlePlace() { return -4; }
@@ -364,11 +364,9 @@ class App extends Component {
 
     handleStarRecordCreated(e) {
 
-	console.log(e);
-	var markers = this.state.markers.filter(it => it.type != MarkerType.new);
+	var markers = this.state.markers.filter(it => it.type != MarkerType.new && it.recordName != e.recordName);
 	var fields = e.fields;
-
-	var star = createNewStar(Coord(fields.location.value.latitude, fields.location.value.longitude), fields.type.value, e.recordName);
+	var star = createNewStar(Coord(fields.location.value.latitude, fields.location.value.longitude), parseInt(fields.type.value), e.recordName);
 	
 	markers.push(star);
 	
