@@ -7,6 +7,10 @@ import {Map, OverlayManager, LoadedAreaManager} from './Map.js';
 
 const google = window.google;
 
+var fnSet = google.maps.InfoWindow.prototype.set;
+google.maps.InfoWindow.prototype.set = function () {
+};
+
 export class MarkerType {
     static get red() { return 0; }
     static get green() { return 1; }
@@ -365,11 +369,13 @@ class App extends Component {
     }
 
     handleStarRecordCreated(e) {
-	
+
+	console.log(e);
 	var markers = this.state.markers.filter(it => it.type != MarkerType.new);
 	var fields = e.fields;
 
-	let star = createNewStar({lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value);
+	var star = createNewStar(Coord(fields.location.value.latitude, fields.location.value.longitude), fields.type.value, e.recordName);
+	
 	markers.push(star);
 	
 	this.setState({

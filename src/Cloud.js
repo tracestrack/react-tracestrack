@@ -399,7 +399,7 @@ class CKComponent extends Component {
 		    var deletedRecord = response.records[0];
 
 		    // Render the deleted record.
-		    return _this.props.onStarRemoved(deletedRecord);
+
 		}
 	    });
     }

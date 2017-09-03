@@ -93,12 +93,12 @@ class StarSidebar extends Component {
 	
 	this.ck.loadRecord(star.recordName, null, function(re) {	    
 	    
-    	    var states = {
-		title: re.fields.title.value,
+    	    var state = {
+		title: re.fields.title.value ? re.fields.title.value : 'non',
 		note: re.fields.note.value,
 		url: re.fields.url.value
 	    };
-	    _this.setState(states);
+	    _this.setState(state);
 	});
 
     }
@@ -203,29 +203,42 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
     save() {
 
 	var star = {};
+	let _this = this;
 	star.fields = {};
-	if (this.type == MarkerType.new) {
-	    star.recordName = this.props.star.recordName;
-	}
+
+	star.recordName = this.props.star.recordName ? this.props.star.recordName :  '';
+
 
 	star.fields.location = {latitude: this.state.coordinate.lat, longitude: this.state.coordinate.lng};
-	star.recordType = "Star";	
-	star.fields.title = this.state.title;
-	star.fields.note = this.state.note;
+	star.recordType = "Star";
 
-	if (this.state.type < 0) {
-	    this.state.type = 0;
+	if (this.newTitle == null) {
+	    this.newTitle = this.state.title;
+	    this.newNote = this.state.note;
+	    this.newURL = this.state.url;
 	}
-	star.fields.type = this.state.type;
-	star.fields.url = this.state.url;
+	
+	star.fields.title = this.newTitle;
+	star.fields.note = this.newNote;
+	star.fields.type = this.state.type >= 0 ? this.state.type : 0;
+	star.fields.url = this.newURL;
+
+	console.log(star);
 	
 	this.ck.saveRecord(star, function(record) {
-	    if (typeof this.props.onStarRecordCreated === 'function') {
-		this.props.onStarRecordCreated(record);
+
+	    _this.setState({
+		title: _this.newTitle,
+		url: _this.newURL,
+		note: _this.newNote,
+		editMode: false
+	    });
+	    
+	    if (typeof _this.props.onStarRecordCreated === 'function') {
+		_this.props.onStarRecordCreated(record);
 	    }
 
 	});
-	this.setState({editMode: false});
     }
 
     componentWillReceiveProps(props) {
@@ -234,20 +247,13 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
     }
 
     titleChange(e) {
-	this.setState({
-	    title: e.target.value
-	});
+	this.newTitle = e.target.value;
     }
     urlChange(e) {
-	this.setState({
-	    url: e.target.value
-	});
+	this.newURL = e.target.value;
     }
     noteChange(e) {
-	console.log(e);
-	this.setState({
-	    note: e.target.value
-	});
+	this.newNote = e.target.value;
     }
     
     render() {
