@@ -58,9 +58,13 @@ class TraceSidebar extends Component {
 	this.setState({editMode: true});
     }
 
-    remove = this.save.bind(this);
+    remove = this.remove.bind(this);
     remove() {
-	console.log('remove');
+	var rn = this.trace.recordName;
+	let _this = this;
+	this.ck.removeRecord(rn, function(e){
+	    _this.props.onRemoved(e);
+	});
     }
     
     save = this.save.bind(this);
@@ -143,7 +147,7 @@ class TraceSidebar extends Component {
 		  (
 		      <div>
 			<button onClick={this.remove}>Delete</button>
-			<button onClick={this.cancel}>Cancel</button> 
+			<button onClick={this.cancel}>Cancel</button>
 			<button onClick={this.save}>Save</button>
 		      </div>
 		  )

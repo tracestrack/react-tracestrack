@@ -143,6 +143,11 @@ class App extends Component {
 	});
     }
 
+    handleTraceRemoved = this.handleTraceRemoved.bind(this);
+    handleTraceRemoved(re) {
+	console.log(re);
+    }
+    
     handleTracesLoad(re) {
 
 	var traces = this.state.traces;
@@ -392,7 +397,7 @@ class App extends Component {
 	      }	      
 		{
 		    this.state.showTraceSidebar && (
-			<TraceSidebar trace={this.state.selectedTrace} ck={this._ck} />
+			    <TraceSidebar trace={this.state.selectedTrace} ck={this._ck} onRemoved={this.handleTraceRemoved}/>
 		    )
 	      }	      
 
