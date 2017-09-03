@@ -156,7 +156,7 @@ class App extends Component {
 
 	    let isDetail = re[it].fields.detail != undefined;
 	    if (this.overlayManager.shouldRedraw(re[it].recordName, isDetail)) {
-		let pts = re[it].fields.detail == undefined ? re[it].fields.coarse.value : re[it].fields.detail.value;
+		let pts = re[it].fields.detail == undefined ? re[it].fields.medium.value : re[it].fields.detail.value;
 
 		let trace = createTrace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share);
 
