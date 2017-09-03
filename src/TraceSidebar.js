@@ -28,6 +28,7 @@ class TraceSidebar extends Component {
 	    if (this.lastTraceRN == data.recordName) {
 		return {};
 	    }
+	    this.lastTraceRN = data.recordName;	    
 
 	    this.loadTrace(data);
 	    
@@ -57,6 +58,11 @@ class TraceSidebar extends Component {
 	this.setState({editMode: true});
     }
 
+    remove = this.save.bind(this);
+    remove() {
+	console.log('remove');
+    }
+    
     save = this.save.bind(this);
     save() {
 	var trace = {};
@@ -102,13 +108,12 @@ class TraceSidebar extends Component {
     loadTrace(trace) {
 
 	let _this = this;
-	
+
 	this.ck.loadRecord(trace.recordName, trace.share, function(re) {
 	    let data = re.fields;
 
 	    _this.trace = re;
-
-	    _this.lastTraceRN = re.recordName;
+	    
 	    var states = {
 		title: data.title.value,
 		distance: formatDistance(data.distance.value),

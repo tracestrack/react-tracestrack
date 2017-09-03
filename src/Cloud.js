@@ -313,9 +313,16 @@ class CKComponent extends Component {
     shareWithUI(trace) {
 
 	var databaseScope = trace.share ? "SHARED" : "PRIVATE";
+	let share = trace.share;
+	var ownerRecordName = trace.created.userRecordName;
+	
+	if (share && ownerRecordName == window.userIdentity.userRecordName) {
+	    databaseScope = "PRIVATE";
+	}
+	
 	var recordName = trace.recordName;
 	var createShortGUID = false;
-	var ownerRecordName = trace.created.userRecordName;
+
 	var shareTitle = "XXX";
 	var supportedAccess = ["PUBLIC", 'PRIVATE'];
 	var supportedPermissions = ["READ_ONLY"];
@@ -677,6 +684,10 @@ class CKComponent extends Component {
 	var databaseScope = share ? "SHARED" : "PRIVATE";
 	var ownerRecordName = share ? share.zoneID.ownerRecordName : null;
 
+	if (share && ownerRecordName == window.userIdentity.userRecordName) {
+	    databaseScope = "PRIVATE";
+	}
+	
 	this.demoFetchRecord(
 	    databaseScope,recordName,zoneName,ownerRecordName, callback
 	);
@@ -754,10 +765,11 @@ class CKComponent extends Component {
 
     getUserNameByRecordName(userRecordName) {
 
-	console.log(userRecordName);
-	console.log(discoveredUserIdentities);
-	let userRecord = discoveredUserIdentities[userRecordName];
+	if (userRecordName == window.userIdentity.userRecordName) {
+	    return "Me";
+	}
 
+	let userRecord = discoveredUserIdentities[userRecordName];
 	return userRecord ? userRecord.givenName + " " + userRecord.familyName : userRecordName;
     }
 
