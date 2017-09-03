@@ -224,7 +224,7 @@ class CKComponent extends Component {
 		    throw response.errors[0];
 
 		} else {
-		    callback(record);
+		    callback(response._results[0]);
 		}
 	    });
     }
@@ -675,9 +675,6 @@ class CKComponent extends Component {
 	var databaseScope = share ? "SHARED" : "PRIVATE";
 	var ownerRecordName = share ? share.zoneID.ownerRecordName : null;
 
-	console.log(databaseScope);
-	console.log(ownerRecordName);
-	
 	this.demoFetchRecord(
 	    databaseScope,recordName,zoneName,ownerRecordName, callback
 	);

@@ -67,7 +67,6 @@ class App extends Component {
     handleStarsLoad = this.handleStarsLoad.bind(this);
     handleTracesLoad = this.handleTracesLoad.bind(this);    
     handleAddStar = this.handleAddStar.bind(this);
-    handleStarSaved = this.handleStarSaved.bind(this);
     handleStarRecordCreated = this.handleStarRecordCreated.bind(this);
     handleStarRecordRemoved = this.handleStarRecordRemoved.bind(this);    
     handleLoginSucess = this.handleLoginSucess.bind(this);
@@ -363,11 +362,6 @@ class App extends Component {
 	});
     }
 
-    handleStarSaved() {
-	/*	var markers = this.state.markers.filter(x => x.type != MarkerType.new);
-		this.setState({markers: markers});*/
-    }
-
     handleStarRecordCreated(e) {
 
 	console.log(e);
@@ -395,12 +389,12 @@ class App extends Component {
 
 		{
 		    this.state.showStarSidebar && (
-			<StarSidebar star={this.state.selectedStar} ck={this._ck} onStarSaved={this.handleStarSaved} onStarRecordCreated={this.handleStarRecordCreated}/>
+			<StarSidebar star={this.state.selectedStar} ck={this._ck} onStarRecordCreated={this.handleStarRecordCreated}/>
 		    )
 	      }	      
 		{
 		    this.state.showTraceSidebar && (
-			<TraceSidebar trace={this.state.selectedTrace} ck={this._ck} onStarSaved={this.handleStarSaved} />
+			<TraceSidebar trace={this.state.selectedTrace} ck={this._ck} />
 		    )
 	      }	      
 

@@ -48,7 +48,6 @@ class StarSidebar extends Component {
 		this.loadAddress(data.coord);
 	    }
 
-	    console.log('xxx');
 	    switch (props.star.type) {
 	    case MarkerType.googlePlace:
 		this.loadGooglePlace(data.data);
@@ -60,7 +59,6 @@ class StarSidebar extends Component {
 
 		break;
 	    default:
-		console.log('here');
 		this.loadStar(data);
 		
 	    }
@@ -90,13 +88,15 @@ class StarSidebar extends Component {
     loadStar(star) {
 
 	let _this = this;
+
+	console.log(star.recordName);
 	
 	this.ck.loadRecord(star.recordName, null, function(re) {	    
 	    
     	    var state = {
 		title: re.fields.title.value ? re.fields.title.value : 'non',
 		note: re.fields.note.value,
-		url: re.fields.url.value
+		url: re.fields.url ? re.fields.url.value : ''
 	    };
 	    _this.setState(state);
 	});
@@ -260,8 +260,8 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
 	return (
 		<div className='sidebar-right'>
 		<div className='star-type'>
-		<a onClick={this.setRedStar}><img src={RedStarImg} className='starSet' /></a>
-		<a onClick={this.setGreenStar}><img src={GreenStarImg} className='starSet' /></a>
+		<a onClick={this.setRedStar} className={this.state.type==0?"selected":""}><img src={RedStarImg} className='starSet' /></a>
+		<a onClick={this.setGreenStar} className={this.state.type==1?"selected":""}><img src={GreenStarImg} className='starSet' /></a>
 	    </div>
 	      <div className='controls'>
 		{ !this.state.editMode ?
