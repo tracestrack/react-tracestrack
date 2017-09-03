@@ -108,15 +108,15 @@ class App extends Component {
 
 	
 	let z = window.map.getZoom();
-	console.log(z);
 	var loadDetail = z > 12;
 
 	if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
+	    console.log(loadDetail);
+	    console.log('detal');
 	    this._ck.loadTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, function() {
-		console.log('finish');
 		_this.setState({isLoadingTraces: false});
+		_this.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
 	    });
-	    this.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
 	}
 	else {
 	    console.log('loaded');
@@ -152,18 +152,10 @@ class App extends Component {
 
 	var traces = this.state.traces;
 
-	let z = window.map.getZoom();
-	var lod = 1;
-	if (z > 11) {
-	    lod = 2;
-	}
-	else {
-	    lod = 1;
-	}
-
 	for (var it in re) {
 
-	    if (this.overlayManager.shouldRedraw(re[it].recordName, lod)) {
+	    let isDetail = re[it].fields.detail != undefined;
+	    if (this.overlayManager.shouldRedraw(re[it].recordName, isDetail)) {
 		let pts = re[it].fields.detail == undefined ? re[it].fields.coarse.value : re[it].fields.detail.value;
 
 		let trace = createTrace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share);
@@ -175,7 +167,7 @@ class App extends Component {
 		    }
 		}
 		traces.push(trace);
-		this.overlayManager.add(re[it].recordName, lod);
+		this.overlayManager.add(re[it].recordName, isDetail);
 	    }
 	}
 

@@ -44,6 +44,7 @@ export class LoadedAreaManager {
 	for (var it in this.bboxes) {
 	    let bit = this.bboxes[it];
 	    if (maxLat <= bit[0] && maxLng <= bit[1] && minLat >= bit[2] && minLng >= bit[3] && (bit[4] || !bit[4] && !loadDetail)) {
+
 		return true;
 	    }
 	}
@@ -59,15 +60,15 @@ export class OverlayManager {
 	console.log('constructed');
     }
     
-    shouldRedraw(recordName, lod) {
+    shouldRedraw(recordName, isDetail) {
 	if (this.overlayDict[recordName] == null) {
 	    return true;
 	}
-	return lod > this.overlayDict[recordName];
+	return isDetail && !this.overlayDict[recordName];
     }
 
-    add(recordName, lod) {
-	this.overlayDict[recordName] = lod;
+    add(recordName, isDetail) {
+	this.overlayDict[recordName] = isDetail;
     }
     
 }
