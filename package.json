@@ -7,6 +7,7 @@
     "react-dom": "^15.6.1",
     "react-google-maps": "^7.0.0",
     "react-markdown-area": "^0.3.8",
+    "react-router": "^4.2.0",
     "react-scripts": "1.0.10",
     "react-simple-dropdown": "^3.0.0"
   },
