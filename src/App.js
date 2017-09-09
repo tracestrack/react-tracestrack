@@ -11,10 +11,19 @@ var fnSet = google.maps.InfoWindow.prototype.set;
 google.maps.InfoWindow.prototype.set = function () {
 };
 
+window.checkLogin = function() {
+
+    if (!window.userIdentity) {
+	alert("no");
+	return false
+    }
+    return true;
+
+}
+
 export class MarkerType {
     static get red() { return 0; }
     static get green() { return 1; }
-    
     static get newStar() { return -1; }
     static get searchHit() { return -2; }
     static get wiki() { return -3; }

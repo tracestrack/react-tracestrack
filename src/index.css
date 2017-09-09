@@ -15,7 +15,7 @@ body {
 
 .searchBar {
     font-size: 16px;
-    width: 310px;
+    width: 370px;
     border: none;
     border-color: transparent;
     background-image: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D);
@@ -30,8 +30,8 @@ body {
 
 .shadow {
     position: absolute;
-    left: calc((100% - 300px)/2);
-    width:320px;
+    left: calc((100% - 380px)/2);
+    width:385px;
     height:35px;
     top:10px;
     z-index: 100;

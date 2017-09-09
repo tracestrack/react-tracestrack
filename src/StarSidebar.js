@@ -102,11 +102,18 @@ class StarSidebar extends Component {
     }
     
     setGreenStar() {
+	if (!window.checkLogin())
+	    return;
+	    
 	this.state.type = MarkerType.green;
 	this.save();
+
     }
 
     setRedStar() {
+	if (!window.checkLogin())
+	    return;
+
 	this.state.type = MarkerType.red;
 	this.save();
     }
@@ -147,23 +154,21 @@ class StarSidebar extends Component {
 
 	function createNoteFromGooglePlace(place) {
 
-	    var photo = place.photos;
+	    var photos = place.photos;
 	    var md = '';
-	    if (photo && photo.length > 0) {
-
-		photo = photo[0];
-		let $ = window.$;
+	    let $ = window.$;
+	    var count = 3;
+	    console.log(place);
+	    for (var it in photos) {
+		var photo = photos[it];
 		var el = $(photo.html_attributions[0]);
-		window.el = el;
 
-		md = '![]('+photo.getUrl({maxWidth:300})+`)
-
-Photo credit: [`+el.text()+`](`+el.prop('href')+`)
-
-`;
+		md += `![Photo credit: [`+el.text()+`]](`+photo.getUrl({maxWidth:300})+`)`;
+		if (count -- == 0)
+		    break;
 		
-	    }	    
-	    return md + `[View on Google Maps](`+place.url+`)`;
+	    }
+	    return `[View on Google Maps](`+place.url+`)` + md;
     
 	}
 
@@ -185,6 +190,9 @@ Photo credit: [`+el.text()+`](`+el.prop('href')+`)
     }
     
     enterEditMode() {
+	if (!window.checkLogin())
+	    return;
+
 	this.setState({editMode: true});
     }
 

@@ -86,7 +86,7 @@ export const Map = withGoogleMap(props => (
 	  clickableIcons: true,
 	  fullscreenControl: false,
 	  minZoom: 5,
-	  maxZoom: 17,
+	  maxZoom: 18,
 	  streetViewControlOptions: {
               position: google.maps.ControlPosition.BOTTOM_CENTER
 	  }
