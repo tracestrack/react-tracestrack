@@ -42,7 +42,7 @@ class TraceSidebar extends Component {
 		startDate: '',
 		note: '',
 		elevation: '',
-		sharedBy: (data.share ? this.ck.getUserNameByRecordName(data.share.zoneID.ownerRecordName) : 'non')
+		sharedBy: (data.share ? "Shared by " + this.ck.getUserNameByRecordName(data.share.zoneID.ownerRecordName) : 'Share')
 
 	    };
 
@@ -106,8 +106,9 @@ class TraceSidebar extends Component {
 
     share = this.share.bind(this);
     share(){
-	console.log(this.trace);
-	this.ck.shareWithUI(this.trace);
+	this.ck.shareWithUI(this.trace, function(response){
+	    
+	});
     }    
 
     loadTrace = this.loadTrace.bind(this);    
@@ -141,33 +142,33 @@ class TraceSidebar extends Component {
 
     render() {
 	return (
-		<div className='sidebar-right'>
-
-	      <div className='controls'>
-		{ !this.state.editMode ?
-		    (<button onClick={this.enterEditMode}>Edit</button>):
-		  (
-		      <div>
-			<button onClick={this.remove}>Delete</button>
-			<button onClick={this.cancel}>Cancel</button>
-			<button onClick={this.save}>Save</button>
-		      </div>
-		  )
-			}
-	      </div>
+	    <div className='sidebar-right'>
+	      { this.state.sharedBy && (
+	    	  <div className='star-type'>
+		    <button onClick={this.share}>{this.state.sharedBy}</button>
+		  </div>
+	      )}
+		  
+		  <div className='controls'>
+		    { !this.state.editMode ?
+			(<button onClick={this.enterEditMode}>Edit</button>):
+		      (
+			  <div>
+			    <button onClick={this.remove}>Delete</button>
+			    <button onClick={this.cancel}>Cancel</button>
+			    <button onClick={this.save}>Save</button>
+			  </div>
+		      )
+		    }
+		</div>
 		<h1 className='name'>
 		{ !this.state.editMode ?
 		  this.state.title :
 		  (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
 		}
-	    </h1>
+		</h1>
 		<table className='infoBox'>
 		<tbody>
-		{ this.state.sharedBy && (
-		    <tr>
-			<td className='td-trace'>Shared By</td><td><button onClick={this.share}>{this.state.sharedBy}</button></td>
-		    </tr>
-		)}
 
 		<tr>
 		<td className='td-trace'>Date</td><td>{this.state.startDate}</td>
@@ -187,14 +188,14 @@ class TraceSidebar extends Component {
 		<td className='td-trace'>Duration</td><td>{this.state.duration}</td>
 		</tr>
 
-	    </tbody>
-	    </table>
+		</tbody>
+		</table>
 		<LiveMarkedArea editMode={this.state.editMode} label="Notes" defaultValue={this.state.note}  value={this.state.note} onChange={this.noteChange}/>
 
-	    </div>
-	);
+		</div>
+	      );
+	}
+
     }
 
-}
-
-export default TraceSidebar;
+    export default TraceSidebar;

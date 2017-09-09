@@ -310,7 +310,7 @@ class CKComponent extends Component {
 	    .then(handleResponse);
     }
 
-    shareWithUI(trace) {
+    shareWithUI(trace, callback) {
 
 	var databaseScope = trace.share ? "SHARED" : "PRIVATE";
 	let share = trace.share;
@@ -329,14 +329,14 @@ class CKComponent extends Component {
 
 	this.demoShareWithUI(
 	    databaseScope,recordName,zoneName,ownerRecordName,
-	    shareTitle,supportedAccess,supportedPermissions
+	    shareTitle,supportedAccess,supportedPermissions,callback
 	) ;
 	
     }
     
     demoShareWithUI(
 	databaseScope,recordName,zoneName,ownerRecordName,
-	shareTitle,supportedAccess,supportedPermissions
+	shareTitle,supportedAccess,supportedPermissions,callback
     ) {
 	var container = CloudKit.getDefaultContainer();
 	var database = container.getDatabaseWithDatabaseScope(
@@ -369,7 +369,7 @@ class CKComponent extends Component {
 		throw response.errors[0];
 
 	    } else {
-
+		callback(response)
 //		return renderShareResponse(response);
 	    }
 	});
