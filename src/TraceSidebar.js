@@ -16,7 +16,6 @@ class TraceSidebar extends Component {
 	state.editMode = false;
 	
 	this.state = state;
-	this.lastTraceRN = '';
 	this.trace = null;
     }
 
@@ -30,6 +29,7 @@ class TraceSidebar extends Component {
 	    }
 	    this.lastTraceRN = data.recordName;	    
 
+	    console.log('xxx');
 	    this.loadTrace(data);
 	    
 	    return {
@@ -70,6 +70,7 @@ class TraceSidebar extends Component {
     save = this.save.bind(this);
     save() {
 	var trace = {};
+	var _this = this;
 	trace.fields = {};
 	trace.recordName = this.state.recordName;
 	trace.recordType = "Trace";
@@ -78,6 +79,7 @@ class TraceSidebar extends Component {
 	trace.fields.note = this.state.note;
 	this.ck.saveRecord(trace, function (re) {
 	    console.log(re);
+	    _this.setState({editMode: false});	    
 	});
     }
 
