@@ -129,7 +129,9 @@ class TraceSidebar extends Component {
 		startDate: formatDate(new Date(data.startDate.value)),
 		note: data.note.value ? data.note.value : '',
 		elevation: data.elevation.value,
-		type: data.type.value
+		type: data.type.value,
+		linkingId: data.linkingId.value
+		
 	    };
 	    _this.setState(states);
 	});	
@@ -166,6 +168,8 @@ class TraceSidebar extends Component {
 		  this.state.title :
 		  (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
 		}
+
+	    { this.state.linkingId }
 		</h1>
 		<table className='infoBox'>
 		<tbody>

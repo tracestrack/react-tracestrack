@@ -14,13 +14,13 @@ body {
 }
 
 .searchBar {
-    font-size: 16px;
+    font-size: 18px;
     width: 370px;
     border: none;
     border-color: transparent;
     background-image: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D);
     outline: none;
-    padding: 5px 5px 10px 15px;
+    padding: 5px 5px 5px 15px;
 
 }
 

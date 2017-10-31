@@ -66,6 +66,24 @@
         ]
     },
     {
+        "featureType": "landscape.natural",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "saturation": "0"
+            },
+            {
+                "color": "#ebf3e2"
+            },
+            {
+                "lightness": "-16"
+            },
+            {
+                "gamma": "2.93"
+            }
+        ]
+    },
+    {
         "featureType": "landscape.natural.landcover",
         "elementType": "all",
         "stylers": [
@@ -80,6 +98,18 @@
         "stylers": [
             {
                 "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape.natural.terrain",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "visibility": "off"
+            },
+            {
+                "gamma": "1.51"
             }
         ]
     },

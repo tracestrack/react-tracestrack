@@ -7,8 +7,10 @@ import PinImg from './img/pin.png';
 //import RetroStyle from './mapstyles/retro.json';
 //import GrayScaleStyle from './mapstyles/grayscale.json';
 import AppleStyle from './mapstyles/apple.json';
+import exports from './transformation.js';
 
 const google = window.google;
+const transform = exports;
 
 function getColor(type) {
     switch (type) {
@@ -141,9 +143,10 @@ export const Map = withGoogleMap(props => (
 
 	for (var i = 0; i < trace.detail.length; i += 2) {
 
+	    let gcj = transform.wgs2gcj(trace.detail[i]/1000000,trace.detail[i + 1]/1000000);
 	    coords.push({
-		lat: trace.detail[i]/1000000,
-		lng: trace.detail[i + 1]/1000000
+		lat: gcj.lat,
+		lng: gcj.lng
 	    });
 	}
 	

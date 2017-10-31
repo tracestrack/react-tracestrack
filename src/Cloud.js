@@ -15,7 +15,7 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: '5348da234d4dd6a9195d4a9ca9502acf0adb5edfb52c35d29fb4b3ff54eef17b',
+	    apiToken: '4a46ece10e44e88830bfec1075da36968a40b256b5149860f450c89c6f2eae93',
 
 	    persist: true, // Sets a cookie.
 
