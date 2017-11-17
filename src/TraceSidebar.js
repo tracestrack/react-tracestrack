@@ -120,13 +120,17 @@ class TraceSidebar extends Component {
 	    let data = re.fields;
 
 	    _this.trace = re;
+
+	    let date = new Date(data.startDate.value + data.secondsFromGMT.value * 1000);
+
+	    console.log(data);
 	    
 	    var states = {
 		title: data.title.value,
 		distance: formatDistance(data.distance.value),
 		averageSpeed: formatSpeed(data.averageSpeed.value),
 		duration: formatDuration(data.duration.value),
-		startDate: formatDate(new Date(data.startDate.value)),
+		startDate: formatDate(date),
 		note: data.note.value ? data.note.value : '',
 		elevation: data.elevation.value,
 		type: data.type.value,
