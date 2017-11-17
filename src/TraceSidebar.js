@@ -169,7 +169,6 @@ class TraceSidebar extends Component {
 		  (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
 		}
 
-	    { this.state.linkingId }
 		</h1>
 		<table className='infoBox'>
 		<tbody>

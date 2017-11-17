@@ -42,13 +42,14 @@ function createNewStar(coord, type, recordName, address, data) {
 }
 
 /** Trace Model */
-function createTrace(detail, type, recordName, zoneRecordName, share) {
+function createTrace(detail, type, recordName, zoneRecordName, share, linkingId) {
     return {
 	detail: detail,
 	recordName: recordName,
 	zoneRecordName: zoneRecordName,
 	share: share,
-	type: type
+	type: type,
+	linkingId: linkingId
     };
 }
 
@@ -167,7 +168,7 @@ class App extends Component {
 	    if (this.overlayManager.shouldRedraw(re[it].recordName, isDetail)) {
 		let pts = re[it].fields.detail == undefined ? re[it].fields.medium.value : re[it].fields.detail.value;
 
-		let trace = createTrace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share);
+		let trace = createTrace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
 
 		for (var it2 in traces) {
 		    if (traces[it2].recordName == re[it].recordName) {
@@ -203,7 +204,7 @@ class App extends Component {
 	});
 
     }
-    
+      
     handleMapLeftClick(e) {
 
 	if (e.placeId) {
@@ -346,7 +347,7 @@ class App extends Component {
 	    if (this.state.selectedTrace && traces[it].recordName == this.state.selectedTrace.recordName) {
 		traces[it].selected = false;
 	    }
-	    if (traces[it].recordName == trace.recordName) {
+	    if (traces[it].recordName == trace.recordName || trace.linkingId != 0 && traces[it].linkingId == trace.linkingId) {
 		traces[it].selected = true;
 	    }
 	}

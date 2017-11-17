@@ -711,7 +711,7 @@ class CKComponent extends Component {
 	var databaseSharedScope = "SHARED";
 	var ownerRecordName = null;
 	var recordType = "Trace";
-	var desiredKeys = [loadDetail?"detail":"medium", 'type'];
+	var desiredKeys = [loadDetail?"detail":"medium", 'type', 'linkingId'];
 	var sortByField = null;
 	var ascending = null;
 	var latitude = null;
