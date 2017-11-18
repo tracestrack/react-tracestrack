@@ -230,8 +230,15 @@ class App extends Component {
 	    if (this.state.showTraceSidebar) {
 		state.showTraceSidebar =  false;
 	    }
-	    if (this.state.selectedTrace)
+	    if (this.state.selectedTrace) {
 		this.state.selectedTrace.selected = false;
+		let traces = this.state.traces;
+		for (var it in traces) {
+		    if (traces[it].linkingId == -this.state.selectedTrace.linkingId) {
+			traces[it].selected = false;
+		    }
+		}
+	    }
 	    
 	    state.selectedTrace = null;
 
@@ -342,18 +349,21 @@ class App extends Component {
 	console.log(trace);
 
 	let traces = this.state.traces;
-	
+	var selectedTrace = null;
 	for (var it in traces) {
 	    if (this.state.selectedTrace && traces[it].recordName == this.state.selectedTrace.recordName) {
 		traces[it].selected = false;
 	    }
-	    if (traces[it].recordName == trace.recordName || trace.linkingId != 0 && traces[it].linkingId == trace.linkingId) {
+	    if (traces[it].recordName == trace.recordName || trace.linkingId != 0 && (traces[it].linkingId == trace.linkingId || traces[it].linkingId == -trace.linkingId)) {
 		traces[it].selected = true;
+		if (traces[it].linkingId > 0) {
+		    selectedTrace = traces[it];
+		}
 	    }
 	}
 		
 	this.setState({
-	    selectedTrace: trace,
+	    selectedTrace: selectedTrace,
 	    showTraceSidebar: true,
 	    showStarSidebar: false
 	    
