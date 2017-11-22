@@ -230,8 +230,10 @@ class App extends Component {
 	    if (this.state.showTraceSidebar) {
 		state.showTraceSidebar =  false;
 	    }
+
+	    console.log(this.state.selectedTrace);
 	    if (this.state.selectedTrace) {
-		this.state.selectedTrace.selected = false;
+
 		let traces = this.state.traces;
 		for (var it in traces) {
 		    if (traces[it].linkingId == -this.state.selectedTrace.linkingId) {
@@ -239,9 +241,9 @@ class App extends Component {
 		    }
 		}
 	    }
-	    
-	    state.selectedTrace = null;
 
+	    state.selectedTrace = null;
+	    
 	    if (Object.keys(state).length > 0) {
 		this.setState(state);
 	    }
@@ -356,11 +358,12 @@ class App extends Component {
 	    }
 	    if (traces[it].recordName == trace.recordName || trace.linkingId != 0 && (traces[it].linkingId == trace.linkingId || traces[it].linkingId == -trace.linkingId)) {
 		traces[it].selected = true;
-		if (traces[it].linkingId > 0) {
+		if (traces[it].linkingId >= 0) {
 		    selectedTrace = traces[it];
 		}
 	    }
 	}
+	console.log(selectedTrace);
 		
 	this.setState({
 	    selectedTrace: selectedTrace,
