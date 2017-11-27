@@ -159,7 +159,7 @@ class App extends Component {
 
 	    var fields = re[it].fields;
 	    
-	    var marker = Star({lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, re[it].recordName);
+	    var marker = Star(Coord(fields.location.value.latitude, fields.location.value.longitude), fields.type.value, re[it].recordName);
 
 	    markers.push(marker);
 	}
@@ -169,14 +169,16 @@ class App extends Component {
 	});
 
     }
-      
+
+    /** Left click on the map */
     handleMapLeftClick(e) {
 
 	if (e.placeId) {
-	    var newStar = Star({lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace, '', '', e.placeId);
+	    /** Clicked Google Map POI */
+	    var poi = Star({lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace, '', '', e.placeId);
 
 	    this.setState({
-		selectedStar: newStar,
+		selectedStar: poi,
 		showStarSidebar: true,
 		showContextMenu: false,
 		showTraceSidebar: false
@@ -186,28 +188,21 @@ class App extends Component {
 	else {
 
 	    var state = {};
-	    if (this.state.showStarSidebar) {
-		state.showStarSidebar = false;
-	    }
-	    if (this.state.showContextMenu) {
-		state.showContextMenu = false;
-	    }
-	    if (this.state.showTraceSidebar) {
-		state.showTraceSidebar =  false;
-	    }
+	    state.showStarSidebar = false;
+	    state.showContextMenu = false;
+	    state.showTraceSidebar =  false;
 
-	    console.log(this.state.selectedTrace);
 	    if (this.state.selectedTrace) {
-
+		/** Unselect traces */
 		let traces = this.state.traces;
 		for (var it in traces) {
 		    if (traces[it].linkingId == -this.state.selectedTrace.linkingId) {
 			traces[it].selected = false;
 		    }
 		}
+		state.selectedTrace = null;
 	    }
 
-	    state.selectedTrace = null;
 	    
 	    if (Object.keys(state).length > 0) {
 		this.setState(state);
@@ -216,6 +211,7 @@ class App extends Component {
 	
     }
 
+    /** Right click context menu */
     handleMapRightClick(e) {
 	this.setState({
 	    showContextMenu: true,
@@ -224,15 +220,15 @@ class App extends Component {
 	});	
     }
 
+    /** Map is loaded */
     handleMapMounted(map) {
 
 	window.map = map;
 
 	var input = document.getElementById('searchTextField');
+	input.setAttribute('spellcheck', 'false');
+	
 	var searchBox = new google.maps.places.SearchBox(input);
-	var options = {
-	    types: ['(regions)']
-	};
 
 	var _this = this;
 
@@ -276,7 +272,6 @@ class App extends Component {
 
 	    var bounds = new google.maps.LatLngBounds();
 
-
 	    places.forEach(function(place) {
 		if (!place.geometry) {
 		    console.log("Returned place contains no geometry");
@@ -287,7 +282,6 @@ class App extends Component {
 		var marker = Star(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place.formatted_address, place.name);
 
 		markers.push(marker);
-
 		
 		if (place.geometry.viewport) {
 		    // Only geocodes have viewport.
@@ -304,12 +298,11 @@ class App extends Component {
 		});
 	    }
 
-
 	    map.fitBounds(bounds);
 	});
     }
 
-    
+    /** When star is added by click on the context menu*/
     handleAddStar() {
 
 	let loc = this.state.rightClickEvent.latLng;
@@ -328,10 +321,12 @@ class App extends Component {
 	
     }
 
+    /** Click on the trace */
     handleTraceClick(trace) {
-	console.log(trace);
 
 	let traces = this.state.traces;
+
+	// Use on trace to represent merged traces
 	var selectedTrace = null;
 	for (var it in traces) {
 	    if (this.state.selectedTrace && traces[it].recordName == this.state.selectedTrace.recordName) {
@@ -344,17 +339,17 @@ class App extends Component {
 		}
 	    }
 	}
-	console.log(selectedTrace);
-		
+	
 	this.setState({
 	    selectedTrace: selectedTrace,
 	    showTraceSidebar: true,
-	    showStarSidebar: false
-	    
+	    showStarSidebar: false	    
 	});
-
     }
     
+    /** Marker is clicked
+     *  Marker could be either stars or pois or search results
+     */
     handleMarkerClick(targetMarker) {
 	this.setState({
 	    selectedStar: targetMarker,
@@ -363,6 +358,7 @@ class App extends Component {
 	});
     }
 
+    /** Star is created */
     handleStarRecordCreated(e) {
 
 	var markers = this.state.markers.filter(it => it.type != MarkerType.new && it.recordName != e.recordName);
@@ -377,25 +373,26 @@ class App extends Component {
 	});
 	
     }
-    
+
+    /** Render the app */
     render() {
 	return (
-	    <div className='full-height'>
+		<div className='full-height'>
 
-	      <Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
-	      
-	      <CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSucess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad}/>
+		<Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
+		
+		<CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSucess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad}/>
 
-		{
-		    this.state.showStarSidebar && (
+	    {
+		this.state.showStarSidebar && (
 			<StarSidebar star={this.state.selectedStar} ck={this._ck} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved}/>
-		    )
-	      }	      
-		{
-		    this.state.showTraceSidebar && (
-			    <TraceSidebar trace={this.state.selectedTrace} ck={this._ck} />
-		    )
-	      }	      
+		)
+	    }	      
+	    {
+		this.state.showTraceSidebar && (
+			<TraceSidebar trace={this.state.selectedTrace} ck={this._ck} />
+		)
+	    }	      
 
 		<div className={this.state.isPanoramaView ? 'hidden' : 'shadow' }>
 		<input type="text" id="searchTextField" className='searchBar' />
