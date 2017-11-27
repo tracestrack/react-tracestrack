@@ -15,7 +15,8 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: '4a46ece10e44e88830bfec1075da36968a40b256b5149860f450c89c6f2eae93',//'9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc',
+	    //apiToken: '4a46ece10e44e88830bfec1075da36968a40b256b5149860f450c89c6f2eae93'
+	    apiToken: '9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc',
 
 	    persist: true, // Sets a cookie.
 
@@ -29,8 +30,8 @@ CloudKit.configure({
 		theme: 'white-with-outline'
 	    }
 	},
-	//environment: 'production'
-	environment: 'development'
+	environment: 'production'
+	//environment: 'development'
     }]
 });
 
@@ -98,14 +99,34 @@ class CKComponent extends Component {
 		// userIdentity is the signed-in user or null.
 		if(userIdentity) {
 		    gotoAuthenticatedState(userIdentity);
+		    _this.demoSaveRecordZones(zoneName);
+		    
 		} else {
 		    gotoUnauthenticatedState();
 		}
 	    });
     }
 
+    demoSaveRecordZones(zoneName) {
+	var container = CloudKit.getDefaultContainer();
+	var privateDB = container.privateCloudDatabase;
 
+	return privateDB.saveRecordZones({zoneName: zoneName}).then(function(response) {
+	    if(response.hasErrors) {
 
+		console.log("error creating zone");
+		// Handle any errors.
+		throw response.errors[0];
+
+	    } else {
+
+		// response.zones is an array of zone objects.
+		console.log(response);
+		//return renderZone(response.zones[0]);
+
+	    }
+	});
+    }
     
     demoSaveRecords(
 	databaseScope,recordName,recordChangeTag,recordType,zoneName,
@@ -207,6 +228,29 @@ class CKComponent extends Component {
 	    });
     }
 
+    demoDeleteRecordZones(zoneName) {
+
+	var container = CloudKit.getDefaultContainer();
+	var database = container.getDatabaseWithDatabaseScope(
+	    CloudKit.DatabaseScope['PRIVATE']
+	);
+	
+	return database.deleteRecordZones({zoneName: zoneName}).then(function(response) {
+	    if(response.hasErrors) {
+
+		console.log(response);
+		
+		// Handle any errors.
+		throw response.errors[0];
+
+	    } else {
+
+		// response.zones is an array of zone objects.
+		console.log(response);
+
+	    }
+	});
+    }
     
     demoPerformQuery(
 	databaseScope,zoneName,ownerRecordName,recordType,
@@ -348,7 +392,7 @@ class CKComponent extends Component {
 
 	    } else {
 		callback(response)
-//		return renderShareResponse(response);
+		//		return renderShareResponse(response);
 	    }
 	});
     }
@@ -652,11 +696,19 @@ class CKComponent extends Component {
 	super(props);
 	this.demoSetUpAuth();
     }
+
+
+    click = this.onClick.bind(this);
+    onClick() {
+	this.demoDeleteRecordZones("Traces");
+    }
     
     render() {
 	return (<div>
+
 		<div id='apple-sign-in-button'></div>
-		<div id='apple-sign-out-button'></div>
+		<div id='apple-sign-out-button'>		<button onClick={this.click} style={{position: 'absolute', left:0, top: 0}}>RESET</button></div>
+
 		</div>);
     }
     
