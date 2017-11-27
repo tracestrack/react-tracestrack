@@ -39,27 +39,6 @@ function displayUserName(name) {
     window.$("#apple-sign-in-button").text(name);    
 }
 
-function demoSaveRecordZones(zoneName) {
-    var container = CloudKit.getDefaultContainer();
-    var privateDB = container.privateCloudDatabase;
-
-    return privateDB.saveRecordZones({zoneName: zoneName}).then(function(response) {
-	if(response.hasErrors) {
-
-	    console.log("error creating zone");
-	    // Handle any errors.
-	    throw response.errors[0];
-
-	} else {
-
-	    // response.zones is an array of zone objects.
-	    console.log(response);
-	    //return renderZone(response.zones[0]);
-
-	}
-    });
-}
-
 var sharedZoneIDs = [];
 var discoveredUserIdentities = {};
 
@@ -119,7 +98,6 @@ class CKComponent extends Component {
 		// userIdentity is the signed-in user or null.
 		if(userIdentity) {
 		    gotoAuthenticatedState(userIdentity);
-		    demoSaveRecordZones(zoneName);
 		} else {
 		    gotoUnauthenticatedState();
 		}
@@ -466,52 +444,6 @@ class CKComponent extends Component {
 	
 
     }
-
-    demoFetchDatabaseChanges(databaseScope,syncToken) {
-	var container = CloudKit.getDefaultContainer();
-	var database = container.getDatabaseWithDatabaseScope(
-	    CloudKit.DatabaseScope[databaseScope]
-	);
-
-	let _this = this;
-	
-	var opts = {
-
-	    // Limit to 5 results.
-	    resultsLimit: 5
-	};
-
-	if(syncToken) {
-	    opts.syncToken = syncToken;
-	}
-
-	return database.fetchDatabaseChanges(opts).then(function(response) {
-
-	    if(response.hasErrors) {
-
-		// Handle the errors.
-		throw response.errors[0];
-
-	    } else {
-
-		var newSyncToken = response.syncToken;
-		var zones = response.zones;
-		var moreComing = response.moreComing;
-
-		for (var it in zones) {
-
-		    let zoneId = zones[it].zoneID;
-		    //_this.demoFetchRecordZoneChanges("SHARED", zoneId.zoneName, zoneId.ownerRecordName, '');
-
-		    sharedZoneIDs.push(zoneId);
-		}
-
-		_this.refreshTrace();
-
-	    }
-	});
-    }
-
 
     demoDiscoverAllUserIdentities() {
 	var container = CloudKit.getDefaultContainer();
