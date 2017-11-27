@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Coord, MarkerType} from './App.js';
+import {Coord, MarkerType} from './Models.js';
 import {LiveMarkedArea} from './LiveMarkedArea.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
@@ -123,6 +123,9 @@ class StarSidebar extends Component {
 	var geocoder = new google.maps.Geocoder;
 	let _this = this;
 	geocoder.geocode({'location': latlng}, function(results, status) {
+
+	    console.log(results);
+
 	    if (status === 'OK') {
 		if (results[0]) {
 
@@ -135,7 +138,7 @@ class StarSidebar extends Component {
 		    window.alert('No results found');
 		}
 	    } else {
-		window.alert('Geocoder failed due to: ' + status);
+		//window.alert('Geocoder failed due to: ' + status);
 	    }
 	});
 

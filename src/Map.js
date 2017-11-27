@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
-import { MarkerType } from './App.js';
+import { MarkerType } from './Models.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
 import PinImg from './img/pin.png';
-//import RetroStyle from './mapstyles/retro.json';
-//import GrayScaleStyle from './mapstyles/grayscale.json';
 import AppleStyle from './mapstyles/apple.json';
 import exports from './transformation.js';
 

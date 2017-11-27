@@ -4,10 +4,11 @@ import CKComponent from './Cloud.js';
 import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
 import {Map, OverlayManager, LoadedAreaManager} from './Map.js';
+import {createNewStar, createTrace, MarkerType, Coord} from './Models.js';
 
 const google = window.google;
 
-var fnSet = google.maps.InfoWindow.prototype.set;
+/** Disable default infoWindow */
 google.maps.InfoWindow.prototype.set = function () {
 };
 
@@ -19,42 +20,6 @@ window.checkLogin = function() {
     }
     return true;
 
-}
-
-export class MarkerType {
-    static get red() { return 0; }
-    static get green() { return 1; }
-    static get newStar() { return -1; }
-    static get searchHit() { return -2; }
-    static get wiki() { return -3; }
-    static get googlePlace() { return -4; }
-}
-
-/** Star model is used to render detailsidebar */
-function createNewStar(coord, type, recordName, address, data) {
-    return {
-	coord: coord,
-	type: type,
-	recordName: recordName,
-	address: address,
-	data: data
-    };
-}
-
-/** Trace Model */
-function createTrace(detail, type, recordName, zoneRecordName, share, linkingId) {
-    return {
-	detail: detail,
-	recordName: recordName,
-	zoneRecordName: zoneRecordName,
-	share: share,
-	type: type,
-	linkingId: linkingId
-    };
-}
-
-export function Coord(lat, lng) {
-    return {lat: lat, lng: lng};
 }
 
 class App extends Component {
@@ -80,7 +45,8 @@ class App extends Component {
     handleStarRecordCreated = this.handleStarRecordCreated.bind(this);
     handleStarRecordRemoved = this.handleStarRecordRemoved.bind(this);    
     handleLoginSucess = this.handleLoginSucess.bind(this);
-    
+
+    /** OnLoad */
     componentDidMount() {
 	this.setState({
 	    isLoadingTraces: false
@@ -91,7 +57,8 @@ class App extends Component {
 	this.loadedAreaManager = new LoadedAreaManager();
 	
     }
-    
+
+    /** Map Moved */
     handleMapBoundsChanged() {
 
 	let _this = this;
@@ -134,12 +101,12 @@ class App extends Component {
 	}
     }
 
+    /** Login ok */
     handleLoginSucess() {
 	if (window.userIdentity) {
 	    this._ck.loadStars();
 	    this.handleMapBoundsChanged();
 
-	    this._ck.fetchDBChanges();
 	    //this._ck.demoDiscoverUserIdentityWithUserRecordName('_7022d50b9d797f3775d0930d397ceaf4');
 	    this._ck.demoDiscoverAllUserIdentities();
 	}	
@@ -295,7 +262,7 @@ class App extends Component {
 	    if (places.length == 0) {
 		return;
 	    }
-	    else if (places.length == 1 && places[0].types.indexOf('locality') > -1) {
+	    else if (places.length == 1 && places[0].types.indexOf('political') > -1) {
 		isLocality = true;
 
 	    }
