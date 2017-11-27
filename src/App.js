@@ -417,7 +417,7 @@ class App extends Component {
 	      }	      
 
 		<div className={this.state.isPanoramaView ? 'hidden' : 'shadow' }>
-		<input type="text" id="searchTextField" className='searchBar' />
+		<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="searchTextField" className='searchBar' />
 		</div>
 		
 		<Map
