@@ -4,7 +4,7 @@ import CKComponent from './Cloud.js';
 import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
 import {Map, OverlayManager, LoadedAreaManager} from './Map.js';
-import {createNewStar, createTrace, MarkerType, Coord} from './Models.js';
+import {Star, Trace, MarkerType, Coord} from './Models.js';
 
 const google = window.google;
 
@@ -111,7 +111,8 @@ class App extends Component {
 	    this._ck.demoDiscoverAllUserIdentities();
 	}	
     }
-    
+
+    /** Star record is removed */
     handleStarRecordRemoved(re) {
 	var markers = this.state.markers.filter(e => e != this.state.selectedStar);
 	this.setState({
@@ -120,11 +121,7 @@ class App extends Component {
 	});
     }
 
-    handleTraceRemoved = this.handleTraceRemoved.bind(this);
-    handleTraceRemoved(re) {
-	console.log(re);
-    }
-    
+    /** Traces are loaded */
     handleTracesLoad(re) {
 
 	var traces = this.state.traces;
@@ -135,7 +132,7 @@ class App extends Component {
 	    if (this.overlayManager.shouldRedraw(re[it].recordName, isDetail)) {
 		let pts = re[it].fields.detail == undefined ? re[it].fields.medium.value : re[it].fields.detail.value;
 
-		let trace = createTrace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
+		let trace = Trace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
 
 		for (var it2 in traces) {
 		    if (traces[it2].recordName == re[it].recordName) {
@@ -152,7 +149,8 @@ class App extends Component {
 	    traces: traces
 	});
     }
-    
+
+    /** Stars are loaded */
     handleStarsLoad(re) {
 
 	var markers = this.state.markers;
@@ -161,7 +159,7 @@ class App extends Component {
 
 	    var fields = re[it].fields;
 	    
-	    var marker = createNewStar({lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, re[it].recordName);
+	    var marker = Star({lat: fields.location.value.latitude, lng: fields.location.value.longitude}, fields.type.value, re[it].recordName);
 
 	    markers.push(marker);
 	}
@@ -175,7 +173,7 @@ class App extends Component {
     handleMapLeftClick(e) {
 
 	if (e.placeId) {
-	    var newStar = createNewStar({lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace, '', '', e.placeId);
+	    var newStar = Star({lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace, '', '', e.placeId);
 
 	    this.setState({
 		selectedStar: newStar,
@@ -286,7 +284,7 @@ class App extends Component {
 
 		console.log(place);
 		
-		var marker = createNewStar(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place.formatted_address, place.name);
+		var marker = Star(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place.formatted_address, place.name);
 
 		markers.push(marker);
 
@@ -317,7 +315,7 @@ class App extends Component {
 	let loc = this.state.rightClickEvent.latLng;
 	var markers = this.state.markers;
 
-	var newStar = createNewStar(Coord(loc.lat(), loc.lng()), MarkerType.new);
+	var newStar = Star(Coord(loc.lat(), loc.lng()), MarkerType.new);
 
 	markers.push(newStar);
 
@@ -369,7 +367,7 @@ class App extends Component {
 
 	var markers = this.state.markers.filter(it => it.type != MarkerType.new && it.recordName != e.recordName);
 	var fields = e.fields;
-	var star = createNewStar(Coord(fields.location.value.latitude, fields.location.value.longitude), parseInt(fields.type.value), e.recordName);
+	var star = Star(Coord(fields.location.value.latitude, fields.location.value.longitude), parseInt(fields.type.value), e.recordName);
 	
 	markers.push(star);
 	
@@ -395,7 +393,7 @@ class App extends Component {
 	      }	      
 		{
 		    this.state.showTraceSidebar && (
-			    <TraceSidebar trace={this.state.selectedTrace} ck={this._ck} onRemoved={this.handleTraceRemoved}/>
+			    <TraceSidebar trace={this.state.selectedTrace} ck={this._ck} />
 		    )
 	      }	      
 

@@ -8,7 +8,7 @@ export class MarkerType {
 }
 
 /** Star model is used to render detailsidebar */
-export function createNewStar(coord, type, recordName, address, data) {
+export function Star(coord, type, recordName, address, data) {
     return {
 	coord: coord,
 	type: type,
@@ -19,7 +19,7 @@ export function createNewStar(coord, type, recordName, address, data) {
 }
 
 /** Trace Model */
-export function createTrace(detail, type, recordName, zoneRecordName, share, linkingId) {
+export function Trace(detail, type, recordName, zoneRecordName, share, linkingId) {
     return {
 	detail: detail,
 	recordName: recordName,

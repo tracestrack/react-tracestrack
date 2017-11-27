@@ -15,7 +15,7 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: '9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc',
+	    apiToken: '4a46ece10e44e88830bfec1075da36968a40b256b5149860f450c89c6f2eae93',//'9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc',
 
 	    persist: true, // Sets a cookie.
 
@@ -29,8 +29,8 @@ CloudKit.configure({
 		theme: 'white-with-outline'
 	    }
 	},
-	environment: 'production'
-	//environment: 'development'
+	//environment: 'production'
+	environment: 'development'
     }]
 });
 
@@ -557,64 +557,6 @@ class CKComponent extends Component {
 	    });
     }
 
-    fetchDBChanges() {
-	this.demoFetchDatabaseChanges("SHARED", "");
-    }
-
-    demoFetchRecordZoneChanges(
-	databaseScope,zoneName,ownerRecordName,syncToken
-    ) {
-	var container = CloudKit.getDefaultContainer();
-	var database = container.getDatabaseWithDatabaseScope(
-	    CloudKit.DatabaseScope[databaseScope]
-	);
-
-	var zoneID = { zoneName: zoneName };
-
-	if(ownerRecordName) {
-	    zoneID.ownerRecordName = ownerRecordName;
-	}
-
-	var args = {
-	    zoneID: zoneID,
-
-	    // Limit to 5 results.
-	    resultsLimit: 5
-	};
-
-	if(syncToken) {
-	    args.syncToken = syncToken;
-	}
-
-	return database.fetchRecordZoneChanges(args).then(function(response) {
-	    if(response.hasErrors) {
-
-		console.log('----------- errro');
-
-		// Handle the errors.
-		throw response.errors[0];
-
-	    } else {
-		var zonesResponse = response.zones[0];
-		var newSyncToken = zonesResponse.syncToken;
-		var records = zonesResponse.records;
-		var moreComing = zonesResponse.moreComing;
-
-		console.log('-------');
-		console.log(records);
-/*		return renderRecords(
-		    databaseScope,
-		    zoneName,
-		    ownerRecordName,
-		    records,
-		    newSyncToken,
-		    moreComing
-		);*/
-	    }
-	});
-    }
-
-    
     demoFetchRecord(
 	databaseScope,recordName,zoneName,ownerRecordName, callback
     ) {
