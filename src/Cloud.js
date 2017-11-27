@@ -15,7 +15,7 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: '4a46ece10e44e88830bfec1075da36968a40b256b5149860f450c89c6f2eae93',
+	    apiToken: '9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc',
 
 	    persist: true, // Sets a cookie.
 
@@ -29,8 +29,8 @@ CloudKit.configure({
 		theme: 'white-with-outline'
 	    }
 	},
-
-	environment: 'development'
+	environment: 'production'
+	//environment: 'development'
     }]
 });
 

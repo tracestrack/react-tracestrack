@@ -285,45 +285,61 @@ class App extends Component {
 	    }
 
 	});
+
 	
 	searchBox.addListener('places_changed', function() {
 	    var places = searchBox.getPlaces();
-
+	    var markers = [];
+	    var isLocality = false;
+	    
 	    if (places.length == 0) {
 		return;
 	    }
+	    else if (places.length == 1 && places[0].types.indexOf('locality') > -1) {
+		isLocality = true;
 
-	    var markers = [];
-	    for (var it in _this.state.markers) {
-		if (_this.state.markers[it].type != MarkerType.searchHit) {
-		    markers.push(_this.state.markers[it]);
+	    }
+	    else {
+
+		for (var it in _this.state.markers) {
+		    if (_this.state.markers[it].type != MarkerType.searchHit) {
+			markers.push(_this.state.markers[it]);
+		    }
 		}
+
 	    }
 
 	    var bounds = new google.maps.LatLngBounds();
+
+
 	    places.forEach(function(place) {
 		if (!place.geometry) {
 		    console.log("Returned place contains no geometry");
-		    return;
-		}		
+		}
 
 		console.log(place);
 		
 		var marker = createNewStar(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place.formatted_address, place.name);
 
 		markers.push(marker);
-		
-		_this.setState({
-		    markers: markers
-		});
 
+		
 		if (place.geometry.viewport) {
 		    // Only geocodes have viewport.
 		    bounds.union(place.geometry.viewport);
 		} else {
 		    bounds.extend(place.geometry.location);
 		}
+		
 	    });
+
+	    if (isLocality == false) {
+		_this.setState({
+		    markers: markers
+		});
+	    }
+
+
 	    map.fitBounds(bounds);
 	});
     }
@@ -417,7 +433,7 @@ class App extends Component {
 	      }	      
 
 		<div className={this.state.isPanoramaView ? 'hidden' : 'shadow' }>
-		<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="searchTextField" className='searchBar' />
+		<input type="text" id="searchTextField" className='searchBar' />
 		</div>
 		
 		<Map
