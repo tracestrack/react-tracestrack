@@ -27,5 +27,29 @@ CloudKit.configure({
     }]
 });
 
+function gotoAuthenticatedState(userIdentity) {
+    var name = userIdentity.nameComponents;
+    if(name) {
+	$(".cover-heading").text('Welcome, ' + name.givenName);    
+    } else {
+	displayUserName('Welcome, user ' + userIdentity.userRecordName);
+    }
+    $("#comment").text("You can visit your map now.");
+}
 
-CloudKit.getDefaultContainer().setUpAuth()
+function gotoUnauthenticatedState(error) {
+
+    if(error && error.ckErrorCode === 'AUTH_PERSIST_ERROR') {
+	window.showDialogForPersistError();
+    }
+
+    $("#comment").text("All your data is saved in Apple's iCloud. You are the only one who have access to your data.");
+}
+
+CloudKit.getDefaultContainer().setUpAuth().then(function(userIdentity) {
+    if(userIdentity) {
+	gotoAuthenticatedState(userIdentity);
+    } else {
+	gotoUnauthenticatedState();
+    }
+});

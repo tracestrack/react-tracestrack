@@ -142,7 +142,7 @@ class TraceSidebar extends Component {
 	    <div className='sidebar-right'>
 	      { this.state.sharedBy && (
 	    	  <div className='star-type'>
-		    <button onClick={this.share}>{this.state.sharedBy}</button>
+
 		  </div>
 	      )}
 		  
