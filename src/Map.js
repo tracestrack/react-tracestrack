@@ -79,7 +79,7 @@ export const Map = withGoogleMap(props => (
       defaultOptions={{
 	  mapTypeControlOptions: {
               style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-              position: google.maps.ControlPosition.TOP_LEFT
+              position: google.maps.ControlPosition.TOP_RIGHT
 	  },
 	  styles: AppleStyle,
 	  zoomControl: false,
