@@ -76,18 +76,7 @@ class CKComponent extends Component {
 		.then(gotoUnauthenticatedState);
 	}
 	function gotoUnauthenticatedState(error) {
-
-	    if(error && error.ckErrorCode === 'AUTH_PERSIST_ERROR') {
-		window.showDialogForPersistError();
-	    }
-
-	    window.$("#apple-sign-in-button").show();
-	    window.$("#apple-sign-out-button").hide();
-
-	    container
-		.whenUserSignsIn()
-		.then(gotoAuthenticatedState)
-		.catch(gotoUnauthenticatedState);
+	    window.location.replace("/signin");
 	}
 
 	// Check a user is signed in and render the appropriate button.

@@ -43,8 +43,13 @@ function gotoUnauthenticatedState(error) {
 	window.showDialogForPersistError();
     }
 
-    $("#comment").text("All your data is saved in Apple's iCloud. You are the only one who have access to your data.");
+    $("#comment").html("All your data is saved in Apple's iCloud. You are the only one who have access to your data. For more information, visit <a href='https://www.apple.com/icloud/'>iCloud intro page</a>.");
 }
+
+CloudKit.getDefaultContainer()
+    .whenUserSignsIn()
+    .then(gotoAuthenticatedState)
+    .catch(gotoUnauthenticatedState);
 
 CloudKit.getDefaultContainer().setUpAuth().then(function(userIdentity) {
     if(userIdentity) {
