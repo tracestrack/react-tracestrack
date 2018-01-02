@@ -1,5 +1,15 @@
 "use strict";
 
+var IS_DEV = true;
+
+var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
+var environment = "production";
+
+if (IS_DEV) {
+    apiToken = "33d1b5c507d11c053a816e42186299c750e44eef6e17f7dc09de03c95995e2bd";
+    environment = "development";
+}
+
 
 CloudKit.configure({
     locale: 'en-us',
@@ -11,7 +21,7 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: '9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc',
+	    apiToken: apiToken,
 	    persist: true, // Sets a cookie.
 	    signInButton: {
 		id: 'apple-sign-in-button',
@@ -22,8 +32,7 @@ CloudKit.configure({
 		theme: 'white-with-outline'
 	    }
 	},
-	environment: 'production'
-	//environment: 'development'
+	environment: environment
     }]
 });
 
@@ -32,9 +41,9 @@ function gotoAuthenticatedState(userIdentity) {
     if(name) {
 	$(".cover-heading").text('Welcome, ' + name.givenName);    
     } else {
-	displayUserName('Welcome, user ' + userIdentity.userRecordName);
+	$(".cover-heading").text('Welcome!');
     }
-    $("#comment").text("You can visit your map now.");
+    $("#comment").html("You can visit your map now. <br /><a href='/'>Go to trace map</a>");
 }
 
 function gotoUnauthenticatedState(error) {

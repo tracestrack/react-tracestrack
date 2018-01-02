@@ -42,6 +42,7 @@ class TraceSidebar extends Component {
 		startDate: '',
 		note: '',
 		elevation: '',
+		lastUpdate: '',
 		sharedBy: (data.share ? "Shared by " + this.ck.getUserNameByRecordName(data.share.zoneID.ownerRecordName) : 'Share')
 
 	    };
@@ -108,14 +109,13 @@ class TraceSidebar extends Component {
 	let _this = this;
 
 	this.ck.loadRecord(trace.recordName, trace.share, function(re) {
+
 	    let data = re.fields;
 
 	    _this.trace = re;
 
 	    let date = new Date(data.startDate.value + data.secondsFromGMT.value * 1000);
 
-	    console.log(data);
-	    
 	    var states = {
 		title: data.title.value,
 		distance: formatDistance(data.distance.value),
@@ -125,7 +125,8 @@ class TraceSidebar extends Component {
 		note: data.note.value ? data.note.value : '',
 		elevation: data.elevation.value,
 		type: data.type.value,
-		linkingId: data.linkingId.value
+		linkingId: data.linkingId.value,
+		lastUpdate: new Date(re.modified.timestamp).toLocaleString()
 		
 	    };
 	    _this.setState(states);
@@ -168,7 +169,7 @@ class TraceSidebar extends Component {
 		<tbody>
 
 		<tr>
-		<td className='td-trace'>Date</td><td>{this.state.startDate}</td>
+		<td className='td-trace'>Local Date Time</td><td>{this.state.startDate}</td>
 		</tr>
 
 		<tr>
@@ -183,6 +184,9 @@ class TraceSidebar extends Component {
 		</tr>
 		<tr>
 		<td className='td-trace'>Duration</td><td>{this.state.duration}</td>
+		</tr>
+		<tr>
+		<td className='td-trace'>Last update</td><td>{this.state.lastUpdate}</td>
 		</tr>
 
 		</tbody>

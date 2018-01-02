@@ -5,6 +5,16 @@ const CloudKit = window.CloudKit;
 
 const zoneName = "Traces";
 
+var IS_DEV = true;
+
+var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
+var environment = "production";
+
+if (IS_DEV) {
+    apiToken = "33d1b5c507d11c053a816e42186299c750e44eef6e17f7dc09de03c95995e2bd";
+    environment = "development";
+}
+
 CloudKit.configure({
     locale: 'en-us',
 
@@ -15,26 +25,20 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: '9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc',
-	    //apiToken: '31b5538e42729b4ca53c8e6e5b5fd62f7f2330c0b10403b6e3775d2d68491fe3',
-
+	    apiToken: apiToken,
 	    persist: true, // Sets a cookie.
-
 	    signInButton: {
 		id: 'apple-sign-in-button',
 		theme: 'white-with-outline' // Other options: 'white', 'white-with-outline'.
 	    },
-
 	    signOutButton: {
 		id: 'apple-sign-out-button',
 		theme: 'white-with-outline'
 	    }
 	},
-	environment: 'production'
-	//environment: 'development'
+	environment: environment
     }]
 });
-
 
 function displayUserName(name) {
     window.$("#apple-sign-in-button").text(name);    
@@ -76,7 +80,8 @@ class CKComponent extends Component {
 		.then(gotoUnauthenticatedState);
 	}
 	function gotoUnauthenticatedState(error) {
-	    window.location.replace("/signin");
+	    alert("Please login! You'll be redirected to the login page.");
+	    window.location.replace("/account");
 	}
 
 	// Check a user is signed in and render the appropriate button.
@@ -549,6 +554,7 @@ class CKComponent extends Component {
 
 		} else {
 		    var record = response.records[0];
+		    console.log(record.modified);
 
 		    // Render the fetched record.
 		    callback(record);
