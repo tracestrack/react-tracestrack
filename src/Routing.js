@@ -12,17 +12,9 @@ import Manage from './Manage';
 const Routing = () => (
   <Router>
     <div>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/account">Account</Link></li>
-        <li><Link to="/manage">Manage</Link></li>
-      </ul>
-
-      <hr/>
-
       <Route exact path="/" component={App}/>
       <Route path="/account" component={Account}/>
-      <Route path="/manage" component={Manage}/>
+      <Route path="/activies" component={Manage}/>
     </div>
   </Router>
 )

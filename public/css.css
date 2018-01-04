@@ -7,6 +7,7 @@ a,
 a:focus,
 a:hover {
   color: #fff;
+  text-decoration: none;
 }
 
 /* Custom default button */
@@ -43,11 +44,7 @@ body {
   min-height: 100%;
   box-shadow: inset 0 0 5rem rgba(0,0,0,.5);
 }
-.site-wrapper-inner {
-  display: table-cell;
-  vertical-align: top;
 
-}
 .cover-container {
   margin-right: auto;
   margin-left: auto;
@@ -68,7 +65,8 @@ body {
 }
 
 .masthead-brand {
-  margin-bottom: 0;
+  font-size: 24px;
+  margin: 0px;
 }
 
 .nav-masthead .nav-link {
@@ -132,7 +130,7 @@ body {
 @media (min-width: 40em) {
   /* Pull out the header and footer */
   .masthead {
-    position: fixed;
+
     top: 0;
   }
   .mastfoot {
@@ -155,9 +153,12 @@ body {
 
 @media (min-width: 62em) {
   .masthead,
-  .mastfoot,
   .cover-container {
     width: 42rem;
+    margin: auto;
+  }
+  .mastfoot {
+
   }
 }
 
@@ -169,4 +170,16 @@ body {
 
 .apple-auth-button {
     text-align: left;
+}
+
+div.signinout {
+    width: 42em;
+    margin: auto;
+    padding-top:100px;
+}
+
+
+.signinout img {
+    margin-bottom: 20px;
+    width: 450px;
 }

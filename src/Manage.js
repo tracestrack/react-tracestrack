@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import {SiteHeader, SiteFooter} from './Account.js';
 
 class Manage extends React.Component {
-  render() {
-    return (
-      <button className="square" onClick={() => alert('click')}>
-	    Manage
-      </button>
-    );
-  }
+    render() {
+	return (
+		<div>
+		<SiteHeader selected='activities' />
+
+
+		<SiteFooter />
+		</div>
+	);
+    }
 }
 
 

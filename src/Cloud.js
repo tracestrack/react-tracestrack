@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import "./Cloud.css";
 
 const CloudKit = window.CloudKit;
 
@@ -71,17 +70,18 @@ class CKComponent extends Component {
 		displayUserName('User record name: ' + userIdentity.userRecordName);
 	    }
 
-	    _this.props.onLoginSuccess();
-	    window.$("#apple-sign-in-button").hide();
-	    window.$("#apple-sign-out-button").show();
+	    if (_this.props.onLoginSuccess) {
+		_this.props.onLoginSuccess();
+	    }
+
 	    
 	    container
 		.whenUserSignsOut()
 		.then(gotoUnauthenticatedState);
 	}
 	function gotoUnauthenticatedState(error) {
-	    alert("Please login! You'll be redirected to the login page.");
-	    window.location.replace("/account");
+	    //alert("Please login! You'll be redirected to the login page.");
+	    //window.location.replace("/account");
 	}
 
 	// Check a user is signed in and render the appropriate button.

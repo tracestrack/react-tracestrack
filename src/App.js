@@ -44,7 +44,7 @@ class App extends Component {
     handleAddStar = this.handleAddStar.bind(this);
     handleStarRecordCreated = this.handleStarRecordCreated.bind(this);
     handleStarRecordRemoved = this.handleStarRecordRemoved.bind(this);    
-    handleLoginSucess = this.handleLoginSucess.bind(this);
+    handleLoginSuccess = this.handleLoginSuccess.bind(this);
 
     /** OnLoad */
     componentDidMount() {
@@ -102,7 +102,7 @@ class App extends Component {
     }
 
     /** Login ok */
-    handleLoginSucess() {
+    handleLoginSuccess() {
 	if (window.userIdentity) {
 	    this._ck.loadStars();
 	    this.handleMapBoundsChanged();
@@ -381,7 +381,7 @@ class App extends Component {
 
 		<Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
 		
-		<CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSucess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad}/>
+		<CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSuccess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad}/>
 
 	    {
 		this.state.showStarSidebar && (

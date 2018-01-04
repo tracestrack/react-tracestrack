@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "react": "^15.6.1",
+    "react-bootstrap": "^0.31.5",
     "react-dom": "^15.6.1",
     "react-google-maps": "^7.0.0",
     "react-markdown-area": "^0.3.8",
