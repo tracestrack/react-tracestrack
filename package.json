@@ -11,7 +11,8 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.10",
-    "react-simple-dropdown": "^3.0.0"
+    "react-simple-dropdown": "^3.0.0",
+    "react-table": "^6.7.6"
   },
   "scripts": {
     "start": "react-scripts start",

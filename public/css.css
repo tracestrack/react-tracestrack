@@ -136,7 +136,7 @@ body {
     top: 0;
   }
   .mastfoot {
-    position: fixed;
+
     bottom: 0;
   }
 
@@ -228,4 +228,9 @@ header, h1, td {
     color: #444;
     background: rgba(255,255,255,0.9);
 
+}
+
+.activity-table {
+    width: 90%;
+    margin: auto;
 }

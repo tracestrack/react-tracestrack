@@ -9,12 +9,9 @@ export function formatSpeed(v) {
 }
 
 export function formatDate(date) {
-    var options = {  
-	weekday: "long", year: "numeric", month: "short",  
-	day: "numeric", hour: "2-digit", minute: "2-digit"
-    };  
-    return date.toISOString();
-	//.toLocaleTimeString("en-us", options);
+
+    return date.getUTCFullYear() + "/" + (date.getUTCMonth() + 1) + "/" + date.getUTCDay() + " " + date.getUTCHours() + ":" + date.getUTCMinutes();
+
 }
 export function formatDuration(sec_num) {
     var hours   = Math.floor(sec_num / 3600);

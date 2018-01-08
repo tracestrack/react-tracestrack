@@ -4,7 +4,7 @@ const CloudKit = window.CloudKit;
 
 const zoneName = "Traces";
 
-var IS_DEV = true;
+var IS_DEV = false;
 
 var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
 var environment = "production";
@@ -618,9 +618,9 @@ class CKComponent extends Component {
 	var databaseSharedScope = "SHARED";
 	var ownerRecordName = null;
 	var recordType = "Trace";
-	var desiredKeys = ['type', 'linkingId', 'path'];
-	var sortByField = null;
-	var ascending = null;
+	var desiredKeys = ['type', 'startDate', 'path', 'title','secondsFromGMT'];
+	var sortByField = 'startDate';
+	var ascending = false;
 	var _this = this;
 
 	// private database
