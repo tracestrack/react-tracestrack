@@ -14,7 +14,7 @@ const Routing = () => (
     <div>
       <Route exact path="/" component={App}/>
       <Route path="/account" component={Account}/>
-      <Route path="/activies" component={Manage}/>
+      <Route path="/activities" component={Manage}/>
     </div>
   </Router>
 )

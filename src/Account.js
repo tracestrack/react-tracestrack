@@ -27,9 +27,9 @@ export class SiteHeader extends React.Component {
 
 	    {
 		      (this.state.selected=='activities') && 
-			  (<a className="nav-link active" href="/activies">Activities</a>)
+			  (<a className="nav-link active" href="/activities">Activities</a>)
 			  ||
-			  (<a className="nav-link " href="/activies">Activities</a>)
+			  (<a className="nav-link " href="/activities">Activities</a>)
 		  }
 	    
                 <a className="nav-link" href="http://traces.website/help">Help</a>
@@ -63,7 +63,7 @@ class Account extends React.Component {
     constructor(props) {
 	super(props);
 
-	this.state = {signedIn: false};
+	this.state = {signedIn: -1}; // -1 undecided, 0 false, 1 true
     }
 
 
@@ -71,7 +71,7 @@ class Account extends React.Component {
     handleLoginSuccess() {
 	window.$("#apple-sign-in-button").hide();
 	window.$("#apple-sign-out-button").show();
-	this.setState({signedIn: true});
+	this.setState({signedIn: 1});
     }
 
     render() {
@@ -88,10 +88,12 @@ class Account extends React.Component {
 		<div id='apple-sign-in-button'></div>
 		<div id='apple-sign-out-button'></div>
 
-		{ (this.state.signedIn === false) &&
+		{ (this.state.signedIn === -1) &&
 		    (<p>All your data is saved in Apple's iCloud. You are the only one who have access to your data. For more information, visit <a href='https://www.apple.com//icloud/'>iCloud intro page</a>.</p>)
-		  ||
-		  (<p><button>Go to Map</button></p>)
+
+		}
+		{ (this.state.signedIn === 1) &&
+		  (<p><a href='/'>Go to Map</a></p>)
 		}
 
 	    </div>

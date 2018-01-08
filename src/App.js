@@ -379,6 +379,10 @@ class App extends Component {
 	return (
 		<div className='full-height'>
 
+		<div className='account-div'>
+		<a href='/account'>Account</a>
+	    </div>
+
 		<Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
 		
 		<CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSuccess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad}/>

@@ -249,7 +249,7 @@ class CKComponent extends Component {
     demoPerformQuery(
 	databaseScope,zoneName,ownerRecordName,recordType,
 	desiredKeys,sortByField,ascending,latitude,longitude,
-	filters, continuationMarker, callback, finishCallback
+	filters, continuationMarker, callback, finishCallback, autoLoadMore
     ) {
 
 	var container = CloudKit.getDefaultContainer();
@@ -309,7 +309,7 @@ class CKComponent extends Component {
 		console.log('got ' + records.length + ' records');
 
 		callback(records);
-		if (response.moreComing) {
+		if (response.moreComing && autoLoadMore) {
 		    console.log('auto load more');
 		    database.performQuery(response).then(handleResponse);
 		}
@@ -588,7 +588,7 @@ class CKComponent extends Component {
 	    databaseScope,zoneName,ownerRecordName,recordType,
 	    desiredKeys,sortByField,ascending,latitude,longitude,[], null, function(records) {
 		_this.props.onStarsLoad(records);
-	    });
+	    }, function() {}, true);
 
     }
 
@@ -611,7 +611,26 @@ class CKComponent extends Component {
 	let box = this.lastBox;
 	console.log(box);
 	this.loadTraces(box[0], box[1], box[2], box[3], this.lastLoadDetail, this.lastFinishCallback);
-	
+    }
+
+    loadTracesOrderByDate(callback) {
+	var databaseScope = "PRIVATE";
+	var databaseSharedScope = "SHARED";
+	var ownerRecordName = null;
+	var recordType = "Trace";
+	var desiredKeys = ['type', 'linkingId', 'path'];
+	var sortByField = null;
+	var ascending = null;
+	var _this = this;
+
+	// private database
+	this.demoPerformQuery(
+	    databaseScope,zoneName,ownerRecordName,recordType,
+	    desiredKeys,sortByField,ascending,null,null,[], null, function(records) {
+		callback(records);
+	    }, function() {
+		//finishCallback();
+	    }, false);
     }
     
     loadTraces(maxLat, maxLng, minLat, minLng, loadDetail, finishCallback) {
@@ -653,7 +672,7 @@ class CKComponent extends Component {
 		_this.props.onTracesLoad(records);
 	    }, function() {
 		finishCallback();
-	    });
+	    }, true);
 
 	// shared database
 
@@ -669,7 +688,7 @@ class CKComponent extends Component {
 		    _this.props.onTracesLoad(records);
 		}, function() {
 		    finishCallback();
-		});
+		}, true);
 
 	}
 

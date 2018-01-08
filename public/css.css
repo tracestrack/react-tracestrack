@@ -67,6 +67,8 @@ body {
 .masthead-brand {
   font-size: 24px;
   margin: 0px;
+  color: white;
+
 }
 
 .nav-masthead .nav-link {
@@ -149,6 +151,12 @@ body {
   .cover-container {
     width: 100%; /* Must be percentage or pixels for horizontal alignment */
   }
+
+  .signinout img {
+      margin-bottom: 20px;
+      width: 90%;
+  }
+
 }
 
 @media (min-width: 62em) {
@@ -160,8 +168,21 @@ body {
   .mastfoot {
 
   }
+
+  .signinout img {
+      margin-bottom: 20px;
+      width: 450px;
+  }
+
 }
 
+
+.signinout img {
+    margin-bottom: 20px;
+    width: 90%;
+}
+
+  
 #apple-sign-in-button,
 #apple-sign-out-button {
     margin: auto;
@@ -178,8 +199,33 @@ div.signinout {
     padding-top:100px;
 }
 
+.marked-area-text-container,
+header, h1, td {
+    text-align: left;
+    color: #333;
+}
 
-.signinout img {
-    margin-bottom: 20px;
-    width: 450px;
+.account-div {
+    width: 120px;
+    height: 40px;
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    z-index: 10;
+}
+
+.account-div a:link,
+.account-div a:visited {
+    display: block;
+    padding: 5px;
+    color: #444;
+    background: rgba(255,255,255,0.6);
+}
+
+.account-div a:hover {
+    display: block;
+    padding: 5px;
+    color: #444;
+    background: rgba(255,255,255,0.9);
+
 }

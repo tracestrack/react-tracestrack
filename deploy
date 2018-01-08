@@ -1,4 +1,5 @@
 npm run build
+mv build/index.html build/404.html
 cp -r build/* ../tracesapp2015.github.io
 cd ../tracesapp2015.github.io
 git add .
