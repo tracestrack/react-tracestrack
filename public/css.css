@@ -231,6 +231,14 @@ header, h1, td {
 }
 
 .activity-table {
-    width: 90%;
+    max-width: 100%;
     margin: auto;
+
+}
+.activity-table tr th {
+    text-align: left;
+}
+
+.activity-table tr td {
+    color: white;
 }

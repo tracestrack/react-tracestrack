@@ -4,7 +4,7 @@ const CloudKit = window.CloudKit;
 
 const zoneName = "Traces";
 
-var IS_DEV = false;
+var IS_DEV = true;
 
 var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
 var environment = "production";
@@ -245,7 +245,7 @@ class CKComponent extends Component {
 	    }
 	});
     }
-    
+
     demoPerformQuery(
 	databaseScope,zoneName,ownerRecordName,recordType,
 	desiredKeys,sortByField,ascending,latitude,longitude,
@@ -315,6 +315,7 @@ class CKComponent extends Component {
 		}
 		else {
 		    console.log('end');
+		    _this.continuationMarker = response.continuationMarker;
 		    if (finishCallback) finishCallback();
 		}
 	    }
@@ -612,8 +613,12 @@ class CKComponent extends Component {
 	console.log(box);
 	this.loadTraces(box[0], box[1], box[2], box[3], this.lastLoadDetail, this.lastFinishCallback);
     }
-
-    loadTracesOrderByDate(callback) {
+   
+    loadTracesOrderByDateNext(callback) {
+	this.loadTracesOrderByDate(this.continuationMarker, callback);	
+    }
+    
+    loadTracesOrderByDate(continuationMarker, callback) {
 	var databaseScope = "PRIVATE";
 	var databaseSharedScope = "SHARED";
 	var ownerRecordName = null;
@@ -626,7 +631,7 @@ class CKComponent extends Component {
 	// private database
 	this.demoPerformQuery(
 	    databaseScope,zoneName,ownerRecordName,recordType,
-	    desiredKeys,sortByField,ascending,null,null,[], null, function(records) {
+	    desiredKeys,sortByField,ascending,null,null,[], continuationMarker, function(records) {
 		callback(records);
 	    }, function() {
 		//finishCallback();
@@ -708,6 +713,7 @@ class CKComponent extends Component {
     
     constructor(props){
 	super(props);
+	this.continuationMarker = "";
 	this.demoSetUpAuth();
     }
 
