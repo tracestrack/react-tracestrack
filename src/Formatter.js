@@ -10,7 +10,7 @@ export function formatSpeed(v) {
 
 export function formatDate(date) {
 
-    return date.getUTCFullYear() + "/" + (date.getUTCMonth() + 1) + "/" + date.getUTCDay() + " " + date.getUTCHours() + ":" + date.getUTCMinutes();
+    return date.getUTCFullYear() + "/" + (date.getUTCMonth() + 1) + "/" + (date.getUTCDay() + 1) + " " + date.getUTCHours() + ":" + date.getUTCMinutes();
 
 }
 export function formatDuration(sec_num) {

@@ -71,6 +71,8 @@ class Manage extends React.Component {
 	return (
 		<div>
 
+	    <h1> List latest 100 traces </h1>
+
 		<CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSuccess} />
 		
 		<SiteHeader selected='activities' />
