@@ -4,7 +4,7 @@ const CloudKit = window.CloudKit;
 
 const zoneName = "Traces";
 
-var IS_DEV = true;
+var IS_DEV = false;
 
 var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
 var environment = "production";
@@ -614,11 +614,11 @@ class CKComponent extends Component {
 	this.loadTraces(box[0], box[1], box[2], box[3], this.lastLoadDetail, this.lastFinishCallback);
     }
    
-    loadTracesOrderByDateNext(callback) {
-	this.loadTracesOrderByDate(this.continuationMarker, callback);	
+    loadTracesOrderByDateNext(callback, isLoadAll, doneCallback) {
+	this.loadTracesOrderByDate(this.continuationMarker, callback, isLoadAll, doneCallback);	
     }
     
-    loadTracesOrderByDate(continuationMarker, callback) {
+    loadTracesOrderByDate(continuationMarker, callback, isLoadAll, doneCallback) {
 	var databaseScope = "PRIVATE";
 	var databaseSharedScope = "SHARED";
 	var ownerRecordName = null;
@@ -634,8 +634,9 @@ class CKComponent extends Component {
 	    desiredKeys,sortByField,ascending,null,null,[], continuationMarker, function(records) {
 		callback(records);
 	    }, function() {
-		//finishCallback();
-	    }, false);
+		if (doneCallback)
+		    doneCallback();
+	    }, isLoadAll == true);
     }
     
     loadTraces(maxLat, maxLng, minLat, minLng, loadDetail, finishCallback) {

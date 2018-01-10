@@ -49,17 +49,17 @@ class Manage extends React.Component {
 	    let date = new Date(records[i].fields.startDate.value + records[i].fields.secondsFromGMT.value * 1000);
 
 	    this.traces.push({path: records[i].fields.path.value,
-			 title: records[i].fields.title.value,
-			 date: formatDate(date),
+			      title: records[i].fields.title.value,
+			      date: formatDate(date),
+			      recordName: records[i].recordName
 			});
 	}		
 
-
 	this.setState({traces: this.traces});
+
     }
     
     handleLoginSuccess = this.handleLoginSuccess.bind(this);
-
     handleLoginSuccess() {
 	if (window.userIdentity) {
 
@@ -73,6 +73,51 @@ class Manage extends React.Component {
 	    this._ck.loadTracesOrderByDateNext(this.renderRecords);
     }
 
+    removeDuplis = this.removeDuplis.bind(this);
+    removeDuplis() {
+	var _this = this;
+	this._ck.loadTracesOrderByDateNext(function(records) {
+
+	    document.body.scrollTop = document.body.scrollHeight;
+	    _this.renderRecords(records);
+
+	}, true, function() {
+
+	    var m = {};
+	    var traces = _this.state.traces;
+	    for (var i in traces) {
+		if (m[traces[i].path] == null) {
+		    m[traces[i].path] = [traces[i]];
+		}
+		else {
+		    m[traces[i].path].push(traces[i]);
+		}
+	    }
+
+	    if (window.confirm("You have " + Object.keys(m).length + " unique Traces. Found " + (traces.length - Object.keys(m).length) + " duplicates. Are you sure to remove them?")) {
+
+		var count = 0
+		Object.keys(m).forEach(function(key) {
+
+		    for (var i = 0; i < m[key].length - 1; i++) {
+			count ++;
+			setTimeout(function(){
+			    var k = i;
+			    
+			    _this._ck.removeRecord(m[key][k].recordName, function(p) {
+				console.log("done", p);
+			    });
+			}, 600 * count);
+		    }
+
+
+		})
+
+	    }
+	});
+    }
+
+    
     render() {
 	return (
 		<div>
@@ -84,7 +129,8 @@ class Manage extends React.Component {
 		<Table traces={this.state.traces}/>
 
 		<button onClick={this.loadMore}>Load More</button>
-
+		<button onClick={this.removeDuplis}>Remove Duplicates</button>
+		
 		<SiteFooter />
 		</div>
 	);
