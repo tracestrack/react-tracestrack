@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
+
+    <script src="https://cdn.apple-cloudkit.com/ck/2/cloudkit.js"></script>
+
+
+    <title>Traces - Remember Where You've Been</title>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-105325600-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-105325600-2');
+    </script>
+
+  </head>
+  <body style="width: 100%; height: 100%;">
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places"></script>
+
+    
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+
+    <div id='map' style='width: 100%; height: 700px;'></div>
+    <script>
+      mapboxgl.accessToken = 'pk.eyJ1Ijoic3Ryb25nd2lsbG93IiwiYSI6ImxKa2R1SEkifQ.iZ_vj1lvuvrAcUIl0ZE5XA';
+      var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/light-v9'
+      });
+      map.addControl(new mapboxgl.NavigationControl());
+      
+    </script>
+
+    <!--
+	This HTML file is a template.
+	If you open it directly in the browser, you will see an empty page.
+
+	You can add webfonts, meta tags, or analytics to this file.
+	The build step will place the bundled scripts into the <body> tag.
+
+	To begin the development, run `npm start` or `yarn start`.
+	To create a production bundle, use `npm run build` or `yarn build`.
+      -->
+
+  </body>
+</html>

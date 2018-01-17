@@ -9,18 +9,22 @@ body {
 }
 
 .container {
-    position:absolute; top:0; bottom:0; width:calc(100%);
-    background: red;
+    position:absolute;
+    top:35px;
+    bottom:0px;
+    width:calc(100%);
+    background: white;
 }
 
 .searchBar {
     font-size: 18px;
     width: 370px;
+    height: 30px;
     border: none;
     border-color: transparent;
     background-image: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D);
     outline: none;
-    padding: 5px 5px 5px 15px;
+    padding: 5px 5px 0px 15px;
 
 }
 
@@ -29,14 +33,11 @@ body {
 }
 
 .shadow {
-    position: absolute;
-    left: calc((100% - 380px)/2);
+    display: block;
+    float: left;
     width:385px;
-    height:35px;
-    top:10px;
     z-index: 100;
-    padding: 5px 10px 5px 0px;
-    background: white;
-    -webkit-box-shadow: 1px 1px 1px 1px rgba(100, 100, 100, 0.3);
-    box-shadow: 1px 1px 1px 1px rgba(100, 100, 100, 0.3);
+    padding: 0px 10px 0px 0px;
+
+
 }

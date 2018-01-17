@@ -379,8 +379,16 @@ class App extends Component {
 	return (
 		<div className='full-height'>
 
-		<div className='account-div'>
-		<a href='/account'>Account</a>
+		<div className="header-bar">
+
+	    <div className="account-div">
+	    	<a href='/account'>Account</a>
+		</div>
+		<div className="shadow">
+		<input type="text" id="searchTextField" className='searchBar' />
+		</div>
+		
+
 	    </div>
 
 		<Menu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
@@ -398,10 +406,7 @@ class App extends Component {
 		)
 	    }	      
 
-		<div className={this.state.isPanoramaView ? 'hidden' : 'shadow' }>
-		<input type="text" id="searchTextField" className='searchBar' />
-		</div>
-		
+
 		<Map
 	    markers={this.state.markers}
 	    traces={this.state.traces}
@@ -414,7 +419,7 @@ class App extends Component {
 	    onZoomChanged={this.handleMapBoundsChanged}
 	    
 	    containerElement={
-		    <div style={{ height: `100%` }} className='container' />
+		    <div className='container' />
 	    }
 	    mapElement={
 		    <div style={{ height: `100%` }} />

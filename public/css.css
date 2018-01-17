@@ -207,27 +207,12 @@ header, h1, td {
 
 .account-div {
     width: 120px;
-    height: 40px;
+    height: 35px;
     position: absolute;
-    top: 15px;
-    left: 10px;
+    top: 10px;
+    right: 15px;
     z-index: 10;
-}
-
-.account-div a:link,
-.account-div a:visited {
-    display: block;
-    padding: 5px;
-    color: #444;
-    background: rgba(255,255,255,0.6);
-}
-
-.account-div a:hover {
-    display: block;
-    padding: 5px;
-    color: #444;
-    background: rgba(255,255,255,0.9);
-
+    text-align: right;
 }
 
 .activity-table {
@@ -241,4 +226,12 @@ header, h1, td {
 
 .activity-table tr td {
     color: white;
+}
+
+.header-bar {
+    width: 100%;
+    height: 35px;
+    position: absolute;
+    text-align: left;
+    background: gray;
 }
