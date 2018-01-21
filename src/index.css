@@ -1,14 +1,11 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
 }
 
 #root, .full-height, body, html {
     height: 100%;
 }
 
-.container {
+.mapContainer {
     position:absolute;
     top:35px;
     bottom:0px;

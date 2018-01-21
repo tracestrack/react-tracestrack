@@ -76,7 +76,7 @@ class Account extends React.Component {
 
     render() {
 	return (
-	    <div>
+	    <div className="default">
 
 	      <CKComponent onLoginSuccess={this.handleLoginSuccess} />
 	      <SiteHeader selected='account' />

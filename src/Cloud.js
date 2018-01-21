@@ -4,7 +4,7 @@ const CloudKit = window.CloudKit;
 
 const zoneName = "Traces";
 
-var IS_DEV = false;
+var IS_DEV = true;
 
 var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
 var environment = "production";
@@ -24,7 +24,7 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	    apiToken: apiToken,
+	   x apiToken: apiToken,
 	    persist: true, // Sets a cookie.
 	    signInButton: {
 		id: 'apple-sign-in-button',

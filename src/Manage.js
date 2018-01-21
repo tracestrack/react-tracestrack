@@ -120,7 +120,7 @@ class Manage extends React.Component {
     
     render() {
 	return (
-		<div>
+		<div className='default'>
 
 		<CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSuccess} />
 		
@@ -128,8 +128,10 @@ class Manage extends React.Component {
 
 		<Table traces={this.state.traces}/>
 
+	    <center>
 		<button onClick={this.loadMore}>Load More</button>
 		<button onClick={this.removeDuplis}>Remove Duplicates</button>
+		</center>
 		
 		<SiteFooter />
 		</div>

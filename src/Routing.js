@@ -8,6 +8,7 @@ import {
 import App from './App';
 import Account from './Account';
 import Manage from './Manage';
+import Map2 from './MBMap';
 
 const Routing = () => (
   <Router>
@@ -15,6 +16,7 @@ const Routing = () => (
       <Route exact path="/" component={App}/>
       <Route path="/account" component={Account}/>
       <Route path="/activities" component={Manage}/>
+      <Route path="/mapbox" component={Map2}/>
     </div>
   </Router>
 )

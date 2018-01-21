@@ -3,6 +3,7 @@ import Menu from './menu.js';
 import CKComponent from './Cloud.js';
 import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
+import FilterBox from './FilterBox.js';
 import {Map, OverlayManager, LoadedAreaManager} from './Map.js';
 import {Star, Trace, MarkerType, Coord} from './Models.js';
 
@@ -232,7 +233,24 @@ class App extends Component {
 
 	var _this = this;
 
-	map.getStreetView().addListener("visible_changed", function(e) {
+	// Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+
+	      var pos = Coord(position.coords.latitude, position.coords.longitude);
+              map.panTo(pos);
+	      
+          }, function() {
+              //handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+            //handleLocationError(false, infoWindow, map.getCenter());
+        }
+	
+
+	/*
+	  map.getStreetView().addListener("visible_changed", function(e) {
 	    let v = map.getStreetView().getVisible();
 	    _this.setState({isPanoramaView: v});
 
@@ -246,7 +264,7 @@ class App extends Component {
 	    }
 
 	});
-
+	*/
 	
 	searchBox.addListener('places_changed', function() {
 	    var places = searchBox.getPlaces();
@@ -379,15 +397,18 @@ class App extends Component {
 	return (
 		<div className='full-height'>
 
+	    <FilterBox />
+
 		<div className="header-bar">
 
 	    <div className="account-div">
 	    	<a href='/account'>Account</a>
 		</div>
+
 		<div className="shadow">
 		<input type="text" id="searchTextField" className='searchBar' />
 		</div>
-		
+		<span><button>Filter</button></span>
 
 	    </div>
 
@@ -419,7 +440,7 @@ class App extends Component {
 	    onZoomChanged={this.handleMapBoundsChanged}
 	    
 	    containerElement={
-		    <div className='container' />
+		    <div className='mapContainer' />
 	    }
 	    mapElement={
 		    <div style={{ height: `100%` }} />

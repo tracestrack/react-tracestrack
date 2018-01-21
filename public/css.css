@@ -2,24 +2,6 @@
  * Globals
  */
 
-/* Links */
-a,
-a:focus,
-a:hover {
-  color: #fff;
-  text-decoration: none;
-}
-
-/* Custom default button */
-.btn-secondary,
-.btn-secondary:hover,
-.btn-secondary:focus {
-  color: #333;
-  text-shadow: none; /* Prevent inheritance from `body` */
-  background-color: #fff;
-  border: .05rem solid #fff;
-}
-
 
 /*
  * Base structure
@@ -27,13 +9,19 @@ a:hover {
 
 html,
 body {
-  height: 100%;
-  background-color: #0AADFF;
-}
-body {
   color: #fff;
   text-align: center;
   text-shadow: 0 .05rem .1rem rgba(0,0,0,.5);
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+
+}
+
+#root, .default {
+  background-color: #0AADFF;
+  height: 100%;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -45,20 +33,22 @@ body {
   box-shadow: inset 0 0 5rem rgba(0,0,0,.5);
 }
 
-.cover-container {
-  margin-right: auto;
-  margin-left: auto;
-}
-
 /* Padding for spacing */
-.inner {
-  padding: 2rem;
-}
 
+.masthead .inner {
+  padding: 2rem;
+  width: 80%;
+  margin: auto;
+}
 
 /*
  * Header
  */
+
+.mastfoot {
+    text-align: center;
+    color: white;
+}
 
 .masthead {
   margin-bottom: 2rem;
@@ -89,93 +79,14 @@ body {
 }
 
 .nav-masthead .active {
-  color: #fff;
-  border-bottom-color: #fff;
+    color: #fff;
+    border-bottom-color: #fff;
 }
 
-@media (min-width: 48em) {
-  .masthead-brand {
-    float: left;
-  }
-  .nav-masthead {
-    float: right;
-  }
+.signinout img {
+    margin-bottom: 20px;
+    width: 450px;
 }
-
-
-/*
- * Cover
- */
-
-.cover {
-  padding: 0 1.5rem;
-}
-.cover .btn-lg {
-  padding: .75rem 1.25rem;
-  font-weight: 700;
-}
-
-
-/*
- * Footer
- */
-
-.mastfoot {
-  color: rgba(255,255,255,.9);
-}
-
-
-/*
- * Affix and center
- */
-
-@media (min-width: 40em) {
-  /* Pull out the header and footer */
-  .masthead {
-
-    top: 0;
-  }
-  .mastfoot {
-
-    bottom: 0;
-  }
-
-  /* Start the vertical centering */
-  .site-wrapper-inner {
-    vertical-align: middle;
-  }
-
-  /* Handle the widths */
-  .masthead,
-  .mastfoot,
-  .cover-container {
-    width: 100%; /* Must be percentage or pixels for horizontal alignment */
-  }
-
-  .signinout img {
-      margin-bottom: 20px;
-      width: 90%;
-  }
-
-}
-
-@media (min-width: 62em) {
-  .masthead,
-  .cover-container {
-    width: 42rem;
-    margin: auto;
-  }
-  .mastfoot {
-
-  }
-
-  .signinout img {
-      margin-bottom: 20px;
-      width: 450px;
-  }
-
-}
-
 
 .signinout img {
     margin-bottom: 20px;
@@ -221,7 +132,7 @@ header, h1, td {
 
 }
 .activity-table tr th {
-    text-align: left;
+    color: white;
 }
 
 .activity-table tr td {
