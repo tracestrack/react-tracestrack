@@ -1,0 +1,14 @@
+
+.filterBox {
+
+    color: black;
+    position: absolute;
+    top: 35px;
+    left: calc(50% - 200px);
+    height: 300px;
+    width: 400px;
+    z-index: 100;
+    background-color: rgba(255, 255, 255, 0.7);  
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
