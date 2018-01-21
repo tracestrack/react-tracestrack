@@ -24,7 +24,7 @@ CloudKit.configure({
 
 	apiTokenAuth: {
 	    // And generate a web token through CloudKit Dashboard.
-	   x apiToken: apiToken,
+	    apiToken: apiToken,
 	    persist: true, // Sets a cookie.
 	    signInButton: {
 		id: 'apple-sign-in-button',
