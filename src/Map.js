@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
+import { DirectionsRenderer, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 import { MarkerType } from './Models.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
@@ -104,6 +104,15 @@ export const Map = withGoogleMap(props => (
       onDragEnd={props.onDragEnd}
       onRightClick={props.onMapRightClick}
       >
+
+    {props.directions && <DirectionsRenderer directions={props.directions} options={{
+	draggable: true,
+	preserveViewport: true,
+	suppressBicyclingLayer: true,
+	suppressInfoWindows: true
+    }}/>}
+    
+
       {props.markers.map((marker, index) => {
 	  const onClick = () => props.onMarkerClick(marker);
 

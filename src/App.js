@@ -186,6 +186,44 @@ class App extends Component {
     /** Left click on the map */
     handleMapLeftClick(e) {
 
+	var _this = this;
+
+	if (this.waypoints == null) {
+	    this.waypoints = [];
+
+	}
+
+	if (this.waypoints.length > 0) {
+
+	    const DirectionsService = new google.maps.DirectionsService();
+	    this.waypoints.push({ location: e.latLng });
+
+	    DirectionsService.route({
+		origin: this.waypoints[0].location,
+		destination: e.latLng,
+		travelMode: google.maps.TravelMode.BICYCLING,
+		waypoints: this.waypoints.slice(1, this.waypoints.length - 1)
+	    }, (result, status) => {
+		if (status === google.maps.DirectionsStatus.OK) {
+		    _this.setState({
+			directions: result,
+		    });
+
+		    console.log(result);
+		} else {
+		    console.error(`error fetching directions ${result}`);
+		}
+	    });
+
+	}
+	else {
+	    this.origin = e.latLng;
+
+	    const wp = { location: e.latLng };
+	    this.waypoints.push(wp)
+	}
+
+
 	if (e.placeId) {
 	    /** Clicked Google Map POI */
 	    var poi = Star({lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace, '', '', e.placeId);
@@ -240,10 +278,12 @@ class App extends Component {
 
 	var input = document.getElementById('searchTextField');
 	input.setAttribute('spellcheck', 'false');
+	var _this = this;
 	
 	var searchBox = new google.maps.places.SearchBox(input);
 
-	var _this = this;
+
+
 
 	// Try HTML5 geolocation.
         if (navigator.geolocation) {
@@ -456,6 +496,7 @@ class App extends Component {
 
 
 		<Map
+	    ref={(m) => {this._map = m;}} 
 	    markers={this.state.markers}
 	    traces={this.state.traces}
 	    onMarkerClick={this.handleMarkerClick}
@@ -465,6 +506,7 @@ class App extends Component {
 	    onMapRightClick={this.handleMapRightClick}
 	    onDragEnd={this.handleMapBoundsChanged}
 	    onZoomChanged={this.handleMapBoundsChanged}
+	    directions={this.state.directions}
 	    
 	    containerElement={
 		    <div className='mapContainer' />
