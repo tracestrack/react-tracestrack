@@ -4,7 +4,7 @@ const CloudKit = window.CloudKit;
 
 const zoneName = "Traces";
 
-var IS_DEV = true;
+var IS_DEV = false;
 
 var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
 var environment = "production";
@@ -639,7 +639,9 @@ class CKComponent extends Component {
 	    }, isLoadAll == true);
     }
     
-    loadTraces(maxLat, maxLng, minLat, minLng, loadDetail, finishCallback) {
+    loadTraces(maxLat, maxLng, minLat, minLng, loadDetail, types, finishCallback) {
+
+	console.log(types);
 
 	this.lastBox = [maxLat, maxLng, minLat, minLng];
 	this.lastLoadDetail = loadDetail;
@@ -668,13 +670,15 @@ class CKComponent extends Component {
 	    { fieldName: 'maxLat', comparator: gt, fieldValue: minLat },
 	    { fieldName: 'maxLng', comparator: gt, fieldValue: minLng },
 	    { fieldName: 'minLat', comparator: lt, fieldValue: maxLat },
-	    { fieldName: 'minLng', comparator: lt, fieldValue: maxLng }
+	    { fieldName: 'minLng', comparator: lt, fieldValue: maxLng },
+	    { fieldName: "type",   comparator: 'IN', fieldValue: types}
 	];
 
 	// private database
 	this.demoPerformQuery(
 	    databaseScope,zoneName,ownerRecordName,recordType,
 	    desiredKeys,sortByField,ascending,latitude,longitude,filters, null, function(records) {
+
 		_this.props.onTracesLoad(records);
 	    }, function() {
 		finishCallback();

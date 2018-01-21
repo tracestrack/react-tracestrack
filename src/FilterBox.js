@@ -1,31 +1,55 @@
 import React, { Component } from 'react';
-import {Coord, MarkerType} from './Models.js';
+import {Types, Coord, MarkerType} from './Models.js';
 import "./FilterBox.css";
 
 const google = window.google;
+const $ = window.$;
 
 class FilterBox extends Component {
 
     constructor(props) {
 	super(props);
-
     }
+
+    handleApplyFilter = this.handleApplyFilter.bind(this);
+
+    handleApplyFilter() {
+	var b = [];
+	window.$("[name='selected']:checked").each( function () {
+	    b.push(parseInt(window.$(this).val()));
+	});
+	this.props.onFilterApply(b);
+    }
+
     
     render() {
+	const {vals} = Types();
+
 	return (
 		<div className='filterBox'>
 		<h3>Filter Traces</h3>
 
-		<div>
-		<input type="checkbox" id="subscribeNews" name="subscribe" value="newsletter" />
-		<label for="subscribeNews">Walking</label>
-		</div>
+		<h4>Types</h4>
 
-	    		<div>
-		<input type="checkbox" id="subscribeNews1" name="subscribe" value="newsletter" />
-		<label for="subscribeNews1">Cycling</label>
-		</div>
+	    {
+		Object.keys(Types()).map((key, index) => (
+			<div className="form-check form-check-inline">
+			
+			<label className="form-check-label">
+			<input className="form-check-input" type="checkbox" name="selected" value={index} defaultChecked={this.props.types.indexOf(index) > -1}/>
 
+		    {key}
+		    </label>
+			</div>
+
+		))
+
+	    }
+
+
+	    <div className="box-apply">
+		<button type="button" onClick={this.handleApplyFilter} className="btn btn-success">Apply</button>
+</div>
 
 		</div>
 	)

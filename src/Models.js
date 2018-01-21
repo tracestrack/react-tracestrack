@@ -34,3 +34,17 @@ export function Coord(lat, lng) {
     return {lat: lat, lng: lng};
 }
 
+export function Types() {
+
+    return {
+	"Walking": 0,
+	"Cycling": 1,
+	"Running": 2,
+	"Vehicle": 3,
+	"Train": 4,
+	"Waterway": 5,
+	"Flight": 6
+    };
+
+}
+

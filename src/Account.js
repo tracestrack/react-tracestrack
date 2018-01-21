@@ -75,6 +75,11 @@ class Account extends React.Component {
     }
 
     render() {
+
+	function gotoMap() {
+	    window.location.href = '/';
+	}
+
 	return (
 	    <div className="default">
 
@@ -93,7 +98,7 @@ class Account extends React.Component {
 
 		}
 		{ (this.state.signedIn === 1) &&
-		  (<p><a href='/'>Go to Map</a></p>)
+		  (<p><button type="button" onClick={gotoMap} className="btn btn-light">Go to Map</button></p>)
 		}
 
 	    </div>

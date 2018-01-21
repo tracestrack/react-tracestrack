@@ -30,6 +30,7 @@ class App extends Component {
 	traces: [],
 	showContextMenu: false,
 	showStarSidebar: false,
+	showFilterBox: false,
 	rightClickPosition: {left: 100, top: 100},
 	isPanoramaView: false
     }
@@ -47,6 +48,17 @@ class App extends Component {
     handleStarRecordRemoved = this.handleStarRecordRemoved.bind(this);    
     handleLoginSuccess = this.handleLoginSuccess.bind(this);
 
+    onFilterApply = this.onFilterApply.bind(this);
+
+    onFilterApply(b) {
+
+	this.loadedAreaManager.clear();
+	this.overlayManager.clear();
+	this.setState({traces: [], isLoadingTraces: false, showFilterBox: false});
+	this.types = b;
+	this.handleMapBoundsChanged();
+    }
+
     /** OnLoad */
     componentDidMount() {
 	this.setState({
@@ -56,6 +68,7 @@ class App extends Component {
 	window.$("#apple-sign-out-button").hide();
 	this.overlayManager = new OverlayManager();
 	this.loadedAreaManager = new LoadedAreaManager();
+	this.types = [0];
 	
     }
 
@@ -89,9 +102,8 @@ class App extends Component {
 	var loadDetail = z > 12;
 
 	if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
-	    console.log(loadDetail);
-	    console.log('detal');
-	    this._ck.loadTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, function() {
+
+	    this._ck.loadTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, this.types, function() {
 		_this.setState({isLoadingTraces: false});
 		_this.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
 	    });
@@ -295,7 +307,6 @@ class App extends Component {
 		    console.log("Returned place contains no geometry");
 		}
 
-		console.log(place);
 		
 		var marker = Star(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place.formatted_address, place.name);
 
@@ -392,12 +403,25 @@ class App extends Component {
 	
     }
 
+
+    showFilterBox = this.showFilterBox.bind(this);
+    showFilterBox() {
+	this.setState({showFilterBox: true});
+    }
+
+    
     /** Render the app */
     render() {
+	
 	return (
 		<div className='full-height'>
 
-	    <FilterBox />
+	    	    {
+			this.state.showFilterBox && (
+				<FilterBox onFilterApply={this.onFilterApply} types={this.types} />
+			)
+		    }
+
 
 		<div className="header-bar">
 
@@ -410,7 +434,7 @@ class App extends Component {
 		</div>
 
 		<div className="toolbox">
-		<button className="btn btn-primary btn-sm">Filter</button>
+		<button className="btn btn-primary btn-sm" onClick={this.showFilterBox}>Filter</button>
 		</div>
 
 	    </div>

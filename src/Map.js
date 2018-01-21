@@ -36,6 +36,10 @@ export class LoadedAreaManager {
 	this.bboxes = [];
     }
 
+    clear() {
+	this.bboxes = [];
+    }
+
     addLoaded(maxLat, maxLng, minLat, minLng, loadDetail) {
 	this.bboxes.push([maxLat, maxLng, minLat, minLng, loadDetail]);
     }
@@ -55,9 +59,7 @@ export class LoadedAreaManager {
 export class OverlayManager {
 
     constructor() {
-	
 	this.overlayDict = {};
-	console.log('constructed');
     }
     
     shouldRedraw(recordName, isDetail) {
@@ -69,6 +71,10 @@ export class OverlayManager {
 
     add(recordName, isDetail) {
 	this.overlayDict[recordName] = isDetail;
+    }
+
+    clear() {
+	this.overlayDict = {};
     }
     
 }
