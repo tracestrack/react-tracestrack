@@ -401,14 +401,17 @@ class App extends Component {
 
 		<div className="header-bar">
 
-	    <div className="account-div">
+	    <div className="map-header-div">
 	    	<a href='/account'>Account</a>
 		</div>
 
 		<div className="shadow">
-		<input type="text" id="searchTextField" className='searchBar' />
+		<input type="text" id="searchTextField" className='form-control form-control-sm' />
 		</div>
-		<span><button>Filter</button></span>
+
+		<div className="toolbox">
+		<button className="btn btn-primary btn-sm">Filter</button>
+		</div>
 
 	    </div>
 

@@ -129,8 +129,9 @@ class Manage extends React.Component {
 		<Table traces={this.state.traces}/>
 
 	    <center>
-		<button onClick={this.loadMore}>Load More</button>
-		<button onClick={this.removeDuplis}>Remove Duplicates</button>
+		<button className="btn btn-primary" onClick={this.loadMore}>Load More</button>
+		   
+		<button className="btn btn-danger" onClick={this.removeDuplis}>Remove Duplicates</button>
 		</center>
 		
 		<SiteFooter />

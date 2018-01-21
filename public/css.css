@@ -48,17 +48,15 @@ body {
 .mastfoot {
     text-align: center;
     color: white;
-}
-
-.masthead {
-  margin-bottom: 2rem;
+    margin-top: 50px;
 }
 
 .masthead-brand {
-  font-size: 24px;
+  font-size: 28px;
   margin: 0px;
   color: white;
-
+  font-family: 'Optima';
+  font-weight: bold;
 }
 
 .nav-masthead .nav-link {
@@ -104,10 +102,17 @@ body {
     text-align: left;
 }
 
+div.signinout p {
+    margin: 10px 0  10px 0;
+
+}
+
 div.signinout {
+    color: white;
     width: 42em;
     margin: auto;
     padding-top:100px;
+    text-align: center;
 }
 
 .marked-area-text-container,
@@ -116,7 +121,7 @@ header, h1, td {
     color: #333;
 }
 
-.account-div {
+.map-header-div {
     width: 120px;
     height: 35px;
     position: absolute;
@@ -141,8 +146,34 @@ header, h1, td {
 
 .header-bar {
     width: 100%;
-    height: 35px;
+    height: 40px;
     position: absolute;
     text-align: left;
-    background: gray;
+    background: white;
+}
+
+.mapContainer {
+    position:absolute;
+    top:40px;
+    bottom:0px;
+    width:calc(100%);
+    background: white;
+}
+
+.hidden {
+    display: none;
+}
+
+.shadow {
+    display: block;
+    float: left;
+    width:485px;
+    z-index: 100;
+    padding: 5px 10px 5px 5px;
+}
+
+.toolbox {
+    width: 100px;
+    float: left;
+    margin: 5px 10px 5px 20px;
 }
