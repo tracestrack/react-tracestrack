@@ -29,7 +29,6 @@ class TraceSidebar extends Component {
 	    }
 	    this.lastTraceRN = data.recordName;	    
 
-	    console.log('xxx');
 	    this.loadTrace(data);
 	    
 	    return {

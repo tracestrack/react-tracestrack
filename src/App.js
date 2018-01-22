@@ -187,7 +187,7 @@ class App extends Component {
     handleMapLeftClick(e) {
 
 	var _this = this;
-
+/*
 	if (this.waypoints == null) {
 	    this.waypoints = [];
 
@@ -222,7 +222,7 @@ class App extends Component {
 	    const wp = { location: e.latLng };
 	    this.waypoints.push(wp)
 	}
-
+*/
 
 	if (e.placeId) {
 	    /** Clicked Google Map POI */
