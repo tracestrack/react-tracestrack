@@ -98,7 +98,6 @@ export const Map = withGoogleMap(props => (
 	  }
       }}
       defaultZoom={14}
-      defaultCenter={{ lat: 51.447698, lng: 5.487497 }}
       onClick={props.onMapLeftClick}
       onZoomChanged={props.onZoomChanged}
       onDragEnd={props.onDragEnd}

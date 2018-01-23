@@ -23,6 +23,7 @@ window.checkLogin = function() {
 
 }
 
+
 class App extends Component {
 
     state = {
@@ -48,7 +49,22 @@ class App extends Component {
     handleStarRecordRemoved = this.handleStarRecordRemoved.bind(this);    
     handleLoginSuccess = this.handleLoginSuccess.bind(this);
 
+    
     onFilterApply = this.onFilterApply.bind(this);
+    onSetStartMap = this.onSetStartMap.bind(this);
+
+    onSetStartMap() {
+	var _this = this;
+	var center = window.map.getCenter();
+	this.settingRecord.fields['lastMapLocation'] = {latitude: center.lat(), longitude: center.lng()};
+	this.settingRecord.fields['types'] = this.settingRecord.fields['types'].value;
+	console.log(this.settingRecord);
+	
+	this._ck.saveRecord(this.settingRecord, function (re) {
+	    _this.handleMapBoundsChanged();
+	    console.log(re);		
+	});
+    }
 
     onFilterApply(b) {
 
@@ -56,7 +72,15 @@ class App extends Component {
 	this.overlayManager.clear();
 	this.setState({traces: [], isLoadingTraces: false, showFilterBox: false});
 	this.types = b;
-	this.handleMapBoundsChanged();
+	var _this = this;
+	
+	this.settingRecord.fields['types'] = b;
+	
+	this._ck.saveRecord(this.settingRecord, function (re) {
+	    _this.handleMapBoundsChanged();
+	    console.log(re);		
+	});
+
     }
 
     /** OnLoad */
@@ -66,6 +90,7 @@ class App extends Component {
 	});
 
 	window.$("#apple-sign-out-button").hide();
+
 	this.overlayManager = new OverlayManager();
 	this.loadedAreaManager = new LoadedAreaManager();
 	this.types = [0];
@@ -118,10 +143,33 @@ class App extends Component {
     handleLoginSuccess() {
 	if (window.userIdentity) {
 	    this._ck.loadStars();
-	    this.handleMapBoundsChanged();
 
 	    //this._ck.demoDiscoverUserIdentityWithUserRecordName('_7022d50b9d797f3775d0930d397ceaf4');
-	    this._ck.demoDiscoverAllUserIdentities();
+	    //this._ck.demoDiscoverAllUserIdentities();
+
+	    var _this = this;
+	    this._ck.loadSettings(function(re) {
+		if (re.length == 0) {
+		    _this._ck.insertSetting(function(re) {
+			console.log(re);
+		    });			
+		    _this.handleMapBoundsChanged();
+		}
+		else {
+		    _this.settingRecord = re[0];
+
+		    console.log(re);		
+
+		    var f_coord = re[0].fields.lastMapLocation.value;
+		    var pos = Coord(f_coord.latitude, f_coord.longitude);
+		    window.map.panTo(pos);
+
+		    _this.types = re[0].fields.types.value;
+		    _this.handleMapBoundsChanged();
+		}
+
+	    });
+
 	}	
     }
 
@@ -284,7 +332,7 @@ class App extends Component {
 
 
 
-
+/*
 	// Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -299,7 +347,7 @@ class App extends Component {
           // Browser doesn't support Geolocation
             //handleLocationError(false, infoWindow, map.getCenter());
         }
-	
+*/	
 
 	/*
 	  map.getStreetView().addListener("visible_changed", function(e) {
@@ -475,6 +523,8 @@ class App extends Component {
 
 		<div className="toolbox">
 		<button className="btn btn-primary btn-sm" onClick={this.showFilterBox}>Filter</button>
+
+		<button className="btn btn-primary btn-sm" onClick={this.onSetStartMap}>Set as start map</button>
 		</div>
 
 	    </div>

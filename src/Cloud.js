@@ -4,7 +4,7 @@ const CloudKit = window.CloudKit;
 
 const zoneName = "Traces";
 
-var IS_DEV = false;
+var IS_DEV = true;
 
 var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
 var environment = "production";
@@ -54,6 +54,9 @@ class CKComponent extends Component {
     loadTraces = this.loadTraces.bind(this);    
     demoSetUpAuth = this.demoSetUpAuth.bind(this);
 
+    loadSettings = this.loadSettings.bind(this);
+
+    
     demoSetUpAuth() {
 
 	// Get the container.
@@ -430,7 +433,37 @@ class CKComponent extends Component {
 	    });
     }
 
-    
+    insertSetting(callback) {
+	var databaseScope = "PRIVATE";
+	var recordName = null;
+
+	var forRecordName = null;
+	var forRecordChangeTag = null;
+	var publicPermission = null;
+	var ownerRecordName = null;
+	var participants = null;
+	var parentRecordName = null;
+	var fields = {types: [1,2,3]};
+	var createShortGUID = false;
+	var recordType = "Setting";
+
+	var zoneID = { zoneName: zoneName };
+	var options = { zoneID: zoneID };
+
+	var _this = this;
+
+	var container = CloudKit.getDefaultContainer();
+	var database = container.getDatabaseWithDatabaseScope(
+	    CloudKit.DatabaseScope[databaseScope]
+	);
+
+	
+	_this.demoSaveRecords(databaseScope,recordName,null,recordType,zoneName,
+			      forRecordName,forRecordChangeTag,publicPermission,ownerRecordName,
+			      participants,parentRecordName,fields,createShortGUID, callback);
+	
+    }
+
     saveRecord(re, callback) {
 
 	var databaseScope = "PRIVATE";
@@ -639,9 +672,25 @@ class CKComponent extends Component {
 	    }, isLoadAll == true);
     }
     
-    loadTraces(maxLat, maxLng, minLat, minLng, loadDetail, types, finishCallback) {
+    loadSettings(cb) {
+	var databaseScope = "PRIVATE";
+	var ownerRecordName = null;
+	var recordType = "Setting";
+	var desiredKeys = ['types', 'lastMapZoom', 'lastMapLocation'];
+	var _this = this;
 
-	console.log(types);
+	// private database
+	this.demoPerformQuery(
+	    databaseScope,zoneName,ownerRecordName,recordType,
+	    desiredKeys,null,null,null,null,[], null, function(re) {
+		cb(re);
+		console.log("loadSetting: " + re);
+	    }, null, true);
+
+	
+    }
+    
+    loadTraces(maxLat, maxLng, minLat, minLng, loadDetail, types, finishCallback) {
 
 	this.lastBox = [maxLat, maxLng, minLat, minLng];
 	this.lastLoadDetail = loadDetail;
