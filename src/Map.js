@@ -97,7 +97,8 @@ export const Map = withGoogleMap(props => (
               position: google.maps.ControlPosition.BOTTOM_CENTER
 	  }
       }}
-      defaultZoom={14}
+    
+    zoom={props.zoom}
       onClick={props.onMapLeftClick}
       onZoomChanged={props.onZoomChanged}
       onDragEnd={props.onDragEnd}

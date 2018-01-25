@@ -24,3 +24,7 @@
     text-align: right;
     
 }
+
+.box-apply > button {
+    margin-right: 10px;
+}

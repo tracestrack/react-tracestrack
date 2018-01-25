@@ -4,6 +4,7 @@ import CKComponent from './Cloud.js';
 import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
 import FilterBox from './FilterBox.js';
+import SettingManager from './SettingManager.js';
 import {Map, OverlayManager, LoadedAreaManager} from './Map.js';
 import {Star, Trace, MarkerType, Coord} from './Models.js';
 
@@ -24,9 +25,12 @@ window.checkLogin = function() {
 }
 
 
+var settingManager;
+
 class App extends Component {
 
     state = {
+	zoom: 10,
 	markers: [],
 	traces: [],
 	showContextMenu: false,
@@ -56,11 +60,11 @@ class App extends Component {
     onSetStartMap() {
 	var _this = this;
 	var center = window.map.getCenter();
-	this.settingRecord.fields['lastMapLocation'] = {latitude: center.lat(), longitude: center.lng()};
-	this.settingRecord.fields['types'] = this.settingRecord.fields['types'].value;
-	console.log(this.settingRecord);
+
+	settingManager.lastMapLocation = {latitude: center.lat(), longitude: center.lng()};
+	settingManager.lastMapZoom = window.map.getZoom();
 	
-	this._ck.saveRecord(this.settingRecord, function (re) {
+	this._ck.saveRecord(settingManager.packRecord(), function (re) {
 	    _this.handleMapBoundsChanged();
 	    console.log(re);		
 	});
@@ -73,10 +77,10 @@ class App extends Component {
 	this.setState({traces: [], isLoadingTraces: false, showFilterBox: false});
 	this.types = b;
 	var _this = this;
+
+	settingManager.types = b;
 	
-	this.settingRecord.fields['types'] = b;
-	
-	this._ck.saveRecord(this.settingRecord, function (re) {
+	this._ck.saveRecord(settingManager.packRecord(), function (re) {
 	    _this.handleMapBoundsChanged();
 	    console.log(re);		
 	});
@@ -152,19 +156,23 @@ class App extends Component {
 		if (re.length == 0) {
 		    _this._ck.insertSetting(function(re) {
 			console.log(re);
-		    });			
+		    });
+		    
+		    var pos = Coord(51.443416, 5.479131);
+		    window.map.panTo(pos);
+		    
 		    _this.handleMapBoundsChanged();
 		}
 		else {
-		    _this.settingRecord = re[0];
+		    settingManager = new SettingManager(re[0]);
 
-		    console.log(re);		
+		    var loc = settingManager.getLastMapLocation();
+		    var pos = Coord(loc.value.latitude, loc.value.longitude);
 
-		    var f_coord = re[0].fields.lastMapLocation.value;
-		    var pos = Coord(f_coord.latitude, f_coord.longitude);
 		    window.map.panTo(pos);
+		    _this.setState({zoom: settingManager.getLastMapZoom()});
 
-		    _this.types = re[0].fields.types.value;
+		    _this.types = settingManager.getTypes();
 		    _this.handleMapBoundsChanged();
 		}
 
@@ -497,6 +505,10 @@ class App extends Component {
 	this.setState({showFilterBox: true});
     }
 
+    onFilterCancel = this.onFilterCancel.bind(this);
+    onFilterCancel() {
+	this.setState({showFilterBox: false});
+    }
     
     /** Render the app */
     render() {
@@ -506,7 +518,7 @@ class App extends Component {
 
 	    	    {
 			this.state.showFilterBox && (
-				<FilterBox onFilterApply={this.onFilterApply} types={this.types} />
+				<FilterBox onFilterApply={this.onFilterApply} types={this.types} onCancel={this.onFilterCancel} />
 			)
 		    }
 
@@ -522,9 +534,9 @@ class App extends Component {
 		</div>
 
 		<div className="toolbox">
-		<button className="btn btn-primary btn-sm" onClick={this.showFilterBox}>Filter</button>
+		<button className="btn btn-info btn-sm" onClick={this.showFilterBox}>Filter</button>
 
-		<button className="btn btn-primary btn-sm" onClick={this.onSetStartMap}>Set as start map</button>
+		<button className="btn btn-info btn-sm" onClick={this.onSetStartMap}>Set as start map</button>
 		</div>
 
 	    </div>
@@ -546,6 +558,7 @@ class App extends Component {
 
 
 		<Map
+	    zoom={this.state.zoom}
 	    ref={(m) => {this._map = m;}} 
 	    markers={this.state.markers}
 	    traces={this.state.traces}

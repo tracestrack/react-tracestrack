@@ -48,7 +48,9 @@ class FilterBox extends Component {
 
 
 	    <div className="box-apply">
-		<button type="button" onClick={this.handleApplyFilter} className="btn btn-success">Apply</button>
+		<button type="button" onClick={this.handleApplyFilter} className="btn btn-primary">Apply</button>
+
+		<button type="button" onClick={this.props.onCancel} className="btn btn-secondary">Cancel</button>
 </div>
 
 		</div>

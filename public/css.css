@@ -177,3 +177,8 @@ header, h1, td {
     float: left;
     margin: 5px 10px 5px 20px;
 }
+
+.toolbox > button {
+    margin-right: 10px;
+}
+
