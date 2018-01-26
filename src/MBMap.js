@@ -18,6 +18,7 @@ class Map2 extends Component {
 	return (
 
 	        <ReactMapGL
+	    mapboxApiAccessToken="pk.eyJ1Ijoic3Ryb25nd2lsbG93IiwiYSI6ImxKa2R1SEkifQ.iZ_vj1lvuvrAcUIl0ZE5XA"
             {...this.state.viewport}
             onViewportChange={(viewport) => this.setState({viewport})}
 		/>
