@@ -4,13 +4,13 @@ const CloudKit = window.CloudKit;
 
 const zoneName = "Traces";
 
-var IS_DEV = true;
+var IS_DEV = false;
 
 var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
 var environment = "production";
 
 if (IS_DEV) {
-    apiToken = "33d1b5c507d11c053a816e42186299c750e44eef6e17f7dc09de03c95995e2bd";
+    apiToken = "1ae5c635886c99c2bd24df1248c23b737d580c16548356d51f24244630703e66";
     environment = "development";
 }
 
@@ -83,8 +83,10 @@ class CKComponent extends Component {
 		.then(gotoUnauthenticatedState);
 	}
 	function gotoUnauthenticatedState(error) {
-	    //alert("Please login! You'll be redirected to the login page.");
-	    //window.location.replace("/account");
+	    if (window.location.href.split('/')[3] != "account") {
+		alert("Please login!");
+		window.location.replace("/account");
+	    }
 	}
 
 	// Check a user is signed in and render the appropriate button.

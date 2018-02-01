@@ -166,8 +166,9 @@ class App extends Component {
 		else {
 		    settingManager = new SettingManager(re[0]);
 
+
 		    var loc = settingManager.getLastMapLocation();
-		    var pos = Coord(loc.value.latitude, loc.value.longitude);
+		    var pos = Coord(loc.latitude, loc.longitude);
 
 		    window.map.panTo(pos);
 		    _this.setState({zoom: settingManager.getLastMapZoom()});
@@ -178,7 +179,7 @@ class App extends Component {
 
 	    });
 
-	}	
+	}
     }
 
     /** Star record is removed */
