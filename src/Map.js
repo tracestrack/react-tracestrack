@@ -3,7 +3,6 @@ import { DirectionsRenderer, withGoogleMap, GoogleMap, Marker, Polyline } from "
 import { MarkerType } from './Models.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
-import PinImg from './img/marker.svg';
 import AppleStyle from './mapstyles/apple.json';
 import exports from './transformation.js';
 import ReactMapGL from 'react-map-gl';

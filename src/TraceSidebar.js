@@ -148,11 +148,11 @@ class TraceSidebar extends Component {
 		  
 		  <div className='controls'>
 		    { !this.state.editMode ?
-			(<button onClick={this.enterEditMode}>Edit</button>):
+			(<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>Edit</button>):
 		      (
 			  <div>
-			    <button onClick={this.cancel}>Cancel</button>
-			    <button onClick={this.save}>Save</button>
+			    <button className="btn btn-sm btn-secondary" onClick={this.cancel}>Cancel</button>
+			    <button className="btn btn-sm btn-danger" onClick={this.save}>Save</button>
 			  </div>
 		      )
 		    }
