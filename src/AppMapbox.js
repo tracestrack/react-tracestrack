@@ -94,7 +94,7 @@ class AppMapbox extends Component {
 		    settingManager = new SettingManager(re[0]);
 
 		    var loc = settingManager.getLastMapLocation();
-		    var pos = Coord(loc.value.latitude, loc.value.longitude);
+		    var pos = Coord(loc.latitude, loc.longitude);
 
 		    //window.map.panTo(pos);
 		    _this.setState({zoom: settingManager.getLastMapZoom()});
@@ -135,18 +135,18 @@ class AppMapbox extends Component {
 	let z = window.mapbox.getZoom();
 	var loadDetail = z > 12;
 
-	//if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
+	if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
 
 
 	    this._ck.loadTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, this.types, function() {
 		_this.setState({isLoadingTraces: false});
 		_this.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
 	    });
-/*	}
+	}
 	else {
 	    console.log('loaded');
 	    _this.setState({isLoadingTraces: false});
-	}*/
+	}
     }
 
 

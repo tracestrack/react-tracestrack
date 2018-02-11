@@ -9,21 +9,11 @@ import {Map, OverlayManager, LoadedAreaManager} from './Map.js';
 import {Star, Trace, MarkerType, Coord} from './Models.js';
 
 const google = window.google;
+const lang = window.lang;
 
 /** Disable default infoWindow */
 google.maps.InfoWindow.prototype.set = function () {
 };
-
-window.checkLogin = function() {
-
-    if (!window.userIdentity) {
-	alert("no");
-	return false
-    }
-    return true;
-
-}
-
 
 var settingManager;
 
@@ -66,7 +56,7 @@ class App extends Component {
 	
 	this._ck.saveRecord(settingManager.packRecord(), function (re) {
 	    _this.handleMapBoundsChanged();
-	    console.log(re);		
+	    alert("Default region set.");
 	});
     }
 
@@ -165,7 +155,6 @@ class App extends Component {
 		}
 		else {
 		    settingManager = new SettingManager(re[0]);
-
 
 		    var loc = settingManager.getLastMapLocation();
 		    var pos = Coord(loc.latitude, loc.longitude);
@@ -527,7 +516,7 @@ class App extends Component {
 		<div className="header-bar">
 
 	    <div className="map-header-div">
-	    	<a href='/account'>Account</a>
+	    	<a href='/account'>{lang.account}</a>
 		</div>
 
 		<div className="shadow">
@@ -535,9 +524,9 @@ class App extends Component {
 		</div>
 
 		<div className="toolbox">
-		<button className="btn btn-info btn-sm" onClick={this.showFilterBox}>Filter</button>
+		<button className="btn btn-info btn-sm" onClick={this.showFilterBox}>{lang.filter}</button>
 
-		<button className="btn btn-info btn-sm" onClick={this.onSetStartMap}>Set as start map</button>
+		<button className="btn btn-info btn-sm" onClick={this.onSetStartMap}>{lang.setDefaultMap}</button>
 		</div>
 
 	    </div>

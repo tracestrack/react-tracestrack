@@ -183,3 +183,17 @@ header, h1, td {
     margin-right: 10px;
 }
 
+.lang-box {
+    width: 150px;
+    float: right;
+    top: -33px;
+    position: relative;
+}
+
+.lang-box a {
+    color: white;
+    display: block;
+    margin-left: 20px;
+    float: left;
+    width: 50px;
+}

@@ -102,15 +102,16 @@ class Manage extends React.Component {
 		    for (var i = 0; i < m[key].length - 1; i++) {
 			count ++;
 			setTimeout(function(){
-			    var k = i;
-			    
-			    _this._ck.removeRecord(m[key][k].recordName, function(p) {
-				console.log("done", p);
-			    });
+
+			    return function(k) {
+
+				_this._ck.removeRecord(m[key][k].recordName, function(p) {
+				    console.log("done", p);
+				});
+			    }(i);
+
 			}, 600 * count);
 		    }
-
-
 		})
 
 	    }

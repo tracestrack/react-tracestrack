@@ -1,11 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
+var IS_DEV = true;
 const CloudKit = window.CloudKit;
-
 const zoneName = "Traces";
-
-var IS_DEV = false;
-
 var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
 var environment = "production";
 

@@ -89,7 +89,7 @@ export const Map = withGoogleMap(props => (
               position: google.maps.ControlPosition.TOP_RIGHT
 	  },
 	  styles: AppleStyle,
-	  zoomControl: false,
+	  zoomControl: true,
 	  clickableIcons: true,
 	  fullscreenControl: false,
 	  minZoom: 5,
@@ -281,7 +281,7 @@ export class MapMapbox extends Component {
 
 	    <ReactMapGL
 	      ref={(m) => {if (m) {window.mapbox = m.getMap();}}} 
-	      mapStyle="mapbox://styles/strongwillow/cjcx32d7y0rjn2qnwgkoy6ebh"
+	      mapStyle="mapbox://styles/strongwillow/cjd7lffbn85ny2tmo1l7zxjln"
 	      onLoad={this.updateTrace}
 	      mapboxApiAccessToken="pk.eyJ1Ijoic3Ryb25nd2lsbG93IiwiYSI6ImxKa2R1SEkifQ.iZ_vj1lvuvrAcUIl0ZE5XA"
 	      {...this.state.viewport}

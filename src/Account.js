@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import CKComponent from './Cloud.js';
 
+const lang = window.lang;
+
 export class SiteHeader extends React.Component {
 
     constructor(props) {
@@ -9,32 +11,55 @@ export class SiteHeader extends React.Component {
 	console.log(props);
 	this.state = {selected: props.selected};
     }
+
+
+    switchEn = this.switchEn.bind(this);
+    switchEn() {
+	window.localStorage.setItem('lang', 'en');
+    }
     
+    switchZh = this.switchZh.bind(this);
+    switchZh() {
+	window.localStorage.setItem('lang', 'zh-cn');
+    }
+
     render() {
 	return (
 	    <header className="masthead">
 	      <div className="inner">
 		<h3 className="masthead-brand">Traces</h3>
 		<nav className="nav nav-masthead">
-                  <a className="nav-link" href="http://traces.website">Home</a>
-                  <a className="nav-link" href="/">Map</a>
+                <a className="nav-link" href="http://traces.website">{lang.home}</a>
+                <a className="nav-link" href="/">{lang.map}</a>
 		  {
 		      (this.state.selected=='account') && 
-			  (<a className="nav-link active" href="/account">Account</a>)
+			  (<a className="nav-link active" href="/account">{lang.account}</a>)
 			  ||
-			  (<a className="nav-link " href="/account">Account</a>)
+			  (<a className="nav-link " href="/account">{lang.account}</a>)
 		  }
 
 	    {
 		      (this.state.selected=='activities') && 
-			  (<a className="nav-link active" href="/activities">Activities</a>)
+		    (<a className="nav-link active" href="/activities">{lang.activities}</a>)
 			  ||
-			  (<a className="nav-link " href="/activities">Activities</a>)
+		    (<a className="nav-link " href="/activities">{lang.activities}</a>)
 		  }
 	    
-                <a className="nav-link" href="http://traces.website/help">Help</a>
-		</nav>
+                <a className="nav-link" href="http://traces.website/help">{lang.help}</a>
+
+
+
+	    </nav>
+		<div className="lang-box">
+
+                <a href="" onClick={this.switchEn}>English</a>
+                <a href="" onClick={this.switchZh}>中文</a>	    
+		
+	    </div>
 		</div>
+
+
+
 		</header>
 	);
     }

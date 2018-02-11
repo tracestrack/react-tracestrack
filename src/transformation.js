@@ -9,17 +9,33 @@ if (typeof module === "object" && exports) {
 
 var earthR = 6378137.0;
 
-let _CHINA_BORDER = [(37.474858, 124.562988), (47.576526, 135.791016), (53.800651, 122.431641), (41.178654, 106.171875), (49.066668, 87.758789), (38.993572, 73.652344), (30.789037, 79.760742), (27.332735, 97.031250), (22.146708, 99.492187), (23.281719, 106.040039), (17.224758, 108.764648), (20.427013, 115.883789), (28.265682, 123.134766), (37.474858, 124.562988)];
+let _CHINA_BORDER = [[37.474858, 124.562988], [47.576526, 135.791016], [53.800651, 122.431641], [41.178654, 106.171875], [49.066668, 87.758789], [38.993572, 73.652344], [30.789037, 79.760742], [27.332735, 97.031250], [22.146708, 99.492187], [23.281719, 106.040039], [17.224758, 108.764648], [20.427013, 115.883789], [28.265682, 123.134766], [37.474858, 124.562988]];
 
-function outOfChina(lat, lng) {
-	if ((lng < 72.004) || (lng > 137.8347)) {
-		return true;
-	}
-	if ((lat < 0.8293) || (lat > 55.8271)) {
-		return true;
-	}
-	return false;
+function isInChina(lat, lng) {
+
+    let latBool = lat <= 53 && lat >= 18;
+    let lonBool = lng <= 135 && lng >= 18;
+    if ((latBool && lonBool) == false) {
+        return false;
+    }
+
+    var ret = false;
+        
+    var j = _CHINA_BORDER.length - 1
+    for (var i = 0; i < _CHINA_BORDER.length; i++) {
+        
+        var cond1 = (_CHINA_BORDER[i][0] > lat) != (_CHINA_BORDER[j][0] > lat);
+
+        var long = (_CHINA_BORDER[j][1] - _CHINA_BORDER[i][1]) * (lat - _CHINA_BORDER[i][0]) / (_CHINA_BORDER[j][0] - _CHINA_BORDER[i][0]) + _CHINA_BORDER[i][1];
+        if (cond1 && lng < long) {
+            ret = !ret;
+        }
+        j = i;
+    }
+
+    return ret;
 }
+
 
 function transform(x, y) {
 	var xy = x * y;
@@ -59,7 +75,7 @@ function delta(lat, lng) {
 }
 
 function wgs2gcj(wgsLat, wgsLng) {
-	if (outOfChina(wgsLat, wgsLng)) {
+	if (!isInChina(wgsLat, wgsLng)) {
 		return {lat: wgsLat, lng: wgsLng};
 	}
 	var d = delta(wgsLat, wgsLng);
@@ -68,7 +84,7 @@ function wgs2gcj(wgsLat, wgsLng) {
 exports.wgs2gcj = wgs2gcj;
 
 function gcj2wgs(gcjLat, gcjLng) {
-	if (outOfChina(gcjLat, gcjLng)) {
+	if (!isInChina(gcjLat, gcjLng)) {
 		return {lat: gcjLat, lng: gcjLng};
 	}
 	var d = delta(gcjLat, gcjLng);
@@ -120,7 +136,7 @@ function distance(latA, lngA, latB, lngB) {
 exports.distance = distance;
 
 function gcj2bd(gcjLat, gcjLng) {
-	if (outOfChina(gcjLat, gcjLng)) {
+	if (!isInChina(gcjLat, gcjLng)) {
 		return {lat: gcjLat, lng: gcjLng};
 	}
 
@@ -134,7 +150,7 @@ function gcj2bd(gcjLat, gcjLng) {
 exports.gcj2bd = gcj2bd;
 
 function bd2gcj(bdLat, bdLng) {
-	if (outOfChina(bdLat, bdLng)) {
+	if (!isInChina(bdLat, bdLng)) {
 		return {lat: bdLat, lng: bdLng};
 	}
 

@@ -16,7 +16,7 @@ class SettingManager {
 	    return {latitude: 51.443416, longitude: 5.479131};
 	}
 	else {
-	    return this.lastMapLocation;
+	    return this.lastMapLocation.value;
 	}
     }
 
