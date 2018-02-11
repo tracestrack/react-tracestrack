@@ -12,8 +12,18 @@ const google = window.google;
 const lang = window.lang;
 
 /** Disable default infoWindow */
-google.maps.InfoWindow.prototype.set = function () {
-};
+if (google) {
+    google.maps.InfoWindow.prototype.set = function () {
+    };
+}
+
+window.checkLogin = function() {
+    if (!window.userIdentity) {
+	alert("no");
+	return false
+    }
+    return true;
+}
 
 var settingManager;
 
@@ -272,7 +282,7 @@ class App extends Component {
 
 	if (e.placeId) {
 	    /** Clicked Google Map POI */
-	    var poi = Star({lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace, '', '', e.placeId);
+	    var poi = Star({lat: e.latLng.lat(), lng: e.latLng.lng()}, MarkerType.googlePlace, '', e.placeId);
 
 	    this.setState({
 		selectedStar: poi,
@@ -379,6 +389,7 @@ class App extends Component {
 	    else {
 
 		for (var it in _this.state.markers) {
+
 		    if (_this.state.markers[it].type != MarkerType.searchHit) {
 			markers.push(_this.state.markers[it]);
 		    }
@@ -393,8 +404,7 @@ class App extends Component {
 		    console.log("Returned place contains no geometry");
 		}
 
-		
-		var marker = Star(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place.formatted_address, place.name);
+		var marker = Star(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place);
 
 		markers.push(marker);
 		

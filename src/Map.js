@@ -3,7 +3,7 @@ import { DirectionsRenderer, withGoogleMap, GoogleMap, Marker, Polyline } from "
 import { MarkerType } from './Models.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
-import PinImg from './img/pin.png';
+import PinImg from './img/marker.svg';
 import AppleStyle from './mapstyles/apple.json';
 import exports from './transformation.js';
 import ReactMapGL from 'react-map-gl';
@@ -131,7 +131,7 @@ export const Map = withGoogleMap(props => (
 	      icon = {url: GreenStarImg, scaledSize: new google.maps.Size(16, 16)};
 	      break;
 	  case MarkerType.searchHit:
-	      icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
+	      //icon = {url: PinImg, scaledSize: new google.maps.Size(32, 32)};
 	      break;
 	  case MarkerType.new:
 	      //icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};

@@ -3,9 +3,9 @@ import {Coord, MarkerType} from './Models.js';
 import {LiveMarkedArea} from './LiveMarkedArea.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
-
 import "./Sidebar.css";
 
+const lang = window.lang;
 
 const google = window.google;
 
@@ -40,12 +40,11 @@ class StarSidebar extends Component {
 		type: data.type,
 		url: '',
 		coordinate: data.coord,
-		editMode: false,
-		address: data.address
+		editMode: false
 	    };
 
 	    if (!ret.address) {
-		this.loadAddress(data.coord);
+
 	    }
 
 	    switch (props.star.type) {
@@ -54,17 +53,19 @@ class StarSidebar extends Component {
 		break;
 	    case MarkerType.new:
 		ret.editMode = true;
+
 		break;
 	    case MarkerType.searchHit:
+		ret = Object.assign({}, ret, this.getStateByGooglePlace(data.data));
 
 		break;
 	    default:
 		this.loadStar(data);
-		
+		this.loadAddress(data.coord);
 	    }
 	    return ret;
 	}
-	return null;
+	return {};
     }
 
     
@@ -90,10 +91,12 @@ class StarSidebar extends Component {
 	let _this = this;
 
 	this.ck.loadRecord(star.recordName, null, function(re) {	    
+
+	    console.log(re);
 	    
     	    var state = {
 		title: re.fields.title.value ? re.fields.title.value : 'non',
-		note: re.fields.note.value,
+		note: re.fields.note ? re.fields.note.value : "",
 		url: re.fields.url ? re.fields.url.value : ''
 	    };
 	    _this.setState(state);
@@ -144,17 +147,17 @@ class StarSidebar extends Component {
 
     }
 
-    loadGooglePlace(id) {
-	var request = {
-	    placeId: id
+    getStateByGooglePlace = this.getStateByGooglePlace.bind(this);
+    getStateByGooglePlace(place) {
+	let state = {
+	    title: place.name,
+	    address: place.formatted_address,
+	    url: place.website,
+	    note: createNoteFromGooglePlace(place)
 	};
-	console.log(id);
 
-	let _this = this;
-	let MAP = '__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED';
-	var service = new google.maps.places.PlacesService(window.map.context[MAP]);
-	service.getDetails(request, callback);
-
+	return state;
+	
 	function createNoteFromGooglePlace(place) {
 
 	    var photos = place.photos;
@@ -172,24 +175,25 @@ class StarSidebar extends Component {
 		
 	    }
 	    return `[View on Google Maps](`+place.url+`)` + md;
-    
+	    
 	}
 
-	function callback(place, status) {
+    }
+
+    loadGooglePlace(id) {
+	var request = {
+	    placeId: id
+	};
+
+	let _this = this;
+	let MAP = '__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED';
+	var service = new google.maps.places.PlacesService(window.map.context[MAP]);
+	service.getDetails(request, function (place, status) {
 	    if (status == google.maps.places.PlacesServiceStatus.OK) {
-
-		let state = {
-		    title: place.name,
-		    address: place.formatted_address,
-		    url: place.website,
-		    note: createNoteFromGooglePlace(place)
-		};
-
-		_this.setState(state);
-		
+		_this.setState(_this.getStateByGooglePlace(place));
 	    }
-	}
-
+	});
+			   
     }
     
     enterEditMode() {
@@ -215,31 +219,30 @@ class StarSidebar extends Component {
 
 	var star = {};
 	let _this = this;
+
+	this.setState({isSaving: true});
+
 	star.fields = {};
 
 	star.recordName = this.props.star.recordName ? this.props.star.recordName :  '';
 
-
 	star.fields.location = {latitude: this.state.coordinate.lat, longitude: this.state.coordinate.lng};
 	star.recordType = "Star";
 
-	if (this.newTitle == null) {
-	    this.newTitle = this.state.title;
-	    this.newNote = this.state.note;
-	    this.newURL = this.state.url;
-	}
-	
-	star.fields.title = this.newTitle;
-	star.fields.note = this.newNote;
+	star.fields.title = this.newTitle ? this.newTitle : this.state.title;
+	star.fields.note = this.newNote ? this.newNote : this.state.note;
 	star.fields.type = this.state.type >= 0 ? this.state.type : 0;
-	star.fields.url = this.newURL;
+	star.fields.url = this.newURL ? this.newURL : this.state.url;
 	
 	this.ck.saveRecord(star, function(record) {
 
+	    _this.setState({isSaving: false});
+
+	    console.log(record);
 	    _this.setState({
-		title: _this.newTitle,
-		url: _this.newURL,
-		note: _this.newNote,
+		title: star.fields.title,
+		url: star.fields.url,
+		note: star.fields.note,
 		editMode: false
 	    });
 	    
@@ -256,7 +259,7 @@ class StarSidebar extends Component {
     }
 
     titleChange(e) {
-	this.newTitle = e.target.value;
+	this.newTitle = e.target.value ? e.target.value : "Untitled";
     }
     urlChange(e) {
 	this.newURL = e.target.value;
@@ -274,12 +277,12 @@ class StarSidebar extends Component {
 	    </div>
 	      <div className='controls'>
 		{ !this.state.editMode ?
-		    (<button onClick={this.enterEditMode}>Edit</button>):
+		  (<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>{lang.edit}</button>):
 		  (
 		      <div>
-			<button onClick={this.remove}>Delete</button>
-			<button onClick={this.cancel}>Cancel</button> 
-			<button onClick={this.save}>Save</button>
+			  <button disabled={this.state.isSaving} className="btn btn-sm btn-danger" onClick={this.remove}>Delete</button>
+			<button disabled={this.state.isSaving}  className="btn btn-sm btn-secondary" onClick={this.cancel}>Cancel</button> 
+			<button disabled={this.state.isSaving}  className="btn btn-sm btn-primary" onClick={this.save}>Save</button>
 		      </div>
 		  )
 			}

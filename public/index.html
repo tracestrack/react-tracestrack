@@ -4,19 +4,27 @@
 
     <script>
 
+      var gm = document.createElement('script');
+      gm.type='text/javascript';
+	    
       var script = document.createElement('script');
       script.type='text/javascript';
       
 
       if (window.localStorage.getItem('lang') == 'zh-cn') {
 
+      gm.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=zh-cn';
+
       script.src = 'language/zh-cn.js';
       }
       else {
 
       script.src = 'language/en.js';
+
+      gm.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=en';
       }
 
+      document.getElementsByTagName('head')[0].appendChild(gm);
       document.getElementsByTagName('head')[0].appendChild(script);
 
     </script>
@@ -52,11 +60,8 @@
       gtag('config', 'UA-105325600-2');
     </script>
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places"></script>
-
   </head>
   <body>
-
 
     <noscript>
       You need to enable JavaScript to run this app.

@@ -13,7 +13,7 @@ _::-webkit-full-page-media, _:future, :root .sidebar-right {
     top: 0;
 
     overflow-y: scroll;
-    background-color: rgba(255, 255, 255, 1);  
+    background-color: rgba(255, 255, 255, 0.9);  
     backdrop-filter: blur(10px);
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
@@ -151,8 +151,7 @@ td input {
 }
 
 .star-type a {
-    padding: 5px 5px 2px 5px;
-    border-radius: 15px;
+    padding: 5px 5px 7px 5px;
     height: 14px;
 }
 
@@ -162,5 +161,10 @@ td input {
 }
 
 .selected {
-    border: 1px solid gray;
+
+    border-bottom: 2px solid blue;
+}
+
+.marked-area-header {
+    margin: 10px 0 0 10px;
 }

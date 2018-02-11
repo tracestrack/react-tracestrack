@@ -495,6 +495,7 @@ class CKComponent extends Component {
 				  participants,parentRecordName,fields,createShortGUID, callback);
 	}
 
+
 	if (recordName) {
 	    database.fetchRecords(recordName,options)
 		.then(function(response) {

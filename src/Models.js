@@ -8,12 +8,11 @@ export class MarkerType {
 }
 
 /** Star model is used to render detailsidebar */
-export function Star(coord, type, recordName, address, data) {
+export function Star(coord, type, recordName, data) {
     return {
 	coord: coord,
 	type: type,
 	recordName: recordName,
-	address: address,
 	data: data
     };
 }

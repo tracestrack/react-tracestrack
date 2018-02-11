@@ -6,5 +6,7 @@ lang = {
     help: "帮助",
 
     filter: "筛选",
-    setDefaultMap: "设当前地图为默认"
+    setDefaultMap: "设当前地图为默认",
+    edit: "编辑"
+    
 };
