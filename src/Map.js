@@ -83,116 +83,124 @@ export class OverlayManager {
 }
 
 export const Map = compose(
-  withProps({
-      googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=zh-cn",
-    loadingElement: <div style={{ height: `100%` }} />,
-      containerElement: <div className='mapContainer' />,
-      mapElement: <div style={{ height: `100%` }} />	  
+    withProps({
+	googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=zh-cn",
+	loadingElement: <div style={{ height: `100%` }} />,
+	containerElement: <div className='mapContainer' />,
+	mapElement: <div style={{ height: `100%` }} />	  
 
-  }),
-  withScriptjs,
-  withGoogleMap
+    }),
+    withScriptjs,
+    withGoogleMap
 )((props) =>
 
-    <GoogleMap
-      ref={props.onMapMounted}
-      defaultOptions={{
-	  mapTypeControlOptions: {
-              style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-              position: window.google.maps.ControlPosition.TOP_RIGHT
-	  },
-	  styles: AppleStyle,
-	  zoomControl: true,
-	  clickableIcons: true,
-	  fullscreenControl: false,
-	  minZoom: 5,
-	  maxZoom: 18,
-	  streetViewControlOptions: {
-              position: window.google.maps.ControlPosition.BOTTOM_CENTER
-	  }
-      }}
+  <GoogleMap
+  ref={props.onMapMounted}
+  defaultOptions={{
+      mapTypeControlOptions: {
+          style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+          position: window.google.maps.ControlPosition.TOP_RIGHT
+      },
+      styles: AppleStyle,
+      zoomControl: true,
+      clickableIcons: true,
+      fullscreenControl: false,
+      minZoom: 5,
+      maxZoom: 18,
+      streetViewControlOptions: {
+          position: window.google.maps.ControlPosition.BOTTOM_CENTER
+      }
+  }}
+  
+  zoom={props.zoom}
+  onClick={props.onMapLeftClick}
+  onZoomChanged={props.onZoomChanged}
+  onDragEnd={props.onDragEnd}
+  onRightClick={props.onMapRightClick}
+  >
+
+  {props.traces.map((trace, index) => {
+
+      console.log('xxxxx');
+      const onClick = () => props.onTraceClick(trace);
       
-      zoom={props.zoom}
-      onClick={props.onMapLeftClick}
-      onZoomChanged={props.onZoomChanged}
-      onDragEnd={props.onDragEnd}
-      onRightClick={props.onMapRightClick}
-      >
+      var coords = [];
 
-      {props.directions && <DirectionsRenderer directions={props.directions} options={{
-						   draggable: true,
-						   preserveViewport: true,
-						   suppressBicyclingLayer: true,
-						   suppressInfoWindows: true
-					       }}/>}
+      for (var i = 0; i < trace.detail.length; i += 2) {
+
+	  let gcj = transform.wgs2gcj(trace.detail[i]/1000000,trace.detail[i + 1]/1000000);
+	  coords.push({
+	      lat: gcj.lat,
+	      lng: gcj.lng
+	  });
+      }
       
+      var opt = {
+	  strokeColor: getColor(trace.type),
+	  strokeOpacity: 0.7,
+	  strokeWeight: trace.selected ? 5 : 2
+      };
 
-      {props.markers.map((marker, index) => {
-	  const onClick = () => props.onMarkerClick(marker);
+      console.log('sssss');
+      console.log(opt);
 
-	  let position = new window.google.maps.LatLng(
-	      marker.coord.lat, marker.coord.lng
-	  );
-
-	  var icon;
-	  
-	  switch (marker.type) {
-	  case MarkerType.red:
-	      icon = {url: RedStarImg, scaledSize: new window.google.maps.Size(16, 16)};
-	      break;
-	  case MarkerType.green:
-	      icon = {url: GreenStarImg, scaledSize: new window.google.maps.Size(16, 16)};
-	      break;
-	  case MarkerType.searchHit:
-	      //icon = {url: PinImg, scaledSize: new window.google.maps.Size(32, 32)};
-	      break;
-	  case MarkerType.new:
-	      //icon = {url: PinImg, scaledSize: new window.google.maps.Size(48, 48)};
-	      break;
-	  }
-	  
-	  return (
-	      <Marker
-		key={index}
-		icon={icon}
-		position={position}
-		title={(index + 1).toString()}
-		onClick={onClick}
-		>
-	      </Marker>
-	  );
-      })}
-    
-    {props.traces.map((trace, index) => {
-	const onClick = () => props.onTraceClick(trace);
-	
-	var coords = [];
-
-	for (var i = 0; i < trace.detail.length; i += 2) {
-
-	    let gcj = transform.wgs2gcj(trace.detail[i]/1000000,trace.detail[i + 1]/1000000);
-	    coords.push({
-		lat: gcj.lat,
-		lng: gcj.lng
-	    });
-	}
-	
-	var opt = {
-	    strokeColor: getColor(trace.type),
-	    strokeOpacity: 0.7,
-	    strokeWeight: trace.selected ? 5 : 2
-	};
-
-	return (
-	    <Polyline
-	      key={index}
-	      path={coords}
-	      options={opt}
-	      onClick={onClick}
+      return (
+	      <Polyline
+	  key={index}
+	  path={coords}
+	  options={opt}
+	  onClick={onClick}
 	      />
-	);
-    })}
-    </GoogleMap>
+      );
+  })}
+
+  {props.directions && <DirectionsRenderer directions={props.directions} options={{
+      draggable: true,
+      preserveViewport: true,
+      suppressBicyclingLayer: true,
+      suppressInfoWindows: true
+  }}/>} 
+  
+  {props.markers.map((marker, index) => {
+      const onClick = () => props.onMarkerClick(marker);
+
+      console.log('marker');
+
+      let position = new window.google.maps.LatLng(
+	  marker.coord.lat, marker.coord.lng
+      );
+
+      var icon;
+      
+      switch (marker.type) {
+      case MarkerType.red:
+	  icon = {url: RedStarImg, scaledSize: new window.google.maps.Size(16, 16)};
+	  break;
+      case MarkerType.green:
+	  icon = {url: GreenStarImg, scaledSize: new window.google.maps.Size(16, 16)};
+	  break;
+      case MarkerType.searchHit:
+	  //icon = {url: PinImg, scaledSize: new window.google.maps.Size(32, 32)};
+	  break;
+      case MarkerType.new:
+	  //icon = {url: PinImg, scaledSize: new window.google.maps.Size(48, 48)};
+	  break;
+      }
+      
+      return (
+	      <Marker
+	  key={index}
+	  icon={icon}
+	  position={position}
+	  title={(index + 1).toString()}
+	  onClick={onClick}
+	      >
+	      </Marker>
+      );
+  })}
+  
+
+  </GoogleMap>
  );
 
 
@@ -292,18 +300,18 @@ export class MapMapbox extends React.Component {
     render() {
 	return (
 
-	    <ReactMapGL
-	      ref={(m) => {if (m) {window.mapbox = m.getMap();}}} 
-	      mapStyle="mapbox://styles/strongwillow/cjd7lffbn85ny2tmo1l7zxjln"
-	      onLoad={this.updateTrace}
-	      mapboxApiAccessToken="pk.eyJ1Ijoic3Ryb25nd2lsbG93IiwiYSI6ImxKa2R1SEkifQ.iZ_vj1lvuvrAcUIl0ZE5XA"
-	      {...this.state.viewport}
-	      onViewportChange={(viewport) => {
-		      this.setState({viewport});
-		      this.props.onViewportChange(viewport);
-		      }
-		  }
-		  />
+		<ReactMapGL
+	    ref={(m) => {if (m) {window.mapbox = m.getMap();}}} 
+	    mapStyle="mapbox://styles/strongwillow/cjd7lffbn85ny2tmo1l7zxjln"
+	    onLoad={this.updateTrace}
+	    mapboxApiAccessToken="pk.eyJ1Ijoic3Ryb25nd2lsbG93IiwiYSI6ImxKa2R1SEkifQ.iZ_vj1lvuvrAcUIl0ZE5XA"
+	    {...this.state.viewport}
+	    onViewportChange={(viewport) => {
+		this.setState({viewport});
+		this.props.onViewportChange(viewport);
+	    }
+			     }
+		/>
 
 	);
     };

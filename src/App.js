@@ -12,12 +12,6 @@ import {Star, Trace, MarkerType, Coord} from './Models.js';
 var google = window.google;
 const lang = window.lang;
 
-/** Disable default infoWindow */
-if (google) {
-    google.maps.InfoWindow.prototype.set = function () {
-    };
-}
-
 window.checkLogin = function() {
     if (!window.userIdentity) {
 	alert("no");
@@ -199,7 +193,7 @@ class App extends Component {
     /** Traces are loaded */
     handleTracesLoad(re) {
 
-	var traces = this.state.traces;
+	var ret = [];
 
 	for (var it in re) {
 
@@ -209,20 +203,21 @@ class App extends Component {
 
 		let trace = Trace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
 
-		for (var it2 in traces) {
-		    if (traces[it2].recordName == re[it].recordName) {
-			traces.splice(it2, 1);
+		for (var it2 in ret) {
+		    if (ret[it2].recordName == re[it].recordName) {
+			ret.splice(it2, 1);
 			break;
 		    }
 		}
-		traces.push(trace);
+		ret.push(trace);
 		this.overlayManager.add(re[it].recordName, isDetail);
 	    }
 	}
 
 	this.setState({
-	    traces: traces
+	    traces: ret
 	});
+
     }
 
     /** Stars are loaded */
@@ -336,8 +331,16 @@ class App extends Component {
     /** Map is loaded */
     handleMapMounted(map) {
 
+
+	
 	window.map = map;
 	google = window.google;
+
+	/** Disable default infoWindow */
+	if (google) {
+	    google.maps.InfoWindow.prototype.set = function () {
+	    };
+	}
 
 	var input = document.getElementById('searchTextField');
 	input.setAttribute('spellcheck', 'false');
@@ -568,7 +571,6 @@ class App extends Component {
 
 	    googleMapURL={this.mapURL}
 	    zoom={this.state.zoom}
-	    ref={(m) => {this._map = m;}} 
 	    markers={this.state.markers}
 	    traces={this.state.traces}
 	    onMarkerClick={this.handleMarkerClick}
@@ -580,7 +582,6 @@ class App extends Component {
 	    onZoomChanged={this.handleMapBoundsChanged}
 	    directions={this.state.directions}
 	    
-
 		/>
 		</div>
 
