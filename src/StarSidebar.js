@@ -6,9 +6,7 @@ import RedStarImg from './img/star_red.png';
 import "./Sidebar.css";
 
 const lang = window.lang;
-
 const google = window.google;
-
 
 class StarSidebar extends Component {
 
@@ -123,7 +121,7 @@ class StarSidebar extends Component {
     
     loadAddress(latlng) {
 
-	var geocoder = new google.maps.Geocoder;
+	var geocoder = new window.google.maps.Geocoder;
 	let _this = this;
 	geocoder.geocode({'location': latlng}, function(results, status) {
 
@@ -187,9 +185,9 @@ class StarSidebar extends Component {
 
 	let _this = this;
 	let MAP = '__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED';
-	var service = new google.maps.places.PlacesService(window.map.context[MAP]);
+	var service = new window.google.maps.places.PlacesService(window.map.context[MAP]);
 	service.getDetails(request, function (place, status) {
-	    if (status == google.maps.places.PlacesServiceStatus.OK) {
+	    if (status == window.google.maps.places.PlacesServiceStatus.OK) {
 		_this.setState(_this.getStateByGooglePlace(place));
 	    }
 	});

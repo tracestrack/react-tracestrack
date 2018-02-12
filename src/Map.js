@@ -1,7 +1,7 @@
 import React from "react"
 import Component from "react"
 
-//import { DirectionsRenderer, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
+import { DirectionsRenderer, withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 import { MarkerType } from './Models.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
@@ -10,8 +10,6 @@ import exports from './transformation.js';
 import ReactMapGL from 'react-map-gl';
 
 import { compose, withProps } from "recompose"
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
-
 
 const google = window.google;
 const transform = exports;
@@ -86,10 +84,11 @@ export class OverlayManager {
 
 export const Map = compose(
   withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+      googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=zh-cn",
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
-    mapElement: <div style={{ height: `100%` }} />,
+      containerElement: <div className='mapContainer' />,
+      mapElement: <div style={{ height: `100%` }} />	  
+
   }),
   withScriptjs,
   withGoogleMap
@@ -99,8 +98,8 @@ export const Map = compose(
       ref={props.onMapMounted}
       defaultOptions={{
 	  mapTypeControlOptions: {
-              style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-              position: google.maps.ControlPosition.TOP_RIGHT
+              style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+              position: window.google.maps.ControlPosition.TOP_RIGHT
 	  },
 	  styles: AppleStyle,
 	  zoomControl: true,
@@ -109,7 +108,7 @@ export const Map = compose(
 	  minZoom: 5,
 	  maxZoom: 18,
 	  streetViewControlOptions: {
-              position: google.maps.ControlPosition.BOTTOM_CENTER
+              position: window.google.maps.ControlPosition.BOTTOM_CENTER
 	  }
       }}
       
@@ -131,7 +130,7 @@ export const Map = compose(
       {props.markers.map((marker, index) => {
 	  const onClick = () => props.onMarkerClick(marker);
 
-	  let position = new google.maps.LatLng(
+	  let position = new window.google.maps.LatLng(
 	      marker.coord.lat, marker.coord.lng
 	  );
 
@@ -139,16 +138,16 @@ export const Map = compose(
 	  
 	  switch (marker.type) {
 	  case MarkerType.red:
-	      icon = {url: RedStarImg, scaledSize: new google.maps.Size(16, 16)};
+	      icon = {url: RedStarImg, scaledSize: new window.google.maps.Size(16, 16)};
 	      break;
 	  case MarkerType.green:
-	      icon = {url: GreenStarImg, scaledSize: new google.maps.Size(16, 16)};
+	      icon = {url: GreenStarImg, scaledSize: new window.google.maps.Size(16, 16)};
 	      break;
 	  case MarkerType.searchHit:
-	      //icon = {url: PinImg, scaledSize: new google.maps.Size(32, 32)};
+	      //icon = {url: PinImg, scaledSize: new window.google.maps.Size(32, 32)};
 	      break;
 	  case MarkerType.new:
-	      //icon = {url: PinImg, scaledSize: new google.maps.Size(48, 48)};
+	      //icon = {url: PinImg, scaledSize: new window.google.maps.Size(48, 48)};
 	      break;
 	  }
 	  

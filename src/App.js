@@ -9,7 +9,7 @@ import {Map, OverlayManager, LoadedAreaManager} from './Map.js';
 import {Star, Trace, MarkerType, Coord} from './Models.js';
 
 
-const google = window.google;
+var google = window.google;
 const lang = window.lang;
 
 /** Disable default infoWindow */
@@ -337,6 +337,7 @@ class App extends Component {
     handleMapMounted(map) {
 
 	window.map = map;
+	google = window.google;
 
 	var input = document.getElementById('searchTextField');
 	input.setAttribute('spellcheck', 'false');
@@ -579,12 +580,7 @@ class App extends Component {
 	    onZoomChanged={this.handleMapBoundsChanged}
 	    directions={this.state.directions}
 	    
-	    containerElement={
-		    <div className='mapContainer' />
-	    }
-	    mapElement={
-		    <div style={{ height: `100%` }} />
-	    }
+
 		/>
 		</div>
 
