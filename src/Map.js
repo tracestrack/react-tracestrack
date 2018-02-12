@@ -1,11 +1,17 @@
-import React, { Component } from 'react';
-import { DirectionsRenderer, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
+import React from "react"
+import Component from "react"
+
+//import { DirectionsRenderer, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 import { MarkerType } from './Models.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
 import AppleStyle from './mapstyles/apple.json';
 import exports from './transformation.js';
 import ReactMapGL from 'react-map-gl';
+
+import { compose, withProps } from "recompose"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+
 
 const google = window.google;
 const transform = exports;
@@ -76,10 +82,19 @@ export class OverlayManager {
     clear() {
 	this.overlayDict = {};
     }
-    
 }
 
-export const Map = withGoogleMap(props => (
+export const Map = compose(
+  withProps({
+    googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+    loadingElement: <div style={{ height: `100%` }} />,
+    containerElement: <div style={{ height: `400px` }} />,
+    mapElement: <div style={{ height: `100%` }} />,
+  }),
+  withScriptjs,
+  withGoogleMap
+)((props) =>
+
     <GoogleMap
       ref={props.onMapMounted}
       defaultOptions={{
@@ -179,10 +194,10 @@ export const Map = withGoogleMap(props => (
 	);
     })}
     </GoogleMap>
-));
+ );
 
 
-export class MapMapbox extends Component {
+export class MapMapbox extends React.Component {
 
     
     updateWindowDimensions = this.updateWindowDimensions.bind(this);

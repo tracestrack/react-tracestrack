@@ -1,4 +1,4 @@
-lang = {
+var lang_en = {
     home: "Home",
     account: "Account",
     map: "Map",
@@ -6,5 +6,6 @@ lang = {
     help: "Help",
 
     filter: "Filter",
-    setDefaultMap: "Set as default"
+    setDefaultMap: "Set as default",
+    edit: "Edit"
 };

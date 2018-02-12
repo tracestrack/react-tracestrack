@@ -8,6 +8,7 @@ import SettingManager from './SettingManager.js';
 import {Map, OverlayManager, LoadedAreaManager} from './Map.js';
 import {Star, Trace, MarkerType, Coord} from './Models.js';
 
+
 const google = window.google;
 const lang = window.lang;
 
@@ -28,6 +29,11 @@ window.checkLogin = function() {
 var settingManager;
 
 class App extends Component {
+
+    constructor() {
+	super()
+	this.mapURL = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=zh-cn"
+    }
 
     state = {
 	zoom: 10,
@@ -558,6 +564,8 @@ class App extends Component {
 
 
 		<Map
+
+	    googleMapURL={this.mapURL}
 	    zoom={this.state.zoom}
 	    ref={(m) => {this._map = m;}} 
 	    markers={this.state.markers}

@@ -1,4 +1,4 @@
-lang = {
+var lang_zh_cn = {
     home: "主页",
     account: "帐号",
     map: "地图",
