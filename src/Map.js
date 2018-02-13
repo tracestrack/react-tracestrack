@@ -82,20 +82,12 @@ export class OverlayManager {
     }
 }
 
-export const Map = compose(
-    withProps({
-	googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=zh-cn",
-	loadingElement: <div style={{ height: `100%` }} />,
-	containerElement: <div className='mapContainer' />,
-	mapElement: <div style={{ height: `100%` }} />	  
-
-    }),
-    withScriptjs,
-    withGoogleMap
-)((props) =>
+export const Map = withScriptjs(withGoogleMap((props) =>
 
   <GoogleMap
   ref={props.onMapMounted}
+
+
   defaultOptions={{
       mapTypeControlOptions: {
           style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
@@ -119,9 +111,9 @@ export const Map = compose(
   onRightClick={props.onMapRightClick}
   >
 
-  {props.traces.map((trace, index) => {
 
-      console.log('xxxxx');
+ {props.traces.map((trace, index) => {
+
       const onClick = () => props.onTraceClick(trace);
       
       var coords = [];
@@ -140,9 +132,6 @@ export const Map = compose(
 	  strokeOpacity: 0.7,
 	  strokeWeight: trace.selected ? 5 : 2
       };
-
-      console.log('sssss');
-      console.log(opt);
 
       return (
 	      <Polyline
@@ -163,8 +152,6 @@ export const Map = compose(
   
   {props.markers.map((marker, index) => {
       const onClick = () => props.onMarkerClick(marker);
-
-      console.log('marker');
 
       let position = new window.google.maps.LatLng(
 	  marker.coord.lat, marker.coord.lng
@@ -201,8 +188,7 @@ export const Map = compose(
   
 
   </GoogleMap>
- );
-
+				      ))
 
 export class MapMapbox extends React.Component {
 
@@ -251,14 +237,11 @@ export class MapMapbox extends React.Component {
 	    }
 
 	    this.tracesRN.push(trace.recordName);
-	    
-	    console.log(trace);
 
 	    var coords = [];
 	    for (var k = 0; k < trace.detail.length; k += 2) {
 		coords.push([trace.detail[k+1] / 1000000, trace.detail[k] / 1000000]);
 	    }
-	    console.log(coords);
 
 	    window.mapbox.addLayer({
 		"id": trace.recordName,

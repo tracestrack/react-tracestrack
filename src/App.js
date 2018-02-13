@@ -82,7 +82,7 @@ class App extends Component {
 	
 	this._ck.saveRecord(settingManager.packRecord(), function (re) {
 	    _this.handleMapBoundsChanged();
-	    console.log(re);		
+	    //console.log(re);		
 	});
 
     }
@@ -193,31 +193,34 @@ class App extends Component {
     /** Traces are loaded */
     handleTracesLoad(re) {
 
-	var ret = [];
+	var _this = this;
+	this.setState(function(prevState, props) {
 
-	for (var it in re) {
+	    var ret = prevState.traces;
+	    
+	    for (var it in re) {
 
-	    let isDetail = re[it].fields.detail != undefined;
-	    if (this.overlayManager.shouldRedraw(re[it].recordName, isDetail)) {
-		let pts = re[it].fields.detail == undefined ? re[it].fields.medium.value : re[it].fields.detail.value;
+		let isDetail = re[it].fields.detail != undefined;
+		if (_this.overlayManager.shouldRedraw(re[it].recordName, isDetail)) {
+		    let pts = re[it].fields.detail == undefined ? re[it].fields.medium.value : re[it].fields.detail.value;
 
-		let trace = Trace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
+		    let trace = Trace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
 
-		for (var it2 in ret) {
-		    if (ret[it2].recordName == re[it].recordName) {
-			ret.splice(it2, 1);
-			break;
+		    for (var it2 in ret) {
+			if (ret[it2].recordName == re[it].recordName) {
+			    ret.splice(it2, 1);
+			    break;
+			}
 		    }
+		    ret.push(trace);
+		    _this.overlayManager.add(re[it].recordName, isDetail);
 		}
-		ret.push(trace);
-		this.overlayManager.add(re[it].recordName, isDetail);
 	    }
-	}
 
-	this.setState({
-	    traces: ret
+	    return {
+		traces: ret
+	    };
 	});
-
     }
 
     /** Stars are loaded */
@@ -569,6 +572,10 @@ class App extends Component {
 
 		<Map
 
+	    googleMapURL = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=zh-cn"
+	    loadingElement = {<div style={{ height: `100%` }} />}
+	    containerElement = {<div className='mapContainer' />}
+	    mapElement = {<div style={{ height: `100%` }} />}
 	    googleMapURL={this.mapURL}
 	    zoom={this.state.zoom}
 	    markers={this.state.markers}
