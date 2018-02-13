@@ -26,7 +26,12 @@ class App extends Component {
 
     constructor() {
 	super()
-	this.mapURL = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=zh-cn"
+
+	var lang = "en";
+	if (window.localStorage.getItem('lang') == 'zh-cn') {
+	    lang = 'zh-cn';
+	}
+	this.mapURL = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=" + lang;
     }
 
     state = {
@@ -572,7 +577,6 @@ class App extends Component {
 
 		<Map
 
-	    googleMapURL = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=zh-cn"
 	    loadingElement = {<div style={{ height: `100%` }} />}
 	    containerElement = {<div className='mapContainer' />}
 	    mapElement = {<div style={{ height: `100%` }} />}
