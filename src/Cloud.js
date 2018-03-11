@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
-var IS_DEV = false;
+var IS_DEV = true;
 const CloudKit = window.CloudKit;
 const zoneName = "Traces";
 var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc";
 var environment = "production";
 
 if (IS_DEV) {
-    apiToken = "1ae5c635886c99c2bd24df1248c23b737d580c16548356d51f24244630703e66";
+    apiToken = "4834ade0445f87ea8c21967fef1f0d75e341fbda16be5bcfbbd650a4121b8a7b";
     environment = "development";
 }
 

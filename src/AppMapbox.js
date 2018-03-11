@@ -19,8 +19,6 @@ class AppMapbox extends Component {
 	
 	window.document.write("<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />");
 
-
-
     }
 
     onMapLoad = this.onMapLoad.bind(this);

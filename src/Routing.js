@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Link
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 import App from './App';
 import Account from './Account';
@@ -19,5 +19,6 @@ const Routing = () => (
       <Route path="/mapbox" component={AppMapbox}/>
     </div>
   </Router>
-)
-export default Routing
+);
+
+export default Routing;

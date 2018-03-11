@@ -28,7 +28,6 @@ class TraceSidebar extends Component {
 		return {};
 	    }
 	    this.lastTraceRN = data.recordName;	    
-
 	    this.loadTrace(data);
 	    
 	    return {
@@ -111,6 +110,9 @@ class TraceSidebar extends Component {
 
 	    let data = re.fields;
 
+	    console.log(data);
+	    console.log(data.gpxFile);
+
 	    _this.trace = re;
 
 	    let date = new Date(data.startDate.value + data.secondsFromGMT.value * 1000);
@@ -125,7 +127,9 @@ class TraceSidebar extends Component {
 		elevation: data.elevation.value,
 		type: data.type.value,
 		linkingId: data.linkingId.value,
-		lastUpdate: new Date(re.modified.timestamp).toLocaleString()
+		lastUpdate: new Date(re.modified.timestamp).toLocaleString(),
+		fileSize: data.gpxFile ? (data.gpxFile.value.size / 1000).toFixed(2) : null,
+		downloadURL: data.gpxFile ? data.gpxFile.value.downloadURL : null
 		
 	    };
 	    _this.setState(states);
@@ -187,6 +191,13 @@ class TraceSidebar extends Component {
 		<tr>
 		<td className='td-trace'>Last update</td><td>{this.state.lastUpdate}</td>
 		</tr>
+
+
+	    {this.state.fileSize && (
+		<tr>
+		<td className='td-trace'></td><td><a href="{this.state.downloadURL}">Download ({this.state.fileSize} KB)</a></td>
+		</tr>
+	    )}
 
 		</tbody>
 		</table>

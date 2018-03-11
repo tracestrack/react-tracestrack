@@ -197,3 +197,19 @@ header, h1, td {
     float: left;
     width: 50px;
 }
+
+
+.pac-icon {
+    width: 0;
+    height: 0;
+}
+
+.pac-item {
+    padding: 3px;
+    text-shadow: none;
+}
+
+.gm-iv-address {
+    height: 56px !important;
+    width: 180px;
+}

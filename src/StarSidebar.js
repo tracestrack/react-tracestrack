@@ -270,8 +270,8 @@ class StarSidebar extends Component {
 	return (
 		<div className='sidebar-right'>
 		<div className='star-type'>
-		<a onClick={this.setRedStar} className={this.state.type==0?"selected":""}><img src={RedStarImg} className='starSet' /></a>
-		<a onClick={this.setGreenStar} className={this.state.type==1?"selected":""}><img src={GreenStarImg} className='starSet' /></a>
+		<a onClick={this.setRedStar} className={this.state.type==0?"selected":""}><img src={RedStarImg} className='starSet' />Not</a>
+		<a onClick={this.setGreenStar} className={this.state.type==1?"selected":""}><img src={GreenStarImg} className='starSet' />Been here</a>
 	    </div>
 	      <div className='controls'>
 		{ !this.state.editMode ?
