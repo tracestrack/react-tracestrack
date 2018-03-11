@@ -143,6 +143,7 @@ td input {
 .starSet {
     width: 16px;
     height: 16px;
+    marging-right: 3px;
 }
 
 .star-type {
