@@ -20,7 +20,6 @@ class FilterBox extends Component {
 	});
 	this.props.onFilterApply(b);
     }
-
     
     render() {
 	const {vals} = Types();
@@ -48,13 +47,13 @@ class FilterBox extends Component {
 
 
 	    <div className="box-apply">
-		<button type="button" onClick={this.handleApplyFilter} className="btn btn-primary">Apply</button>
+		<button type="button" onClick={this.handleApplyFilter} className="btn btn-primary btn-sm">Apply</button>
 
-		<button type="button" onClick={this.props.onCancel} className="btn btn-secondary">Cancel</button>
+		<button type="button" onClick={this.props.onCancel} className="btn btn-secondary btn-sm">Cancel</button>
 </div>
 
 		</div>
-	)
+	);
     }
     
 }

@@ -10,28 +10,32 @@ import {Star, Trace, MarkerType, Coord} from './Models.js';
 
 
 var google = window.google;
+var lStorage = window.localStorage;
 const lang = window.lang;
 
 window.checkLogin = function() {
     if (!window.userIdentity) {
 	alert("no");
-	return false
+	return false;
     }
     return true;
-}
+};
 
 var settingManager;
 
 class App extends Component {
 
     constructor() {
-	super()
+	super();
 
 	var lang = "en";
 	if (window.localStorage.getItem('lang') == 'zh-cn') {
 	    lang = 'zh-cn';
 	}
 	this.mapURL = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=" + lang;
+
+	this.lastResetTime = Date.now(); 
+
     }
 
     state = {
@@ -90,6 +94,10 @@ class App extends Component {
 	    //console.log(re);		
 	});
 
+	if (b.indexOf(7) || b.indexOf(8)) {
+	    this._ck.loadStars();
+	}
+
     }
 
     /** OnLoad */
@@ -126,12 +134,22 @@ class App extends Component {
 	let minLat = bounds.getSouthWest().lat();
 	let minLng = bounds.getSouthWest().lng();
 
-	let nMaxLat = bounds.getNorthEast().lat() + latDiff;
-	let nMaxLng = bounds.getNorthEast().lng() + lngDiff;
-	let nMinLat = bounds.getSouthWest().lat() - latDiff;
-	let nMinLng = bounds.getSouthWest().lng() - lngDiff;
+	let nMaxLat = bounds.getNorthEast().lat();// + latDiff;
+	let nMaxLng = bounds.getNorthEast().lng();// + lngDiff;
+	let nMinLat = bounds.getSouthWest().lat();// - latDiff;
+	let nMinLng = bounds.getSouthWest().lng();// - lngDiff;
 
-	
+	if (Date.now() - this.lastResetTime > 60*1000 && this.overlayManager.getCount() > 300) {
+	    // reset
+
+	    this.loadedAreaManager.clear();
+	    this.overlayManager.clear();
+	    this.setState({traces: []});
+
+	    this.lastResetTime = Date.now();
+
+	}	
+
 	let z = window.map.getZoom();
 	var loadDetail = z > 12;
 
@@ -151,7 +169,7 @@ class App extends Component {
     /** Login ok */
     handleLoginSuccess() {
 	if (window.userIdentity) {
-	    this._ck.loadStars();
+	    //this._ck.loadStars();
 
 	    //this._ck.demoDiscoverUserIdentityWithUserRecordName('_7022d50b9d797f3775d0930d397ceaf4');
 	    //this._ck.demoDiscoverAllUserIdentities();
@@ -167,6 +185,8 @@ class App extends Component {
 		    window.map.panTo(pos);
 		    
 		    _this.handleMapBoundsChanged();
+		    _this._ck.loadStars();
+		    
 		}
 		else {
 		    settingManager = new SettingManager(re[0]);
@@ -179,7 +199,13 @@ class App extends Component {
 
 		    _this.types = settingManager.getTypes();
 		    _this.handleMapBoundsChanged();
+
+		    if (_this.types.indexOf(7) || _this.types.indexOf(8)) {
+			_this._ck.loadStars();
+		    }
+
 		}
+
 
 	    });
 
@@ -222,8 +248,12 @@ class App extends Component {
 		}
 	    }
 
+
+
 	    return {
-		traces: ret
+		traces: ret,
+		dbTraceCount: _this.overlayManager.getCount()
+		
 	    };
 	});
     }
@@ -231,19 +261,26 @@ class App extends Component {
     /** Stars are loaded */
     handleStarsLoad(re) {
 
-	var markers = this.state.markers;
-
+	var markers = [];
+	var showS0 = (this.types.indexOf(7) > -1 ? true : false);
+	var showS1 = (this.types.indexOf(8) > -1 ? true : false);
+	
 	for (var it in re) {
 
 	    var fields = re[it].fields;
-	    
-	    var marker = Star(Coord(fields.location.value.latitude, fields.location.value.longitude), fields.type.value, re[it].recordName);
 
-	    markers.push(marker);
+	    if (showS0 && fields.type.value == 0 ||
+		showS1 && fields.type.value == 1) {
+
+		var marker = Star(Coord(fields.location.value.latitude, fields.location.value.longitude), fields.type.value, re[it].recordName);
+
+		markers.push(marker);
+	    }
 	}
 
 	this.setState({
-	    markers: markers
+	    markers: markers,
+	    dbStarCount: markers.length
 	});
 
     }
@@ -375,22 +412,11 @@ class App extends Component {
         }
 */	
 
-	/*
 	  map.getStreetView().addListener("visible_changed", function(e) {
 	    let v = map.getStreetView().getVisible();
 	    _this.setState({isPanoramaView: v});
 
-	    if (v) {
-		window.$("#apple-sign-in-button").addClass('hidden');
-		window.$("#apple-sign-out-button").addClass('hidden');
-	    }
-	    else {
-		window.$("#apple-sign-in-button").removeClass('hidden');
-		window.$("#apple-sign-out-button").removeClass('hidden');
-	    }
-
 	});
-	*/
 	
 	searchBox.addListener('places_changed', function() {
 	    var places = searchBox.getPlaces();
@@ -564,16 +590,17 @@ class App extends Component {
 		<CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSuccess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad}/>
 
 	    {
-		this.state.showStarSidebar && (
+		    !this.state.isPanoramaView && this.state.showStarSidebar && (
 			<StarSidebar star={this.state.selectedStar} ck={this._ck} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved}/>
 		)
 	    }	      
 	    {
-		this.state.showTraceSidebar && (
+		!this.state.isPanoramaView && this.state.showTraceSidebar && (
 			<TraceSidebar trace={this.state.selectedTrace} ck={this._ck} />
 		)
 	    }	      
 
+	    { !this.state.isPanoramaView && (<div className='xxxx'>{this.state.dbTraceCount}, {this.state.dbStarCount}</div>) }
 
 		<Map
 

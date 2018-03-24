@@ -213,3 +213,14 @@ header, h1, td {
     height: 56px !important;
     width: 180px;
 }
+
+.xxxx {
+    z-index: 1000;
+    background: #ffffff;
+    width: 30px;
+    height: 15px;
+    position: absolute;
+    top: 40px;
+    left: 6px;
+    font-size: 10px;
+}

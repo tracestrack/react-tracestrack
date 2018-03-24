@@ -604,7 +604,6 @@ class CKComponent extends Component {
 	    databaseScope,recordName,zoneName,ownerRecordName, callback
 	);
     }
-
     
     loadStars() {
 

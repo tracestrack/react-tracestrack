@@ -60,6 +60,7 @@ class AppMapbox extends Component {
 	    }
 	}
 
+	console.log(this.overlayManager.getCount());
 
 	console.log(traces);
 	this.setState({
@@ -145,6 +146,7 @@ class AppMapbox extends Component {
 	    console.log('loaded');
 	    _this.setState({isLoadingTraces: false});
 	}
+
     }
 
 

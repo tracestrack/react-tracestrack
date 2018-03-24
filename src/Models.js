@@ -39,10 +39,12 @@ export function Types() {
 	"Walking": 0,
 	"Cycling": 1,
 	"Running": 2,
-	"Vehicle": 3,
-	"Train": 4,
+	"Highway": 3,
+	"Railway": 4,
 	"Waterway": 5,
-	"Flight": 6
+	"Skyway": 6,
+	"Have been": 7,
+	"Want to go": 8
     };
 
 }

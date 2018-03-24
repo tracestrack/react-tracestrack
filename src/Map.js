@@ -1,5 +1,5 @@
-import React from "react"
-import Component from "react"
+import React from "react";
+import Component from "react";
 
 import { DirectionsRenderer, withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 import { MarkerType } from './Models.js';
@@ -9,7 +9,7 @@ import AppleStyle from './mapstyles/apple.json';
 import exports from './transformation.js';
 import ReactMapGL from 'react-map-gl';
 
-import { compose, withProps } from "recompose"
+import { compose, withProps } from "recompose";
 
 const google = window.google;
 const transform = exports;
@@ -65,6 +65,10 @@ export class OverlayManager {
     constructor() {
 	this.overlayDict = {};
     }
+
+    getCount() {
+	return Object.keys(this.overlayDict).length;
+    }
     
     shouldRedraw(recordName, isDetail) {
 	if (this.overlayDict[recordName] == null) {
@@ -86,8 +90,6 @@ export const Map = withScriptjs(withGoogleMap((props) =>
 
   <GoogleMap
   ref={props.onMapMounted}
-
-
   defaultOptions={{
       mapTypeControlOptions: {
           style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
@@ -97,7 +99,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
       zoomControl: true,
       clickableIcons: true,
       fullscreenControl: false,
-      minZoom: 5,
+      minZoom: 8,
       maxZoom: 18,
       streetViewControlOptions: {
           position: window.google.maps.ControlPosition.BOTTOM_CENTER
@@ -188,7 +190,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
   
 
   </GoogleMap>
-				      ))
+					     ));
 
 export class MapMapbox extends React.Component {
 
@@ -199,6 +201,25 @@ export class MapMapbox extends React.Component {
 	this.updateWindowDimensions();
 	window.addEventListener('resize', this.updateWindowDimensions);
 	this.tracesRN = [];
+
+	this.style = {
+        "version": 8,
+        "sources": {
+            "raster-tiles": {
+                "type": "raster",
+                "url": "mapbox://mapbox.streets",
+                "tileSize": 256
+            }
+        },
+        "layers": [{
+            "id": "simple-tiles",
+            "type": "raster",
+            "source": "raster-tiles",
+            "minzoom": 6,
+            "maxzoom": 17
+        }]
+	};
+
     }
 
     componentWillUnmount() {
@@ -263,7 +284,8 @@ export class MapMapbox extends React.Component {
 		},
 		"paint": {
 		    "line-color": "red",
-		    "line-width": 1
+		    'line-opacity': .4,
+		    "line-width": 2
 		}
 	    });
 	}
@@ -285,8 +307,10 @@ export class MapMapbox extends React.Component {
 
 		<ReactMapGL
 	    ref={(m) => {if (m) {window.mapbox = m.getMap();}}} 
-	    mapStyle="mapbox://styles/strongwillow/cjd7lffbn85ny2tmo1l7zxjln"
+		  mapStyle={this.style}
 	    onLoad={this.updateTrace}
+		  minZoom={6}
+		  maxZoom={16}
 	    mapboxApiAccessToken="pk.eyJ1Ijoic3Ryb25nd2lsbG93IiwiYSI6ImxKa2R1SEkifQ.iZ_vj1lvuvrAcUIl0ZE5XA"
 	    {...this.state.viewport}
 	    onViewportChange={(viewport) => {
