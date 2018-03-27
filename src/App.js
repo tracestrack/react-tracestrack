@@ -278,6 +278,8 @@ class App extends Component {
 	    }
 	}
 
+	console.log(markers);
+
 	this.setState({
 	    markers: markers,
 	    dbStarCount: markers.length

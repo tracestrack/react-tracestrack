@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {SiteHeader, SiteFooter} from './Account.js';
 import CKComponent from './Cloud.js';
-import ReactTable from 'react-table'
-import 'react-table/react-table.css'
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 import {formatDistance, formatSpeed, formatDate, formatDuration} from './Formatter.js';
 
 class Table extends React.Component {
@@ -11,24 +11,33 @@ class Table extends React.Component {
 	super(props);
     }
 
+    delete(rn, title) {
+	console.log(this.props);
+	this.props.onDelete(rn, title);
+    }
+    
     render() {
 	return (<table className="activity-table">
+		<tbody>
 		<tr>
 		<th>Path</th>
 		<th width="200">Title</th>
 		<th width="200">Date</th>
 		</tr>
 		
-		{this.props.traces.map((row) => 
-				       <tr>
+		{this.props.traces.map((row) =>
+				       
+				       <tr key={row.recordName}>
 				       <td>{row.path}</td>
 				       <td>{row.title}</td>
 				       <td>{row.date}</td>
+				       <td><button record={row.recordName} onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
 				       </tr>
 				       
 				      )}
+		</tbody>
 		</table>
-	       )
+	       );
     }
 }
 
@@ -39,6 +48,20 @@ class Manage extends React.Component {
 	this.state = {traces: []};
     }
 
+    onDelete = this.onDelete.bind(this);
+    onDelete (recordName, title) {
+	var _this = this;
+	if (window.confirm("You're going to delete trace: \n" + title)) {
+	    _this.ck.removeRecord(recordName, function(p) {
+		console.log("done", p);
+
+		_this.traces = [];
+		_this.ck.loadTracesOrderByDate(null, _this.renderRecords);
+
+	    });
+	}
+    }
+    
     renderRecords = this.renderRecords.bind(this);
     renderRecords(records) {
 
@@ -64,19 +87,19 @@ class Manage extends React.Component {
 	if (window.userIdentity) {
 
 	    this.traces = [];	    
-	    this._ck.loadTracesOrderByDate(null, this.renderRecords);
+	    this.ck.loadTracesOrderByDate(null, this.renderRecords);
 	}	
     }
 
     loadMore = this.loadMore.bind(this);
     loadMore() {
-	    this._ck.loadTracesOrderByDateNext(this.renderRecords);
+	    this.ck.loadTracesOrderByDateNext(this.renderRecords);
     }
 
     removeDuplis = this.removeDuplis.bind(this);
     removeDuplis() {
 	var _this = this;
-	this._ck.loadTracesOrderByDateNext(function(records) {
+	this.ck.loadTracesOrderByDateNext(function(records) {
 
 	    document.body.scrollTop = document.body.scrollHeight;
 	    _this.renderRecords(records);
@@ -96,7 +119,7 @@ class Manage extends React.Component {
 
 	    if (window.confirm("You have " + Object.keys(m).length + " unique Traces. Found " + (traces.length - Object.keys(m).length) + " duplicates. Are you sure to remove them?")) {
 
-		var count = 0
+		var count = 0;
 		Object.keys(m).forEach(function(key) {
 
 		    for (var i = 0; i < m[key].length - 1; i++) {
@@ -105,14 +128,14 @@ class Manage extends React.Component {
 
 			    return function(k) {
 
-				_this._ck.removeRecord(m[key][k].recordName, function(p) {
+				_this.ck.removeRecord(m[key][k].recordName, function(p) {
 				    console.log("done", p);
 				});
 			    }(i);
 
 			}, 600 * count);
 		    }
-		})
+		});
 
 	    }
 	});
@@ -123,11 +146,11 @@ class Manage extends React.Component {
 	return (
 		<div className='default'>
 
-		<CKComponent ref={(ck) => {this._ck = ck;}} onLoginSuccess={this.handleLoginSuccess} />
+		<CKComponent ref={(_ck) => {this.ck = _ck;}} onLoginSuccess={this.handleLoginSuccess} />
 		
 		<SiteHeader selected='activities' />
 
-		<Table traces={this.state.traces}/>
+		<Table onDelete={this.onDelete} traces={this.state.traces}/>
 
 	    <center>
 		<button className="btn btn-primary" onClick={this.loadMore}>Load More</button>
