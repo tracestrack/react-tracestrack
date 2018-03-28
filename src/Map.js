@@ -14,6 +14,8 @@ import { compose, withProps } from "recompose";
 const google = window.google;
 const transform = exports;
 
+var visited = false;
+
 function getColor(type) {
     switch (type) {
     case 0:
@@ -163,14 +165,18 @@ export const Map = withScriptjs(withGoogleMap((props) =>
 	  marker.coord.lat, marker.coord.lng
       );
 
+      if (window.map.getBounds().contains(position) == false) {
+	  return;
+      }
+
       var icon;
       
       switch (marker.type) {
       case MarkerType.red:
-	  icon = {url: RedStarImg, scaledSize: new window.google.maps.Size(16, 16)};
+	  icon = {url: RedStarImg, scaledSize: new window.google.maps.Size(24, 24)};
 	  break;
       case MarkerType.green:
-	  icon = {url: GreenStarImg, scaledSize: new window.google.maps.Size(16, 16)};
+	  icon = {url: GreenStarImg, scaledSize: new window.google.maps.Size(24, 24)};
 	  break;
       case MarkerType.searchHit:
 	  //icon = {url: PinImg, scaledSize: new window.google.maps.Size(32, 32)};
@@ -179,7 +185,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
 	  //icon = {url: PinImg, scaledSize: new window.google.maps.Size(48, 48)};
 	  break;
       }
-      
+
       return (
 	      <Marker
 	  key={index}

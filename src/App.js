@@ -134,10 +134,10 @@ class App extends Component {
 	let minLat = bounds.getSouthWest().lat();
 	let minLng = bounds.getSouthWest().lng();
 
-	let nMaxLat = bounds.getNorthEast().lat();// + latDiff;
-	let nMaxLng = bounds.getNorthEast().lng();// + lngDiff;
-	let nMinLat = bounds.getSouthWest().lat();// - latDiff;
-	let nMinLng = bounds.getSouthWest().lng();// - lngDiff;
+	let nMaxLat = bounds.getNorthEast().lat() + latDiff * 0.01;
+	let nMaxLng = bounds.getNorthEast().lng() + lngDiff * 0.01;
+	let nMinLat = bounds.getSouthWest().lat() - latDiff * 0.01;
+	let nMinLng = bounds.getSouthWest().lng() - lngDiff * 0.01;
 
 	if (Date.now() - this.lastResetTime > 60*1000 && this.overlayManager.getCount() > 300) {
 	    // reset
@@ -289,8 +289,6 @@ class App extends Component {
 		markers.push(marker);
 	    }
 	}
-
-	console.log(markers);
 
 	this.setState({
 	    markers: markers,
