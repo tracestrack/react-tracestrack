@@ -224,3 +224,12 @@ header, h1, td {
     left: 6px;
     font-size: 10px;
 }
+
+.controls > div > button {
+    margin-left: 10px;
+}
+
+.controls > div > div {
+    float:left;
+}
+

@@ -44,7 +44,6 @@ class TraceSidebar extends Component {
 		sharedBy: (data.share ? "Shared by " + this.ck.getUserNameByRecordName(data.share.zoneID.ownerRecordName) : 'Share')
 
 	    };
-
 	}
 	
 	return {
@@ -57,6 +56,19 @@ class TraceSidebar extends Component {
 	this.setState({editMode: true});
     }
 
+    delete = this.delete.bind(this);
+    delete() {
+	if (window.confirm("Are you sure to delete this trace?")) {
+	    var rn = this.state.recordName;
+
+	    var _this = this;
+	    this.ck.removeRecord(rn, function(p) {
+		_this.props.onTraceDeleted(rn);
+	    });
+
+	}
+    }
+    
     save = this.save.bind(this);
     save() {
 	var trace = {};
@@ -155,8 +167,9 @@ class TraceSidebar extends Component {
 			(<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>Edit</button>):
 		      (
 			  <div>
+			    <div>			    <button className="btn btn-sm btn-danger" onClick={this.delete}>Delete</button></div>
 			    <button className="btn btn-sm btn-secondary" onClick={this.cancel}>Cancel</button>
-			    <button className="btn btn-sm btn-danger" onClick={this.save}>Save</button>
+			    <button className="btn btn-sm btn-primary" onClick={this.save}>Save</button>
 			  </div>
 		      )
 		    }

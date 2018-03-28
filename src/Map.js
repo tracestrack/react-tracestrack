@@ -81,6 +81,10 @@ export class OverlayManager {
 	this.overlayDict[recordName] = isDetail;
     }
 
+    remove(recordName) {
+	delete this.overlayDict[recordName];
+    }
+
     clear() {
 	this.overlayDict = {};
     }

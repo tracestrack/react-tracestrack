@@ -221,6 +221,20 @@ class App extends Component {
 	});
     }
 
+    handleTraceDeleted = this.handleTraceDeleted.bind(this);
+    handleTraceDeleted(rn) {
+	this.overlayManager.remove(rn);
+	
+	var traces = this.state.traces.filter(e => e.recordName != rn);
+
+	this.setState({
+	    traces: traces,
+	    showTraceSidebar: false,
+	    dbTraceCount: this.overlayManager.getCount()
+	});
+
+    }
+
     /** Traces are loaded */
     handleTracesLoad(re) {
 
@@ -247,8 +261,6 @@ class App extends Component {
 		    _this.overlayManager.add(re[it].recordName, isDetail);
 		}
 	    }
-
-
 
 	    return {
 		traces: ret,
@@ -598,7 +610,7 @@ class App extends Component {
 	    }	      
 	    {
 		!this.state.isPanoramaView && this.state.showTraceSidebar && (
-			<TraceSidebar trace={this.state.selectedTrace} ck={this._ck} />
+		    <TraceSidebar trace={this.state.selectedTrace} ck={this._ck} onTraceDeleted={this.handleTraceDeleted}/>
 		)
 	    }	      
 
