@@ -32,7 +32,7 @@ class App extends Component {
 	if (window.localStorage.getItem('lang') == 'zh-cn') {
 	    lang = 'zh-cn';
 	}
-	this.mapURL = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjNn0dwi7NB7LCow4t7F-1whdZJS3xPY&libraries=places&language=" + lang;
+	this.mapURL = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAiFrzH5XL9pCzQ7AYcBafwUNF8usBm2eU&libraries=places&language=" + lang;
 
 	this.lastResetTime = Date.now(); 
 

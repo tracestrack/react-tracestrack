@@ -7,7 +7,7 @@ var apiToken = "9a1954490c6dcee9fe5d3c952d609e722c27017be3400c39b6e1033aed2a38dc
 var environment = "production";
 
 if (IS_DEV) {
-    apiToken = "4834ade0445f87ea8c21967fef1f0d75e341fbda16be5bcfbbd650a4121b8a7b";
+    apiToken = "531a47a440ec43ac2170b46411fcc0eeca13e7688c39dc8acb9ff9a57a5aecc3";
     environment = "development";
 }
 
