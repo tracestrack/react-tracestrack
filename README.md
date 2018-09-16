@@ -1,9 +1,9 @@
 # Traces.website
 
-This is an open source online website for [Traces app](http://www.tsingtsai.com/traces/ios/).
+This is an open source online website for [Traces app](http://traces.website/).
 
-Tech stack are:
+Things used:
 
-* React
-* CloudKit
+* Facebook React
+* Apple CloudKit
 * Google Maps
