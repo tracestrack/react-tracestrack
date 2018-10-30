@@ -29,8 +29,8 @@ export class SiteHeader extends React.Component {
 	      <div className="inner">
 		<h3 className="masthead-brand">Traces</h3>
 		<nav className="nav nav-masthead">
-                <a className="nav-link" href="http://traces.website">{lang.home}</a>
-                <a className="nav-link" href="/">{lang.map}</a>
+                <a className="nav-link" href="/">{lang.home}</a>
+                <a className="nav-link" href="/map">{lang.map}</a>
 		  {
 		      (this.state.selected=='account') && 
 			  (<a className="nav-link active" href="/account">{lang.account}</a>)
@@ -45,7 +45,7 @@ export class SiteHeader extends React.Component {
 		    (<a className="nav-link " href="/activities">{lang.activities}</a>)
 		  }
 	    
-                <a className="nav-link" href="http://traces.website/help">{lang.help}</a>
+                <a className="nav-link" href="/help">{lang.help}</a>
 
 
 

@@ -13,7 +13,7 @@ import AppMapbox from './AppMapbox';
 const Routing = () => (
   <Router>
     <div>
-      <Route exact path="/" component={App}/>
+      <Route exact path="/map" component={App}/>
       <Route path="/account" component={Account}/>
       <Route path="/activities" component={Manage}/>
       <Route path="/mapbox" component={AppMapbox}/>
