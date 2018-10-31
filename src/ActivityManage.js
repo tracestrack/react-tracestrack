@@ -41,7 +41,7 @@ class Table extends React.Component {
     }
 }
 
-class Manage extends React.Component {
+class ActivityManage extends React.Component {
 
     constructor(props) {
 	super(props);
@@ -165,4 +165,4 @@ class Manage extends React.Component {
 }
 
 
-export default Manage;
+export default ActivityManage;

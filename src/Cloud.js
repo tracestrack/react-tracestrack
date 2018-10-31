@@ -645,6 +645,35 @@ class CKComponent extends Component {
 	console.log(box);
 	this.loadTraces(box[0], box[1], box[2], box[3], this.lastLoadDetail, this.lastFinishCallback);
     }
+
+    loadStarsOrderByDate(continuationMarker, callback, isLoadAll, doneCallback) {
+	var databaseScope = "PRIVATE";
+	var ownerRecordName = null;
+	var recordType = "Star";
+	var desiredKeys = ["type", "location", "title"];
+	var sortByField = "___createTime";
+	var ascending = false;
+	var latitude = null;
+	var longitude = null;
+	var _this = this;
+
+
+	
+	this.demoPerformQuery(
+	    databaseScope,zoneName,ownerRecordName,recordType,
+	    desiredKeys,sortByField,ascending,latitude,longitude,[], null, function(records) {
+		if (callback) {
+		    callback(records);
+
+		}
+
+	    }, function() {
+		if (doneCallback) {
+		    doneCallback();
+		}
+	    }, true);
+
+    }
    
     loadTracesOrderByDateNext(callback, isLoadAll, doneCallback) {
 	this.loadTracesOrderByDate(this.continuationMarker, callback, isLoadAll, doneCallback);	

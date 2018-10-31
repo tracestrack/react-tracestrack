@@ -3,6 +3,7 @@ var lang_zh_cn = {
     account: "帐号",
     map: "地图",
     activities: "活动",
+    stars: "Stars",
     help: "帮助",
 
     filter: "筛选",

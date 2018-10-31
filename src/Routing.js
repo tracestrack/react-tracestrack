@@ -7,7 +7,8 @@ import {
 
 import App from './App';
 import Account from './Account';
-import Manage from './Manage';
+import ActivityManage from './ActivityManage';
+import StarManage from './StarManage';
 import AppMapbox from './AppMapbox';
 
 const Routing = () => (
@@ -15,7 +16,8 @@ const Routing = () => (
     <div>
       <Route exact path="/map" component={App}/>
       <Route path="/account" component={Account}/>
-      <Route path="/activities" component={Manage}/>
+      <Route path="/activities" component={ActivityManage}/>
+      <Route path="/stars" component={StarManage}/>
       <Route path="/mapbox" component={AppMapbox}/>
     </div>
   </Router>

@@ -208,7 +208,7 @@ class TraceSidebar extends Component {
 
 	    {this.state.fileSize && (
 		<tr>
-		<td className='td-trace'></td><td><a href="{this.state.downloadURL}">Download ({this.state.fileSize} KB)</a></td>
+		<td className='td-trace'></td><td><a target='_blank' href={this.state.downloadURL}>Download ({this.state.fileSize} KB)</a></td>
 		</tr>
 	    )}
 

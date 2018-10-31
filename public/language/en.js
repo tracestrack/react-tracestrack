@@ -3,6 +3,7 @@ var lang_en = {
     account: "Account",
     map: "Map",
     activities: "Activities",
+    stars: "Stars",
     help: "Help",
 
     filter: "Filter",

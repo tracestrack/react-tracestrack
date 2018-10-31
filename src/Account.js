@@ -45,6 +45,13 @@ export class SiteHeader extends React.Component {
 		    (<a className="nav-link " href="/activities">{lang.activities}</a>)
 		  }
 	    
+	    {
+		      (this.state.selected=='stars') && 
+		    (<a className="nav-link active" href="/stars">{lang.stars}</a>)
+			  ||
+		    (<a className="nav-link " href="/stars">{lang.stars}</a>)
+		  }
+	    
                 <a className="nav-link" href="/help">{lang.help}</a>
 
 
