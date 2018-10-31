@@ -149,14 +149,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
 	  onClick={onClick}
 	      />
       );
-  })}
-
-  {props.directions && <DirectionsRenderer directions={props.directions} options={{
-      draggable: true,
-      preserveViewport: true,
-      suppressBicyclingLayer: true,
-      suppressInfoWindows: true
-  }}/>} 
+ })};
   
   {props.markers.map((marker, index) => {
       const onClick = () => props.onMarkerClick(marker);
@@ -174,9 +167,11 @@ export const Map = withScriptjs(withGoogleMap((props) =>
       switch (marker.type) {
       case MarkerType.red:
 	  icon = {url: RedStarImg, scaledSize: new window.google.maps.Size(24, 24)};
+	  console.log("type red");
 	  break;
       case MarkerType.green:
 	  icon = {url: GreenStarImg, scaledSize: new window.google.maps.Size(24, 24)};
+	  console.log("type green");
 	  break;
       case MarkerType.searchHit:
 	  //icon = {url: PinImg, scaledSize: new window.google.maps.Size(32, 32)};
@@ -184,11 +179,11 @@ export const Map = withScriptjs(withGoogleMap((props) =>
       case MarkerType.new:
 	  //icon = {url: PinImg, scaledSize: new window.google.maps.Size(48, 48)};
 	  break;
-      }
+      };
 
       return (
 	      <Marker
-	  key={index}
+	  key={marker.recordName}
 	  icon={icon}
 	  position={position}
 	  title={(index + 1).toString()}
@@ -197,10 +192,10 @@ export const Map = withScriptjs(withGoogleMap((props) =>
 	      </Marker>
       );
   })}
-  
+
 
   </GoogleMap>
-					     ));
+));
 
 export class MapMapbox extends React.Component {
 

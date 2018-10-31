@@ -23,3 +23,7 @@ export function formatDuration(sec_num) {
     if (seconds < 10) {seconds = "0"+seconds;}
     return hours+':'+minutes+':'+seconds;
 }
+
+export function formatCoordinate(lat, lng) {
+    return lat.toFixed(6) + ", " + lng.toFixed(6);
+}

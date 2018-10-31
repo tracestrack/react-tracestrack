@@ -3,7 +3,7 @@ import {SiteHeader, SiteFooter} from './Account.js';
 import CKComponent from './Cloud.js';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import {formatDistance, formatSpeed, formatDate, formatDuration} from './Formatter.js';
+import {formatCoordinate, formatDistance, formatSpeed, formatDate, formatDuration} from './Formatter.js';
 
 class Table extends React.Component {
 
@@ -20,19 +20,22 @@ class Table extends React.Component {
 	return (<table className="activity-table">
 		<tbody>
 		<tr>
-		<th>Path</th>
+
 		<th width="200">Title</th>
-		<th width="200">Date</th>
+		<th width="200">Creation</th>
 		<th width="200">Coordinate</th>
+		<th>Type</th>
+		<th width="200">Country</th>
 		</tr>
 		
 		{this.props.stars.map((row) =>
 				       
 				       <tr key={row.recordName}>
-				       <td>{row.type}</td>
 				       <td>{row.title}</td>
 				       <td>{row.datetime}</td>
 				       <td>{row.coordinate}</td>
+				       <td>{row.type}</td>
+				       <td>NL</td>
 				       <td><button record={row.recordName} onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
 				       </tr>
 				       
@@ -56,7 +59,6 @@ class StarManage extends React.Component {
 	if (window.confirm("You're going to delete trace: \n" + title)) {
 	    _this.ck.removeRecord(recordName, function(p) {
 		console.log("done", p);
-
 		_this.traces = [];
 		_this.ck.loadTracesOrderByDate(null, _this.renderRecords);
 
@@ -74,10 +76,10 @@ class StarManage extends React.Component {
 	    let date = new Date(records[i].created.timestamp);
 	    
 	    this.stars.push({title: records[i].fields.title.value,
-			     type: records[i].fields.type.value,
+			     type: records[i].fields.type.value == 1?"Visisted":"Want to visit",
 			     recordName: records[i].recordName,
 			     datetime: formatDate(date),
-			     coordinate: records[i].fields.location.value.latitude + ", " + records[i].fields.location.value.longitude
+			     coordinate: formatCoordinate(records[i].fields.location.value.latitude, records[i].fields.location.value.longitude)
 			});
 	}		
 

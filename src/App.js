@@ -273,7 +273,7 @@ class App extends Component {
     /** Stars are loaded */
     handleStarsLoad(re) {
 
-	var markers = [];
+	var markers = this.state.markers;
 	var showS0 = (this.types.indexOf(7) > -1 ? true : false);
 	var showS1 = (this.types.indexOf(8) > -1 ? true : false);
 	
