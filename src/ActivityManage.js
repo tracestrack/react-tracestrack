@@ -20,14 +20,16 @@ class Table extends React.Component {
 	return (<table className="activity-table">
 		<tbody>
 		<tr>
+		<th width="50"/>
 		<th>Path</th>
 		<th width="200">Title</th>
 		<th width="200">Date</th>
 		</tr>
 		
-		{this.props.traces.map((row) =>
+		{this.props.traces.map((row,id) =>
 				       
 				       <tr key={row.recordName}>
+				       <td>{id}</td>
 				       <td>{row.path}</td>
 				       <td>{row.title}</td>
 				       <td>{row.date}</td>

@@ -233,3 +233,20 @@ header, h1, td {
     float:left;
 }
 
+
+.countriesVisisted {
+    width: 1200px;
+    margin: auto;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.countriesVisisted > span {
+    padding: 5px;
+}
+
+.starFooter {
+
+    color: white;
+}
+    

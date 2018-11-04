@@ -17,7 +17,9 @@ class Table extends React.Component {
     }
     
     render() {
-	return (<table className="activity-table">
+	return (
+	    
+	    <table className="activity-table">
 		<tbody>
 		<tr>
 		<th width="40"></th>
@@ -51,7 +53,8 @@ class StarManage extends React.Component {
 
     constructor(props) {
 	super(props);
-	this.state = {stars: [], hasMore: true};
+	this.state = {stars: [], hasMore: true, countries_visited: []};
+	this.countries_visited_dict = {};
     }
 
     onDelete = this.onDelete.bind(this);
@@ -80,6 +83,7 @@ class StarManage extends React.Component {
 	    for (var i in _this.stars) {
 		var it = _this.stars[i];
 		if (it.countryCode == null) {
+
 		    modified = true;
 		    
 		    window.jQuery.getJSON("https://api.tomtom.com/search/2/reverseGeocode/" + it.coordinate +".json?key=rAdhraHZaRG4cJg9j9umkAW8u9tZRxs1", function( data ) {
@@ -110,9 +114,11 @@ class StarManage extends React.Component {
 	    }
 	}, 2000);
     }
-    
+
     renderRecords = this.renderRecords.bind(this);
     renderRecords(records) {
+
+	var countries_visited = this.state.countries_visited;
 
 	for (var i in records) {
 
@@ -126,9 +132,21 @@ class StarManage extends React.Component {
 			     countryCode: records[i].fields.countryCode ? records[i].fields.countryCode.value : null,
 			     countrySubdivision: records[i].fields.countrySubdivision ? records[i].fields.countrySubdivision.value : null
 			});
+
+	    if (records[i].fields.countryCode && records[i].fields.type.value == 1) {
+		let tmp = records[i].fields.countryCode.value;
+		if (tmp != "" && tmp != "-") {
+		    if (this.countries_visited_dict[tmp] == null) {
+			this.countries_visited_dict[tmp] = 1;
+			countries_visited.push(tmp);
+		    }
+		}	
+	    }
+		
 	}		
 
-	this.setState({stars: this.stars});
+	console.log(countries_visited);
+	this.setState({stars: this.stars, countries_visited: countries_visited});
 
     };
     
@@ -158,12 +176,29 @@ class StarManage extends React.Component {
 		
 		<SiteHeader selected='stars' />
 
+
+	    <center>
+	      { this.state.hasMore && (<button className="btn btn-primary" onClick={this.loadMore}>Load More</button>) }
+
+		<button className="btn btn-primary" onClick={this.updateCountryCode}>Update country code</button>
+		   
+	    </center>
+		
+		<div className="countriesVisisted">
+		  <h5>Countries visited in the following list [{this.state.countries_visited.length}]:</h5>
+		    {this.state.countries_visited.map((row,i) =>
+						      <span>{row}</span>
+						     )}
+		</div>
+		
 		<Table onDelete={this.onDelete} stars={this.state.stars}/>
 
 	    <center>
 	      { this.state.hasMore && (<button className="btn btn-primary" onClick={this.loadMore}>Load More</button>) }
 
 		<button className="btn btn-primary" onClick={this.updateCountryCode}>Update country code</button>
+
+	    <p className="starFooter">Country code is powered by TomTom API</p>
 		   
 		</center>
 		
