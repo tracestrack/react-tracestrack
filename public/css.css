@@ -217,11 +217,11 @@ header, h1, td {
 .xxxx {
     z-index: 1000;
     background: #ffffff;
-    width: 30px;
+    width: 80px;
     height: 15px;
     position: absolute;
-    top: 40px;
-    left: 6px;
+    bottom: 5px;
+    left: 80px;
     font-size: 10px;
 }
 

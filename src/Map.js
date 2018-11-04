@@ -149,7 +149,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
 	  onClick={onClick}
 	      />
       );
- })};
+ })}
   
   {props.markers.map((marker, index) => {
       const onClick = () => props.onMarkerClick(marker);

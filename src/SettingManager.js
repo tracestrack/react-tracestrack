@@ -16,7 +16,7 @@ class SettingManager {
 	    return {latitude: 51.443416, longitude: 5.479131};
 	}
 	else {
-	    return this.lastMapLocation.value;
+	    return this.lastMapLocation;
 	}
     }
 
@@ -34,12 +34,10 @@ class SettingManager {
     }
 
     packRecord() {
-
-	console.log(this.getLastMapLocation());
 	this.record.fields = {
 	    lastMapLocation: this.getLastMapLocation(),
 	    lastMapZoom: this.getLastMapZoom(),
-	    types: this.getTypes(),	    
+	    types: this.getTypes()
 	};
 
 	return this.record;

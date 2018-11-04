@@ -73,29 +73,40 @@ ul {
 
 h1.name {
     padding: 0 10px 0 10px;
+    clear: both;
+    font-size:24px;
+    opacity: 0.95;
+    margin: 10px 0 10px 0;
 }
 
-table.infoBox {
+.infoBox {
     margin: 0 10px 0 10px;
     font-size: 14px;
     table-layout: fixed;
     width: 96%;
     cell-spacing: 5px;
 }
-table.infoBox a{
+.infoBox a{
     color: #666;
     padding:3px 0px;
     text-decoration:none;
 }
-table.infoBox a:hover{
+.infoBox a:hover{
     color: #444;
 }
 
-.td {
+.infoBox > div > span {
     font-size: 10px;
     font-weight: bold;
     width: 50px;
     padding-top: 3px;
+    width: 100px;
+    display: block;
+    margin-top: 10px;
+}
+.infoBox > div {
+    width: 100%;
+
 }
 
 .td-trace {
@@ -111,7 +122,7 @@ td {
     word-break: break-word;
 }
 
-td input {
+.infoBox input {
     width: 100%;
 }
 
@@ -141,29 +152,30 @@ td input {
 }
 
 .starSet {
-    width: 16px;
-    height: 16px;
-    marging-right: 3px;
+    width: 20px;
+    height: 20px;
 }
 
 .star-type {
     float: left;
     margin: 10px;
+    width: 150px;
 }
 
 .star-type a {
-    padding: 5px 5px 7px 5px;
-    height: 14px;
+    display: block;
+    padding: 5px 5px 5px 5px;
+    height: 35px;
 }
 
 .star-type a:hover {
-    background: #fefefe;
+    background: #cccccc;
     cursor:pointer;
 }
 
 .selected {
-
-    border-bottom: 2px solid blue;
+    border-left: 4px solid gray;
+    margin-left: -4px;
 }
 
 .marked-area-header {

@@ -72,7 +72,8 @@ class App extends Component {
 
 	settingManager.lastMapLocation = {latitude: center.lat(), longitude: center.lng()};
 	settingManager.lastMapZoom = window.map.getZoom();
-	
+	console.log(settingManager.lastMapLocation);
+
 	this._ck.saveRecord(settingManager.packRecord(), function (re) {
 	    _this.handleMapBoundsChanged();
 	    alert("Default region set.");
@@ -191,7 +192,7 @@ class App extends Component {
 		else {
 		    settingManager = new SettingManager(re[0]);
 
-		    var loc = settingManager.getLastMapLocation();
+		    var loc = settingManager.getLastMapLocation().value;
 		    var pos = Coord(loc.latitude, loc.longitude);
 
 		    window.map.panTo(pos);
@@ -278,6 +279,14 @@ class App extends Component {
 	var showS1 = (this.types.indexOf(8) > -1 ? true : false);
 	
 	for (var it in re) {
+	    var shouldCont = false;
+	    for (var m in markers) {
+		if (markers[m].recordName == re[it].recordName) {
+		    shouldCont = true;
+		    break;
+		}
+	    }
+	    if (shouldCont) continue;
 
 	    var fields = re[it].fields;
 
@@ -612,7 +621,7 @@ class App extends Component {
 		)
 	    }	      
 
-	    { !this.state.isPanoramaView && (<div className='xxxx'>{this.state.dbTraceCount}, {this.state.dbStarCount}</div>) }
+	    { !this.state.isPanoramaView && (<div className='xxxx'>T: {this.state.dbTraceCount}, S: {this.state.dbStarCount}</div>) }
 
 		<Map
 

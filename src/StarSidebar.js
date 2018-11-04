@@ -4,6 +4,7 @@ import {LiveMarkedArea} from './LiveMarkedArea.js';
 import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
 import "./Sidebar.css";
+import {formatCoordinate, formatDistance, formatSpeed, formatDate, formatDuration} from './Formatter.js';
 
 const lang = window.lang;
 const google = window.google;
@@ -64,10 +65,9 @@ class StarSidebar extends Component {
 	    return ret;
 	}
 	return {};
-    }
+    };
 
     
-
     enterEditMode = this.enterEditMode.bind(this);
     remove = this.remove.bind(this);    
     cancel = this.cancel.bind(this);
@@ -95,7 +95,8 @@ class StarSidebar extends Component {
     	    var state = {
 		title: re.fields.title.value ? re.fields.title.value : 'non',
 		note: re.fields.note ? re.fields.note.value : "",
-		url: re.fields.url ? re.fields.url.value : ''
+		url: re.fields.url ? re.fields.url.value : '',
+		creation: formatDate(new Date(re.created.timestamp))
 	    };
 	    _this.setState(state);
 	});
@@ -151,7 +152,9 @@ class StarSidebar extends Component {
 	    title: place.name,
 	    address: place.formatted_address,
 	    url: place.website,
-	    note: createNoteFromGooglePlace(place)
+	    note: createNoteFromGooglePlace(place),
+	    creation: null
+	    
 	};
 
 	return state;
@@ -209,7 +212,7 @@ class StarSidebar extends Component {
 	var rn = this.props.star.recordName;
 	let _this = this;
 	this.ck.removeRecord(rn, function(e){
-	    _this.props.onStarRemoved(e)
+	    _this.props.onStarRemoved(e);
 	});
     }
     
@@ -269,10 +272,16 @@ class StarSidebar extends Component {
     render() {
 	return (
 		<div className='sidebar-right'>
+
+		  {(this.state.editMode === false) && 
+		      (
 		<div className='star-type'>
-		<a onClick={this.setRedStar} className={this.state.type==0?"selected":""}><img src={RedStarImg} className='starSet' />Want to go</a>
-		<a onClick={this.setGreenStar} className={this.state.type==1?"selected":""}><img src={GreenStarImg} className='starSet' />Have been</a>
-	    </div>
+		  <a onClick={this.setRedStar} className={this.state.type==0?"selected":""}><img src={RedStarImg} className='starSet' />Want to visit</a>
+		  
+		<a onClick={this.setGreenStar} className={this.state.type==1?"selected":""}><img src={GreenStarImg} className='starSet' />Visited</a>
+		</div>)
+		  }
+		  
 	      <div className='controls'>
 		{ !this.state.editMode ?
 		  (<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>{lang.edit}</button>):
@@ -291,25 +300,27 @@ class StarSidebar extends Component {
 		  (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
 		}
 	    </h1>
-		<table className='infoBox'>
-		<tbody>
-		<tr>
-		<td className='td'>ADD</td><td>{this.state.address} </td>
-		</tr>
-		<tr>
-		<td className='td'>COORDS</td><td>{this.state.coordinate.lat.toFixed(6)}, {this.state.coordinate.lng.toFixed(6)}</td>
-		</tr>
+		<div className='infoBox'>
+
+		<div><span>Address</span>
+		{this.state.address}</div>
+
+		<div><span>Coordinate</span>
+		{this.state.coordinate.lat.toFixed(6)}, {this.state.coordinate.lng.toFixed(6)}</div>
+
+	    {(this.state.creation !== null) && (
+		<div><span>Creation</span>
+		  {this.state.creation}</div>) }
+
 
 	    {
 		    (this.state.editMode === true || this.state.editMode === false && this.state.url != '') &&
-			(<tr>
-			 <td className='td'>URL</td>
-			 <td>{ !this.state.editMode ? (<a href={this.state.url}>{this.state.url}</a>) : (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange}/>) }
-			 </td>			 
-			 </tr>)
+			(
+			    <div><span>URL</span>
+		  { !this.state.editMode ? (<a target='_blank' href={this.state.url}>{this.state.url}</a>) : (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange}/>) }</div>)
 		}
-	    </tbody>
-	    </table>
+	    </div>
+		
 		<LiveMarkedArea editMode={this.state.editMode} label="Notes" defaultValue={this.state.note}  value={this.state.note} onChange={this.noteChange}/>
 
 	    </div>

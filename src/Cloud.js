@@ -646,22 +646,34 @@ class CKComponent extends Component {
 	this.loadTraces(box[0], box[1], box[2], box[3], this.lastLoadDetail, this.lastFinishCallback);
     }
 
+    loadStarsOrderByDateNext(callback, isLoadAll, doneCallback) {
+
+	if (this.continuationMarker == null) {
+	    if (doneCallback) {
+		doneCallback();
+	    }
+	    return;
+
+	}	    
+
+	this.loadStarsOrderByDate(this.continuationMarker, callback, isLoadAll);	
+    }
+    
     loadStarsOrderByDate(continuationMarker, callback, isLoadAll, doneCallback) {
 	var databaseScope = "PRIVATE";
 	var ownerRecordName = null;
 	var recordType = "Star";
-	var desiredKeys = ["type", "location", "title"];
+	var desiredKeys = ["type", "location", "title", "countryCode", "countrySubdivision"];
 	var sortByField = "___createTime";
 	var ascending = false;
 	var latitude = null;
 	var longitude = null;
 	var _this = this;
 
-
 	
 	this.demoPerformQuery(
 	    databaseScope,zoneName,ownerRecordName,recordType,
-	    desiredKeys,sortByField,ascending,latitude,longitude,[], null, function(records) {
+	    desiredKeys,sortByField,ascending,latitude,longitude,[], continuationMarker, function(records) {
 		if (callback) {
 		    callback(records);
 
@@ -671,7 +683,7 @@ class CKComponent extends Component {
 		if (doneCallback) {
 		    doneCallback();
 		}
-	    }, true);
+	    }, isLoadAll);
 
     }
    
@@ -697,7 +709,7 @@ class CKComponent extends Component {
 	    }, function() {
 		if (doneCallback)
 		    doneCallback();
-	    }, isLoadAll == true);
+	    }, isLoadAll);
     }
     
     loadSettings(cb) {
