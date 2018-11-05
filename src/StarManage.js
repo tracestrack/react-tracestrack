@@ -28,6 +28,7 @@ class Table extends React.Component {
 		<th width="200">Coordinate</th>
 		<th>Type</th>
 		<th width="200">Country</th>
+		<th/>
 		</tr>
 		
 		{this.props.stars.map((row,i) =>
@@ -38,8 +39,8 @@ class Table extends React.Component {
 				       <td>{row.datetime}</td>
 				       <td>{row.coordinate}</td>
 				       <td>{row.type}</td>
-				      <td>{row.countryCode}</td>
-
+					   <td>{row.countryCode}</td>
+					       <td><button record={row.recordName} onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
 				       </tr>
 				       
 				      )}
@@ -55,6 +56,7 @@ class StarManage extends React.Component {
 	super(props);
 	this.state = {stars: [], hasMore: true, countries_visited: []};
 	this.countries_visited_dict = {};
+	this.loading = false;
     }
 
     onDelete = this.onDelete.bind(this);
@@ -63,9 +65,8 @@ class StarManage extends React.Component {
 	if (window.confirm("You're going to delete trace: \n" + title)) {
 	    _this.ck.removeRecord(recordName, function(p) {
 		console.log("done", p);
-		_this.traces = [];
-		_this.ck.loadTracesOrderByDate(null, _this.renderRecords);
-
+		_this.stars = [];
+		_this.ck.loadStarsOrderByDate(null, _this.renderRecords);
 	    });
 	}
     }
@@ -119,6 +120,7 @@ class StarManage extends React.Component {
     renderRecords(records) {
 
 	var countries_visited = this.state.countries_visited;
+	this.loading = false;
 
 	for (var i in records) {
 
@@ -162,6 +164,11 @@ class StarManage extends React.Component {
     loadMore = this.loadMore.bind(this);
     loadMore() {
 	var _this = this;
+	if (this.loading) {
+	    return;
+	}
+	
+	this.loading = true;
 	this.ck.loadStarsOrderByDateNext(this.renderRecords, false, function() {
 	    _this.setState({hasMore: false});
 	});
