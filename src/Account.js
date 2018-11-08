@@ -80,7 +80,7 @@ export class SiteFooter extends React.Component {
 	      
 	      <footer className="mastfoot">
 		<div className="inner">
-		  <p>Traces App since 2015, maintained by Qing Cai</p>
+		  <p>	  Traces App since 2015, maintained by <a href='http://www.tsingtsai.com'>Qing Cai</a></p>
 		</div>
 	      </footer>
 

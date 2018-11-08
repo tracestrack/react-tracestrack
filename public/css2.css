@@ -206,3 +206,7 @@ img.help {
 .info-row {
     margin-top: 20px;
 }
+
+p > a {
+    font-weight: bold;
+}

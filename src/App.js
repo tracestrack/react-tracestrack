@@ -592,6 +592,8 @@ class App extends Component {
 
 	    <div className="map-header-div">
 	    	<a href='/account'>{lang.account}</a>
+	    	<a href='/activities'>{lang.activities}</a>
+	    	<a href='/stars'>{lang.stars}</a>
 		</div>
 
 		<div className="shadow">
