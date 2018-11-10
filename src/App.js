@@ -192,7 +192,7 @@ class App extends Component {
 		else {
 		    settingManager = new SettingManager(re[0]);
 
-		    var loc = settingManager.getLastMapLocation().value;
+		    var loc = settingManager.getLastMapLocation();
 		    var pos = Coord(loc.latitude, loc.longitude);
 
 		    window.map.panTo(pos);
