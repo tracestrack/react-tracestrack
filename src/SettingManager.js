@@ -2,7 +2,13 @@ class SettingManager {
   constructor(re) {
       this.record = re;
       
-      this.lastMapLocation = re.fields.lastMapLocation;
+      if (re.fields.lastMapLocation == null || re.fields.lastMapLocation.value == null) {
+	  this.lastMapLocation = {latitude: 51.443416, longitude: 5.479131};
+      }
+      else {
+	  this.lastMapLocation = re.fields.lastMapLocation.value;
+      }
+      
       if (re.fields['types']) {
 	  this.types = re.fields['types'].value;
       }
@@ -12,12 +18,7 @@ class SettingManager {
   }
 
     getLastMapLocation() {
-	if (this.lastMapLocation == null) {
-	    return {latitude: 51.443416, longitude: 5.479131};
-	}
-	else {
-	    return this.lastMapLocation.value;
-	}
+	return this.lastMapLocation;
     }
 
     getTypes() {
