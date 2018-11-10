@@ -1,0 +1,46 @@
+{
+    "records": [
+        {
+            "recordName": "D27B705C-DA3E-445E-AB0D-A59FB2E5024B",
+            "recordType": "Setting",
+            "fields": {
+                "types": {
+                    "value": [
+                        3,
+                        7,
+                        8
+                    ],
+                    "type": "INT64_LIST"
+                },
+                "lastMapLocation": {
+                    "value": {
+                        "latitude": 51.42869479469951,
+                        "longitude": 5.478133875970343
+                    },
+                    "type": "LOCATION"
+                },
+                "lastMapZoom": {
+                    "value": 13,
+                    "type": "INT64"
+                }
+            },
+            "pluginFields": {},
+            "recordChangeTag": "6v5",
+            "created": {
+                "timestamp": 1516743850551,
+                "userRecordName": "_6aaa94beced6b3274711f6fe1dc6ea37",
+                "deviceID": "2"
+            },
+            "modified": {
+                "timestamp": 1541712747944,
+                "userRecordName": "_6aaa94beced6b3274711f6fe1dc6ea37",
+                "deviceID": "2"
+            },
+            "deleted": false,
+            "zoneID": {
+                "zoneName": "Traces",
+                "ownerRecordName": "_6aaa94beced6b3274711f6fe1dc6ea37"
+            }
+        }
+    ]
+}
