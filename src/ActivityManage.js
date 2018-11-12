@@ -152,14 +152,18 @@ class ActivityManage extends React.Component {
 		
 		<SiteHeader selected='activities' />
 
-		<Table onDelete={this.onDelete} traces={this.state.traces}/>
+		<main role="main" className="container">
+		  <h1 className="mt-5">Your activity list</h1>
+		  <p className="lead"></p>
+		  <Table onDelete={this.onDelete} traces={this.state.traces}/>
 
-	    <center>
-		<button className="btn btn-primary" onClick={this.loadMore}>Load More</button>
-		   
-		<button className="btn btn-danger" onClick={this.removeDuplis}>Remove Duplicates</button>
-		</center>
-		
+		  <center>
+		    <button className="btn btn-primary" onClick={this.loadMore}>Load More</button>
+		    
+		    <button className="btn btn-danger" onClick={this.removeDuplis}>Remove Duplicates</button>
+		  </center>
+
+		</main>
 		<SiteFooter />
 		</div>
 	);

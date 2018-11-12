@@ -23,12 +23,12 @@ class Table extends React.Component {
 		<tbody>
 		<tr>
 		<th width="40"></th>
-		<th width="400">Title</th>
-		<th width="200">Creation</th>
-		<th width="200">Coordinate</th>
-		<th>Type</th>
-		<th width="200">Country</th>
-		<th/>
+		<th width="350">Title</th>
+		<th width="150">Creation</th>
+		<th width="150">Coordinate</th>
+		<th width="120">Type</th>
+		<th width="80">Country</th>
+		<th width="100"/>
 		</tr>
 		
 		{this.props.stars.map((row,i) =>
@@ -40,7 +40,7 @@ class Table extends React.Component {
 				       <td>{row.coordinate}</td>
 				       <td>{row.type}</td>
 					   <td>{row.countryCode}</td>
-					       <td><button record={row.recordName} onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
+					       <td><button className="btn btn-sm btn-outline-danger" record={row.recordName} onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
 				       </tr>
 				       
 				      )}
@@ -177,28 +177,33 @@ class StarManage extends React.Component {
     
     render() {
 	return (
+
+
 		<div className='default'>
+
 
 		<CKComponent ref={(_ck) => {this.ck = _ck;}} onLoginSuccess={this.handleLoginSuccess} />
 		
 		<SiteHeader selected='stars' />
 
+<main role="main" className="container">
+      <h1 className="mt-5">Your star list</h1>
+      <p className="lead"></p>
 
-	    <center>
-	      { this.state.hasMore && (<button className="btn btn-primary" onClick={this.loadMore}>Load More</button>) }
+      <Table onDelete={this.onDelete} stars={this.state.stars}/>
 
-		<button className="btn btn-primary" onClick={this.updateCountryCode}>Update country code</button>
-		   
-	    </center>
+      <div className="countriesVisisted">
+	<h5>Countries visited in the above list [{this.state.countries_visited.length}]:</h5>
+	{this.state.countries_visited.map((row,i) =>
+					  <span>{row}</span>
+					 )}
+	    </div>
 		
-		<div className="countriesVisisted">
-		  <h5>Countries visited in the following list [{this.state.countries_visited.length}]:</h5>
-		    {this.state.countries_visited.map((row,i) =>
-						      <span>{row}</span>
-						     )}
-		</div>
+
+      
+    </main>
 		
-		<Table onDelete={this.onDelete} stars={this.state.stars}/>
+
 
 	    <center>
 	      { this.state.hasMore && (<button className="btn btn-primary" onClick={this.loadMore}>Load More</button>) }

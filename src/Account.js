@@ -25,47 +25,57 @@ export class SiteHeader extends React.Component {
 
     render() {
 	return (
+
+
 	    <header className="masthead">
-	      <div className="inner">
-		<h3 className="masthead-brand">Traces</h3>
-		<nav className="nav nav-masthead">
-                <a className="nav-link" href="/">{lang.home}</a>
-                <a className="nav-link" href="/map">{lang.map}</a>
-		  {
-		      (this.state.selected=='account') && 
-			  (<a className="nav-link active" href="/account">{lang.account}</a>)
+
+<nav className="navbar navbar-expand-md navbar-dark bg-dark">
+      <a className="navbar-brand" href="#">Traces</a>
+
+
+      <div className="collapse navbar-collapse" id="navbarsExample04">
+        <ul className="navbar-nav mr-auto">
+          <li className="nav-item">
+
+	    {   (this.state.selected=='map') && 
+		    (<a className="nav-link active" href="/map">Map</a>)
 			  ||
-			  (<a className="nav-link " href="/account">{lang.account}</a>)
+		    (<a className="nav-link" href="/map">Map</a>)
+	    }
+	    
+
+          </li>
+          <li className="nav-item">
+	    {   (this.state.selected=='activities') && 
+		    (<a className="nav-link active" href="/activities">Activities</a>)
+			  ||
+		    (<a className="nav-link " href="/activities">Activities</a>)
 		  }
+
+          </li>
+          <li className="nav-item">
+	    {
+		(this.state.selected=='stars') && 
+		  (<a className="nav-link active" href="/stars">Stars</a>)
+		  ||
+		  (<a className="nav-link " href="/stars">Stars</a>)
+	  }
+
+          </li>
+          <li className="nav-item">
 
 	    {
-		      (this.state.selected=='activities') && 
-		    (<a className="nav-link active" href="/activities">{lang.activities}</a>)
-			  ||
-		    (<a className="nav-link " href="/activities">{lang.activities}</a>)
-		  }
-	    
-	    {
-		      (this.state.selected=='stars') && 
-		    (<a className="nav-link active" href="/stars">{lang.stars}</a>)
-			  ||
-		    (<a className="nav-link " href="/stars">{lang.stars}</a>)
-		  }
-	    
-                <a className="nav-link" href="/help">{lang.help}</a>
+		(this.state.selected=='account') && 
+		  (<a className="nav-link active" href="/account">Account</a>)
+		  ||
+		  (<a className="nav-link " href="/account">Account</a>)
+	  }
 
+          </li>	  
+        </ul>
 
-
-	    </nav>
-		<div className="lang-box">
-
-                <a href="" onClick={this.switchEn}>English</a>
-                <a href="" onClick={this.switchZh}>中文</a>	    
-		
-	    </div>
-		</div>
-
-
+      </div>
+    </nav>
 
 		</header>
 	);
@@ -76,15 +86,12 @@ export class SiteFooter extends React.Component {
     render() {
 	return (
 
-	    <div className="mw-100">
-	      
-	      <footer className="mastfoot">
-		<div className="inner">
-		  <p>	  Traces App since 2015, maintained by <a href='http://www.tsingtsai.com'>Qing Cai</a></p>
-		</div>
-	      </footer>
+<footer className="container">
+  <hr className="featurette-divider" />
 
-            </div>
+        <p>© 2015-2018 Traces · <a href="/privacy">Privacy</a> · <a href="/about">About</a></p>
+      </footer>
+
 	);
     }
 }

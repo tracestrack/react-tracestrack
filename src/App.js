@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Menu from './menu.js';
+import {SiteHeader, SiteFooter} from './Account.js';
 import CKComponent from './Cloud.js';
 import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
@@ -587,14 +588,11 @@ class App extends Component {
 			)
 		    }
 
+		<SiteHeader selected="map" />
+
 
 		<div className="header-bar">
 
-	    <div className="map-header-div">
-	    	<a href='/account'>{lang.account}</a>
-	    	<a href='/activities'>{lang.activities}</a>
-	    	<a href='/stars'>{lang.stars}</a>
-		</div>
 
 		<div className="shadow">
 		<input type="text" id="searchTextField" className='form-control form-control-sm' />
