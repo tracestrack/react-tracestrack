@@ -160,8 +160,14 @@ class ActivityManage extends React.Component {
 		  <center>
 		    <button className="btn btn-primary" onClick={this.loadMore}>Load More</button>
 		    
-		    <button className="btn btn-danger" onClick={this.removeDuplis}>Remove Duplicates</button>
+
 		  </center>
+
+		<p>
+		<h3>Actions</h3>
+		<button className="btn btn-danger" onClick={this.removeDuplis}>Remove Duplicates</button>
+
+	    </p>
 
 		</main>
 		<SiteFooter />

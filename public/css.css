@@ -9,7 +9,6 @@
 
 html,
 body {
-  color: #000;
   text-align: center;
   text-shadow: 0 .05rem .1rem rgba(0,0,0,.5);
   height: 100%;
@@ -47,14 +46,14 @@ body {
 
 .mastfoot {
     text-align: center;
-    color: black;
+    color: #999;
     margin-top: 50px;
 }
 
 .masthead-brand {
   font-size: 28px;
   margin: 0px;
-  color: black;
+  color: #999;
   font-family: 'Optima';
   font-weight: bold;
 }
@@ -77,13 +76,7 @@ body {
 }
 
 .nav-masthead .active {
-    color: #black;
     border-bottom-color: #fff;
-}
-
-.signinout img {
-    margin-bottom: 20px;
-    width: 450px;
 }
 
 .signinout img {
@@ -91,7 +84,6 @@ body {
     width: 90%;
 }
 
-  
 #apple-sign-in-button,
 #apple-sign-out-button {
     margin: auto;
@@ -104,12 +96,11 @@ body {
 
 div.signinout p {
     margin: 10px 0  10px 0;
-
 }
 
 div.signinout {
     width: 42em;
-    margin: auto;
+    margin: auto auto 100px auto;
     padding-top:100px;
     text-align: center;
 }

@@ -193,7 +193,7 @@ class StarManage extends React.Component {
       <Table onDelete={this.onDelete} stars={this.state.stars}/>
 
       <div className="countriesVisisted">
-	<h5>Countries visited in the above list [{this.state.countries_visited.length}]:</h5>
+	<p className="lead">Countries visited in the above list [{this.state.countries_visited.length}]:</p>
 	{this.state.countries_visited.map((row,i) =>
 					  <span>{row}</span>
 					 )}
@@ -201,19 +201,22 @@ class StarManage extends React.Component {
 		
 
       
-    </main>
+
 		
 
 
 	    <center>
-	      { this.state.hasMore && (<button className="btn btn-primary" onClick={this.loadMore}>Load More</button>) }
+	      { this.state.hasMore && (<button type="button" className="btn btn-primary" onClick={this.loadMore}>Load More</button>) }
 
-		<button className="btn btn-primary" onClick={this.updateCountryCode}>Update country code</button>
+	    </center>
+		<p>
+		<h3>Actions</h3>
+		<button type="button" className="btn btn-secondary" onClick={this.updateCountryCode}>Update country code</button>
 
-	    <p className="starFooter">Country code is powered by TomTom API</p>
-		   
-		</center>
-		
+	    </p>
+
+	    <p>Country code is powered by TomTom API</p>
+    </main>		
 		<SiteFooter />
 		</div>
 	);

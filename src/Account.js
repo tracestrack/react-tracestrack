@@ -30,7 +30,7 @@ export class SiteHeader extends React.Component {
 	    <header className="masthead">
 
 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-      <a className="navbar-brand" href="#">Traces</a>
+      <a className="navbar-brand" href="/">Traces</a>
 
 
       <div className="collapse navbar-collapse" id="navbarsExample04">
@@ -89,7 +89,7 @@ export class SiteFooter extends React.Component {
 <footer className="container">
   <hr className="featurette-divider" />
 
-        <p>© 2015-2018 Traces · <a href="/privacy">Privacy</a> · <a href="/about">About</a></p>
+        <p>© 2015-2018 Traces · <a href="/privacy">Privacy</a> · <a href="https://blog.traces.website/about/">About</a></p>
       </footer>
 
 	);
@@ -115,32 +115,32 @@ class Account extends React.Component {
 
     render() {
 
-	function gotoMap() {
-	    window.location.href = '/';
-	}
-
 	return (
 	    <div className="default">
 
 	      <CKComponent onLoginSuccess={this.handleLoginSuccess} />
 	      <SiteHeader selected='account' />
 
-	      <div className="signinout">
+	      <main role="main" className="container">
 
-		<img src='signin-icloud.png' />
+		<div className="signinout">
 
-		<div id='apple-sign-in-button'></div>
-		<div id='apple-sign-out-button'></div>
+		  <img src='signin-icloud.png' />
 
-		{ (this.state.signedIn === -1) &&
-		    (<p>All your data is saved in Apple's iCloud. You are the only one who have access to your data. For more information, visit <a href='https://www.apple.com//icloud/'>iCloud intro page</a>.</p>)
+		  <div id='apple-sign-in-button'></div>
+		  <div id='apple-sign-out-button'></div>
 
-		}
-		{ (this.state.signedIn === 1) &&
-		  (<p><button type="button" onClick={gotoMap} className="btn btn-light">Go to Map</button></p>)
-		}
+		  { (this.state.signedIn === -1) &&
+		      (<p>All your data is saved in Apple's iCloud. You are the only one who have access to your data. For more information, visit <a href='https://www.apple.com//icloud/'>iCloud intro page</a>.</p>)
+
+		  }
 
 	    </div>
+
+		<p>All data is taken from and saved to iCloud. Data is processed either in the app or in the browser. No intermediate servers process your data.</p>
+
+	    </main>
+
 
 
 		<SiteFooter />
