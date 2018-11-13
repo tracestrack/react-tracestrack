@@ -33,7 +33,7 @@ class Table extends React.Component {
 				       <td>{row.path}</td>
 				       <td>{row.title}</td>
 				       <td>{row.date}</td>
-				       <td><button record={row.recordName} onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
+				       <td><button record={row.recordName} className="btn btn-sm btn-outline-danger" onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
 				       </tr>
 				       
 				      )}
