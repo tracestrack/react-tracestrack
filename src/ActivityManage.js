@@ -155,13 +155,19 @@ class ActivityManage extends React.Component {
 		<main role="main" className="container">
 		  <h1 className="mt-5">Your activity list</h1>
 		  <p className="lead"></p>
-		  <Table onDelete={this.onDelete} traces={this.state.traces}/>
 
-		  <center>
-		    <button className="btn btn-primary" onClick={this.loadMore}>Load More</button>
-		    
+		  { this.state.traces.length > 0 && (
+		      <div>
+			<Table onDelete={this.onDelete} traces={this.state.traces}/>			
+			<center>
+			  <button className="btn btn-primary" onClick={this.loadMore}>Load More</button>		    
+		      </center></div>)
+		      }
 
-		  </center>
+
+	    { this.state.traces.length == 0 && (
+		<center>There is no activities yet.</center>
+	    )}
 
 		<p>
 		<h3>Actions</h3>

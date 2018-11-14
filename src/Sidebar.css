@@ -7,10 +7,10 @@ _::-webkit-full-page-media, _:future, :root .sidebar-right {
 
     width: 380px;
     z-index: 111;
-    height: 100%;
     position: absolute;  
     right: 0;  
-    top: 0;
+    top: 90px;
+    bottom: 0px;
 
     overflow-y: scroll;
     background-color: rgba(255, 255, 255, 0.9);  
