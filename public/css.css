@@ -243,3 +243,11 @@ header, h1, td {
 
 }
     
+.uploadBg {
+    width: 800px;
+    height: 400px;
+    background: white;
+    position: absolute;
+    top: 100px;
+    border: 1px solid gray;
+}

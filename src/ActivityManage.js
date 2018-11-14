@@ -4,6 +4,42 @@ import CKComponent from './Cloud.js';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import {formatDistance, formatSpeed, formatDate, formatDuration} from './Formatter.js';
+import gpxParser from './GPXParser.js';
+
+
+class UploadView extends React.Component {
+
+   constructor(props) {
+	super(props);
+    }
+
+    upload(e) {
+        let file = document.getElementById('fileUpload').files[0];
+
+        let gpx = new gpxParser();
+
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            gpx.parse(reader.result);
+	    console.log(gpx.tracks[0].points);
+	};
+        reader.readAsText(file);
+
+    }
+        
+    render() {
+	return (<div className="uploadBg">
+
+		<div className="form-group">
+		<input type="file" className="form-control-file" id="fileUpload" onChange={this.upload} />
+		</div>
+
+		</div>		
+
+	       );
+    }
+    
+};
 
 class Table extends React.Component {
 
@@ -171,7 +207,12 @@ class ActivityManage extends React.Component {
 
 		<p>
 		<h3>Actions</h3>
+
+		<button className="btn btn-primary" onClick={this.removeDuplis}>Upload</button>
 		<button className="btn btn-danger" onClick={this.removeDuplis}>Remove Duplicates</button>
+
+
+	    <UploadView />
 
 	    </p>
 
@@ -184,3 +225,4 @@ class ActivityManage extends React.Component {
 
 
 export default ActivityManage;
+
