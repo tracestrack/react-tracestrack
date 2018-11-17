@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -11,9 +11,17 @@ import ActivityManage from './ActivityManage';
 import StarManage from './StarManage';
 import AppMapbox from './AppMapbox';
 
+class DevIndex extends Component {
+
+    render() {
+	return (<center><a href='/real_index.html'>Real index</a></center>);
+    }
+}
+
 const Routing = () => (
   <Router>
     <div>
+      <Route exact path="/" component={DevIndex}/>
       <Route exact path="/map" component={App}/>
       <Route path="/account" component={Account}/>
       <Route path="/activities" component={ActivityManage}/>
