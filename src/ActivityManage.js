@@ -5,14 +5,19 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import {formatDistance, formatSpeed, formatDate, formatDuration} from './Formatter.js';
 import gpxParser from './GPXParser.js';
+import {MapMapbox, OverlayManager, LoadedAreaManager} from './Map.js';
+import { Trace, MarkerType } from './Models.js';
 
 class UploadView extends React.Component {
 
    constructor(props) {
-	super(props);
+       super(props);
+       this.state = {trace: null};
     }
 
+    upload = this.upload.bind(this)
     upload(e) {
+	let _this = this;
         let file = document.getElementById('fileUpload').files[0];
 
         let gpx = new gpxParser();
@@ -30,20 +35,70 @@ class UploadView extends React.Component {
 	    console.log(points);
 	    var pp = simplify(points, 0.00001, false);
 
-	    console.log(pp);
-	    
+	    var p = [];
+	    for (var i in pp) {
+		p.push([pp[i].y, pp[i].x]);
+	    }
 
+
+	    let t = {title: "HAH", distance: "20km", date: "2018"};
+	    _this.setState({trace: t, traceModel: p});
+	    
 	};
         reader.readAsText(file);
 
+    }
+
+    handleMapMounted = this.handleMapMounted.bind(this)
+    handleMapMounted(map) {
+	
+	window.map = map;
+	let google = window.google;
+
+	/** Disable default infoWindow */
+	if (google) {
+	    google.maps.InfoWindow.prototype.set = function () {
+	    };
+	}
     }
         
     render() {
 	return (<div className="uploadBg">
 
+
+
+		<h3>Upload</h3>
+
 		<div className="form-group">
 		<input type="file" className="form-control-file" id="fileUpload" onChange={this.upload} />
 		</div>
+
+		<hr />
+
+		<MapMapbox
+		trace={this.state.traceModel}
+		/>
+
+
+		{ this.state.trace && (<div>
+				       <table>
+				       <tr>
+				       <td>Title</td>
+				       <td>Date</td>
+				       <td>Distance</td>
+				       </tr>
+
+				       <tr>
+				       <td>{ this.state.trace.title}</td>
+				       <td>{ this.state.trace.date}</td>
+				       <td>{ this.state.trace.distance}</td>
+				       </tr>
+
+				       </table>
+
+
+				       </div>
+				      )}
 
 		</div>		
 
@@ -94,7 +149,7 @@ class ActivityManage extends React.Component {
 
     constructor(props) {
 	super(props);
-	this.state = {traces: []};
+	this.state = {traces: [], showUpload: true};
     }
 
     onDelete = this.onDelete.bind(this);

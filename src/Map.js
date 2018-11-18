@@ -1,6 +1,6 @@
 import React from "react";
 import Component from "react";
-
+import WebMercatorViewport from 'viewport-mercator-project';
 import { DirectionsRenderer, withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 import { MarkerType } from './Models.js';
 import GreenStarImg from './img/star_green.png';
@@ -120,7 +120,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
   >
 
 
- {props.traces.map((trace, index) => {
+ {props.traces && props.traces.map((trace, index) => {
 
       const onClick = () => props.onTraceClick(trace);
       
@@ -151,7 +151,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
       );
  })}
   
-  {props.markers.map((marker, index) => {
+  {props.markers && props.markers.map((marker, index) => {
       const onClick = () => props.onMarkerClick(marker);
 
       let position = new window.google.maps.LatLng(
@@ -199,15 +199,11 @@ export const Map = withScriptjs(withGoogleMap((props) =>
 
 export class MapMapbox extends React.Component {
 
-    
-    updateWindowDimensions = this.updateWindowDimensions.bind(this);
-
     componentDidMount() {
-	this.updateWindowDimensions();
-	window.addEventListener('resize', this.updateWindowDimensions);
+
 	this.tracesRN = [];
 
-	this.style = {
+	this.state.mapStyle = {
         "version": 8,
         "sources": {
             "raster-tiles": {
@@ -219,9 +215,7 @@ export class MapMapbox extends React.Component {
         "layers": [{
             "id": "simple-tiles",
             "type": "raster",
-            "source": "raster-tiles",
-            "minzoom": 6,
-            "maxzoom": 17
+            "source": "raster-tiles"
         }]
 	};
 
@@ -231,29 +225,63 @@ export class MapMapbox extends React.Component {
 	window.removeEventListener('resize', this.updateWindowDimensions);
     }
 
-    updateWindowDimensions() {
-	var s = this.state.viewport;
-	
-	this.setState({
-	    viewport: {
-		width: window.innerWidth,
-		height: window.innerHeight,
-		latitude: s.latitude,
-		longitude: s.longitude,
-		zoom: s.zoom
-		
-	    }
-
-	});
-    }
-
     componentWillReceiveProps(props) {
+	this.props = props;
 	this.updateTrace();
     }
 
     updateTrace = this.updateTrace.bind(this);
     
     updateTrace() {
+	if (this.props.trace != null) {
+
+	    try {
+		window.mapbox.removeLayer("LIN");
+		window.mapbox.removeSource("LIN");
+	    }
+	    catch (e) {
+
+	    }
+
+	    window.mapbox.addLayer({
+		"id": "LIN",
+		"type": "line",
+		"source": {
+		    "type": "geojson",
+		    "data": {
+			"type": "Feature",
+			"properties": {},
+			"geometry": {
+			    "type": "LineString",
+			    "coordinates": this.props.trace
+			}
+		    }
+		},
+		"layout": {
+		    "line-join": "round",
+		    "line-cap": "round"
+		},
+		"paint": {
+		    "line-color": "red",
+		    'line-opacity': .4,
+		    "line-width": 2
+		}
+	    });
+
+	    let coordinates = this.props.trace;
+
+	    var line = window.turf.lineString(coordinates);
+	    var bbox = window.turf.bbox(line);
+
+	    const viewport = new WebMercatorViewport({width: 800, height: 600})
+		  .fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], {
+		      padding: 20
+		  });
+
+	    this.setState({viewport: viewport});
+
+	    return;
+	}
 
 	for (var it in this.props.traces) {
 	    var trace = this.props.traces[it];
@@ -299,31 +327,27 @@ export class MapMapbox extends React.Component {
     
     state = {
 	viewport: {
-	    width: 100,
-	    height: 100,
-	    latitude: 51.445716,
-	    longitude: 5.4731112,
-	    zoom: 14
+	    width: 900,
+	    height: 400,
+	    latitude: 51.437694,
+	    longitude: 5.482333,
+	    zoom: 7
 	}
-    };
+    }
     
     render() {
 	return (
 
-		<ReactMapGL
-	    ref={(m) => {if (m) {window.mapbox = m.getMap();}}} 
-		  mapStyle={this.style}
-	    onLoad={this.updateTrace}
-		  minZoom={6}
-		  maxZoom={16}
-	    mapboxApiAccessToken="pk.eyJ1Ijoic3Ryb25nd2lsbG93IiwiYSI6ImxKa2R1SEkifQ.iZ_vj1lvuvrAcUIl0ZE5XA"
-	    {...this.state.viewport}
-	    onViewportChange={(viewport) => {
-		this.setState({viewport});
-		this.props.onViewportChange(viewport);
-	    }
-			     }
-		/>
+	    <ReactMapGL
+	      ref={(m) => {if (m) {window.mapbox = m.getMap();}}} 
+	      mapStyle={this.state.mapStyle}
+	      minZoom={5}
+	      maxZoom={16}
+	      mapboxApiAccessToken="pk.eyJ1Ijoic3Ryb25nd2lsbG93IiwiYSI6ImxKa2R1SEkifQ.iZ_vj1lvuvrAcUIl0ZE5XA"
+              onViewportChange={(viewport) => this.setState({viewport})}    
+	      {...this.state.viewport}
+
+    />
 
 	);
     };
