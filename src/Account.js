@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import CKComponent from './Cloud.js';
-
-const lang = window.lang;
 
 export class SiteHeader extends React.Component {
 
@@ -37,8 +35,8 @@ export class SiteHeader extends React.Component {
 		  <ul className="navbar-nav mr-auto">
 		    <li className="nav-item">
 
-		      {   (this.state.selected=='map') && 
-			  (<a className="nav-link active" href="/map">Map</a>)
+		      {   ((this.state.selected === 'map') && 
+			   (<a className="nav-link active" href="/map">Map</a>))
 			  ||
 			  (<a className="nav-link" href="/map">Map</a>)
 		      }
@@ -46,8 +44,8 @@ export class SiteHeader extends React.Component {
 
             </li>
 		<li className="nav-item">
-		{   (this.state.selected=='activities') && 
-		    (<a className="nav-link active" href="/activities">Activities</a>)
+		{   ((this.state.selected==='activities') && 
+		    (<a className="nav-link active" href="/activities">Activities</a>))
 		    ||
 		    (<a className="nav-link " href="/activities">Activities</a>)
 		}
@@ -55,8 +53,8 @@ export class SiteHeader extends React.Component {
             </li>
 		<li className="nav-item">
 		{
-		    (this.state.selected=='stars') && 
-			(<a className="nav-link active" href="/stars">Stars</a>)
+		    ((this.state.selected==='stars') && 
+		     (<a className="nav-link active" href="/stars">Stars</a>))
 			||
 			(<a className="nav-link " href="/stars">Stars</a>)
 		}
@@ -65,8 +63,8 @@ export class SiteHeader extends React.Component {
 		<li className="nav-item">
 
 	    {
-		    (this.state.selected=='account') && 
-			(<a className="nav-link active" href="/account">Account</a>)
+		    ((this.state.selected==='account') && 
+		     (<a className="nav-link active" href="/account">Account</a>))
 			||
 			(<a className="nav-link " href="/account">Account</a>)
 		}

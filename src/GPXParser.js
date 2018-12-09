@@ -162,7 +162,8 @@ gpxParser.prototype.calcElevation = function (points) {
         dm = 0,
         ret = {};
 
-    for (var i = 0; i < points.length - 1; i++) {
+    var i = 0;
+    for (i = 0; i < points.length - 1; i++) {
         var diff = parseFloat(points[i + 1].ele) - parseFloat(points[i].ele);
 
         if (diff < 0) {
@@ -174,8 +175,8 @@ gpxParser.prototype.calcElevation = function (points) {
 
     var elevation = [];
     var sum = 0;
-
-    for (var i = 0, len = points.length; i < len; i++) {
+    var len = 0;
+    for (i = 0, len = points.length; i < len; i++) {
         var ele = parseFloat(points[i].ele);
         elevation.push(ele);
         sum += ele;
