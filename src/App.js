@@ -9,7 +9,6 @@ import SettingManager from './SettingManager.js';
 import {Map, OverlayManager, LoadedAreaManager} from './Map.js';
 import {Star, Trace, MarkerType, Coord} from './Models.js';
 
-
 var google = window.google;
 var lStorage = window.localStorage;
 const lang = window.lang;
