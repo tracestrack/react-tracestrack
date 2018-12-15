@@ -27,7 +27,7 @@ function getColor(type) {
     case 6:
       return '#447F84';
     default:
-      return '#000000'
+      return '#000000';
   }
 }
 
