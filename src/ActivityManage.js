@@ -199,7 +199,8 @@ class ActivityManage extends React.Component {
 
   showUpload = this.showUpload.bind(this);
   showUpload() {
-    this.setState({ showUpload: true });
+      //this.setState({ showUpload: true });
+      alert("Functionality not implemented.");
   }
 
 
@@ -275,18 +276,17 @@ class ActivityManage extends React.Component {
             <center>There is no activities yet.</center>
           )}
 
+          <h3>Actions</h3>
           <p>
-            <h3>Actions</h3>
 
             <button className="btn btn-primary" onClick={this.showUpload}>Upload</button>
             <button className="btn btn-danger" onClick={this.removeDuplis}>Remove Duplicates</button>
 
 
-            {this.state.showUpload && (<UploadView />)}
-
           </p>
 
         </main>
+        
         <SiteFooter />
       </div>
     );

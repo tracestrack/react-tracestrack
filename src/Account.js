@@ -1,6 +1,7 @@
 import React from 'react';
 import CKComponent from './Cloud.js';
 import $ from 'jquery';
+import sessionManager from './SessionManager.js';
 
 export class SiteHeader extends React.Component {
 
@@ -63,15 +64,19 @@ export class SiteHeader extends React.Component {
                             </li>
                             <li className="nav-item">
 
-                                {
-                                    ((this.state.selected === 'account') &&
-                                        (<a className="nav-link active" href="/account">Account</a>))
-                                    ||
-                                    (<a className="nav-link " href="/account">Account</a>)
-                                }
 
                             </li>
                         </ul>
+
+    <div className="my-2 my-lg-0 navBarRight">
+                                {
+                                    ((this.state.selected === 'account') &&
+                                     (<a className="nav-link active" href="/account">{sessionManager.getUserName()}</a>))
+                                    ||
+                                        (<a className="nav-link " href="/account">{sessionManager.getUserName()}</a>)
+                                }
+    </div>
+
 
                     </div>
                 </nav>

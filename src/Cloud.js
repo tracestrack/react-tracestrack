@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import sessionManager from './SessionManager.js';
 
 const CloudKit = window.CloudKit;
 const zoneName = "Traces";
@@ -31,10 +32,6 @@ CloudKit.configure({
   }]
 });
 
-function displayUserName(name) {
-  $("#apple-sign-in-button").text(name);
-}
-
 var sharedZoneIDs = [];
 var discoveredUserIdentities = {};
 
@@ -56,14 +53,9 @@ class CKComponent extends Component {
     let _this = this;
 
     function gotoAuthenticatedState(userIdentity) {
-      window.userIdentity = userIdentity;
+        var name = userIdentity.nameComponents;
 
-      var name = userIdentity.nameComponents;
-      if (name) {
-        displayUserName(name.givenName + ' ' + name.familyName);
-      } else {
-        displayUserName('User record name: ' + userIdentity.userRecordName);
-      }
+        sessionManager.setUserName(name.givenName);
 
       if (_this.props.onLoginSuccess) {
         _this.props.onLoginSuccess();

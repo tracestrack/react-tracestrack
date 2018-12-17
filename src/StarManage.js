@@ -197,18 +197,14 @@ class StarManage extends React.Component {
             )}
           </div>
 
-
-
-
-
-
-
           <center>
             {this.state.hasMore && (<button type="button" className="btn btn-primary" onClick={this.loadMore}>Load More</button>)}
 
           </center>
+
+          <h3>Actions</h3>
           <p>
-            <h3>Actions</h3>
+
             <button type="button" className="btn btn-secondary" onClick={this.updateCountryCode}>Update country code</button>
 
           </p>

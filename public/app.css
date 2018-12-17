@@ -258,3 +258,7 @@ header, h1, td {
     top: 100px;
     border: 1px solid gray;
 }
+
+.navBarRight {
+    color: white;
+}
