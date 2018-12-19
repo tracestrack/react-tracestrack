@@ -152,11 +152,10 @@ class StarManage extends React.Component {
 
   handleLoginSuccess = this.handleLoginSuccess.bind(this);
   handleLoginSuccess() {
-    if (window.userIdentity) {
 
       this.stars = [];
       this.ck.loadStarsOrderByDate(null, this.renderRecords, false);
-    }
+
   }
 
   loadMore = this.loadMore.bind(this);

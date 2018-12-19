@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Types } from './Models.js';
+import $ from 'jquery';
 import "./FilterBox.css";
 
 class FilterBox extends Component {
@@ -8,8 +9,8 @@ class FilterBox extends Component {
 
   handleApplyFilter() {
     var b = [];
-    window.$("[name='selected']:checked").each(function() {
-      b.push(Math.round(window.$(this).val()));
+    $("[name='selected']:checked").each(function() {
+      b.push(Math.round($(this).val()));
     });
     this.props.onFilterApply(b);
   }

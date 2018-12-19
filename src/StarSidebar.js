@@ -5,8 +5,8 @@ import GreenStarImg from './img/star_green.png';
 import RedStarImg from './img/star_red.png';
 import "./Sidebar.css";
 import { formatDate } from './Formatter.js';
+import $ from 'jquery';
 
-const lang = window.lang;
 
 class StarSidebar extends Component {
 
@@ -103,17 +103,11 @@ class StarSidebar extends Component {
   }
 
   setGreenStar() {
-    if (!window.checkLogin())
-      return;
-
-    this.setState({ type: MarkerType.green })
+    this.setState({ type: MarkerType.green });
     this.save();
   }
 
   setRedStar() {
-    if (!window.checkLogin())
-      return;
-
     this.setState({ type: MarkerType.red });
     this.save();
   }
@@ -122,7 +116,7 @@ class StarSidebar extends Component {
 
     var geocoder = new window.google.maps.Geocoder();
     let _this = this;
-    geocoder.geocode({ 'location': latlng }, function(results, status) {
+      geocoder.geocode({ 'location': latlng }, function(results, status) {
 
       console.log(results);
 
@@ -161,7 +155,6 @@ class StarSidebar extends Component {
 
       var photos = place.photos;
       var md = '';
-      let $ = window.$;
       var count = 3;
       console.log(place);
       for (var it in photos) {
@@ -282,7 +275,7 @@ class StarSidebar extends Component {
 
         <div className='controls'>
           {!this.state.editMode ?
-            (<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>{lang.edit}</button>) :
+            (<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>Edit</button>) :
             (
               <div>
                 <button disabled={this.state.isSaving} className="btn btn-sm btn-danger" onClick={this.remove}>Delete</button>

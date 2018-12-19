@@ -169,11 +169,7 @@ class App extends Component {
 
     /** Login ok */
     handleLoginSuccess() {
-        if (window.userIdentity) {
-            //this._ck.loadStars();
 
-            //this._ck.demoDiscoverUserIdentityWithUserRecordName('_7022d50b9d797f3775d0930d397ceaf4');
-            //this._ck.demoDiscoverAllUserIdentities();
 
             var _this = this;
             var pos;
@@ -211,7 +207,6 @@ class App extends Component {
 
             });
 
-        }
     }
 
     /** Star record is removed */
