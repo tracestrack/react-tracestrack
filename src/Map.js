@@ -12,22 +12,22 @@ const transform = exports;
 
 function getColor(type) {
   switch (type) {
-    case 0:
-      return '#999505';
-    case 1:
-      return '#ae41fb';
-    case 2:
-      return '#ec1313';
-    case 3:
-      return '#008000';
-    case 4:
-      return '#045cc8';
-    case 5:
-      return '#ff8c00';
-    case 6:
-      return '#447F84';
-    default:
-      return '#000000';
+  case 0:
+    return '#999505';
+  case 1:
+    return '#ae41fb';
+  case 2:
+    return '#ec1313';
+  case 3:
+    return '#008000';
+  case 4:
+    return '#045cc8';
+  case 5:
+    return '#ff8c00';
+  case 6:
+    return '#447F84';
+  default:
+    return '#000000';
   }
 }
 
@@ -89,110 +89,110 @@ export class OverlayManager {
 
 export const Map = withScriptjs(withGoogleMap((props) =>
 
-  <GoogleMap
-    ref={props.onMapMounted}
-    defaultOptions={{
-      mapTypeControlOptions: {
-        style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-        position: window.google.maps.ControlPosition.TOP_RIGHT
-      },
-      styles: AppleStyle,
-      zoomControl: true,
-      clickableIcons: true,
-      fullscreenControl: false,
-      minZoom: 8,
-      maxZoom: 18,
-      streetViewControlOptions: {
-        position: window.google.maps.ControlPosition.BOTTOM_CENTER
-      }
-    }}
+                                              <GoogleMap
+                                                ref={props.onMapMounted}
+                                                defaultOptions={{
+                                                  mapTypeControlOptions: {
+                                                    style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                                                    position: window.google.maps.ControlPosition.TOP_RIGHT
+                                                  },
+                                                  styles: AppleStyle,
+                                                  zoomControl: true,
+                                                  clickableIcons: true,
+                                                  fullscreenControl: false,
+                                                  minZoom: 8,
+                                                  maxZoom: 18,
+                                                  streetViewControlOptions: {
+                                                    position: window.google.maps.ControlPosition.BOTTOM_CENTER
+                                                  }
+                                                }}
 
-    zoom={props.zoom}
-    onClick={props.onMapLeftClick}
-    onZoomChanged={props.onZoomChanged}
-    onDragEnd={props.onDragEnd}
-    onRightClick={props.onMapRightClick}
-  >
-
-
-    {props.traces && props.traces.map((trace, index) => {
-
-      const onClick = () => props.onTraceClick(trace);
-
-      var coords = [];
-
-      for (var i = 0; i < trace.detail.length; i += 2) {
-
-        let gcj = transform.wgs2gcj(trace.detail[i] / 1000000, trace.detail[i + 1] / 1000000);
-        coords.push({
-          lat: gcj.lat,
-          lng: gcj.lng
-        });
-      }
-
-      var opt = {
-        strokeColor: getColor(trace.type),
-        strokeOpacity: 0.7,
-        strokeWeight: trace.selected ? 5 : 2
-      };
-
-      return (
-        <Polyline
-          key={index}
-          path={coords}
-          options={opt}
-          onClick={onClick}
-        />
-      );
-    })}
-
-    {props.markers && props.markers.map((marker, index) => {
-      const onClick = () => props.onMarkerClick(marker);
-
-      let position = new window.google.maps.LatLng(
-        marker.coord.lat, marker.coord.lng
-      );
-
-      if (window.map.getBounds().contains(position) === false) {
-        return (<div />);
-      }
-
-      var icon;
-
-      switch (marker.type) {
-        case MarkerType.red:
-          icon = { url: RedStarImg, scaledSize: new window.google.maps.Size(24, 24) };
-          console.log("type red");
-          break;
-        case MarkerType.green:
-          icon = { url: GreenStarImg, scaledSize: new window.google.maps.Size(24, 24) };
-          console.log("type green");
-          break;
-        case MarkerType.searchHit:
-          //icon = {url: PinImg, scaledSize: new window.google.maps.Size(32, 32)};
-          break;
-        case MarkerType.new:
-          //icon = {url: PinImg, scaledSize: new window.google.maps.Size(48, 48)};
-          break;
-        default:
-
-      };
-
-      return (
-        <Marker
-          key={marker.recordName}
-          icon={icon}
-          position={position}
-          title={(index + 1).toString()}
-          onClick={onClick}
-        >
-        </Marker>
-      );
-    })}
+                                                zoom={props.zoom}
+                                                onClick={props.onMapLeftClick}
+                                                onZoomChanged={props.onZoomChanged}
+                                                onDragEnd={props.onDragEnd}
+                                                onRightClick={props.onMapRightClick}
+                                              >
 
 
-  </GoogleMap>
-));
+                                                {props.traces && props.traces.map((trace, index) => {
+
+                                                  const onClick = () => props.onTraceClick(trace);
+
+                                                  var coords = [];
+
+                                                  for (var i = 0; i < trace.detail.length; i += 2) {
+
+                                                    let gcj = transform.wgs2gcj(trace.detail[i] / 1000000, trace.detail[i + 1] / 1000000);
+                                                    coords.push({
+                                                      lat: gcj.lat,
+                                                      lng: gcj.lng
+                                                    });
+                                                  }
+
+                                                  var opt = {
+                                                    strokeColor: getColor(trace.type),
+                                                    strokeOpacity: 0.7,
+                                                    strokeWeight: trace.selected ? 5 : 2
+                                                  };
+
+                                                  return (
+                                                    <Polyline
+                                                      key={index}
+                                                      path={coords}
+                                                      options={opt}
+                                                      onClick={onClick}
+                                                    />
+                                                  );
+                                                })}
+
+                                                {props.markers && props.markers.map((marker, index) => {
+                                                  const onClick = () => props.onMarkerClick(marker);
+
+                                                  let position = new window.google.maps.LatLng(
+                                                    marker.coord.lat, marker.coord.lng
+                                                  );
+
+                                                  if (window.map.getBounds().contains(position) === false) {
+                                                    return (<div />);
+                                                  }
+
+                                                  var icon;
+
+                                                  switch (marker.type) {
+                                                  case MarkerType.red:
+                                                    icon = { url: RedStarImg, scaledSize: new window.google.maps.Size(24, 24) };
+                                                    console.log("type red");
+                                                    break;
+                                                  case MarkerType.green:
+                                                    icon = { url: GreenStarImg, scaledSize: new window.google.maps.Size(24, 24) };
+                                                    console.log("type green");
+                                                    break;
+                                                  case MarkerType.searchHit:
+                                                    //icon = {url: PinImg, scaledSize: new window.google.maps.Size(32, 32)};
+                                                    break;
+                                                  case MarkerType.new:
+                                                    //icon = {url: PinImg, scaledSize: new window.google.maps.Size(48, 48)};
+                                                    break;
+                                                  default:
+
+                                                  };
+
+                                                  return (
+                                                    <Marker
+                                                      key={marker.recordName}
+                                                      icon={icon}
+                                                      position={position}
+                                                      title={(index + 1).toString()}
+                                                      onClick={onClick}
+                                                    >
+                                                    </Marker>
+                                                  );
+                                                })}
+
+
+                                              </GoogleMap>
+                                             ));
 
 export class MapMapbox extends React.Component {
 
@@ -272,9 +272,9 @@ export class MapMapbox extends React.Component {
       var bbox = window.turf.bbox(line);
 
       const viewport = new WebMercatorViewport({ width: 800, height: 600 })
-        .fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], {
-          padding: 20
-        });
+            .fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], {
+              padding: 20
+            });
 
       this.setState({ viewport: viewport });
 

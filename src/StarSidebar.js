@@ -46,20 +46,20 @@ class StarSidebar extends Component {
       }
 
       switch (props.star.type) {
-        case MarkerType.googlePlace:
-          this.loadGooglePlace(data.data);
-          break;
-        case MarkerType.new:
-          ret.editMode = true;
+      case MarkerType.googlePlace:
+        this.loadGooglePlace(data.data);
+        break;
+      case MarkerType.new:
+        ret.editMode = true;
 
-          break;
-        case MarkerType.searchHit:
-          ret = Object.assign({}, ret, this.getStateByGooglePlace(data.data));
+        break;
+      case MarkerType.searchHit:
+        ret = Object.assign({}, ret, this.getStateByGooglePlace(data.data));
 
-          break;
-        default:
-          this.loadStar(data);
-          this.loadAddress(data.coord);
+        break;
+      default:
+        this.loadStar(data);
+        this.loadAddress(data.coord);
       }
       return ret;
     }
@@ -116,7 +116,7 @@ class StarSidebar extends Component {
 
     var geocoder = new window.google.maps.Geocoder();
     let _this = this;
-      geocoder.geocode({ 'location': latlng }, function(results, status) {
+    geocoder.geocode({ 'location': latlng }, function(results, status) {
 
       console.log(results);
 
@@ -265,30 +265,30 @@ class StarSidebar extends Component {
       <div className='sidebar-right'>
 
         {(this.state.editMode === false) &&
-          (
-            <div className='star-type'>
-              <a onClick={this.setRedStar} className={this.state.type === 0 ? "selected" : ""}><img src={RedStarImg} className='starSet' alt='red star' />Want to visit</a>
+         (
+           <div className='star-type'>
+             <a onClick={this.setRedStar} className={this.state.type === 0 ? "selected" : ""}><img src={RedStarImg} className='starSet' alt='red star' />Want to visit</a>
 
-              <a onClick={this.setGreenStar} className={this.state.type === 1 ? "selected" : ""}><img src={GreenStarImg} className='starSet' alt='green star' />Visited</a>
-            </div>)
+             <a onClick={this.setGreenStar} className={this.state.type === 1 ? "selected" : ""}><img src={GreenStarImg} className='starSet' alt='green star' />Visited</a>
+           </div>)
         }
 
         <div className='controls'>
           {!this.state.editMode ?
-            (<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>Edit</button>) :
-            (
-              <div>
-                <button disabled={this.state.isSaving} className="btn btn-sm btn-danger" onClick={this.remove}>Delete</button>
-                <button disabled={this.state.isSaving} className="btn btn-sm btn-secondary" onClick={this.cancel}>Cancel</button>
-                <button disabled={this.state.isSaving} className="btn btn-sm btn-primary" onClick={this.save}>Save</button>
-              </div>
-            )
+           (<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>Edit</button>) :
+           (
+             <div>
+               <button disabled={this.state.isSaving} className="btn btn-sm btn-danger" onClick={this.remove}>Delete</button>
+               <button disabled={this.state.isSaving} className="btn btn-sm btn-secondary" onClick={this.cancel}>Cancel</button>
+               <button disabled={this.state.isSaving} className="btn btn-sm btn-primary" onClick={this.save}>Save</button>
+             </div>
+           )
           }
         </div>
         <h1 className='name'>
           {!this.state.editMode ?
-            this.state.title :
-            (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
+           this.state.title :
+           (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
           }
         </h1>
         <div className='infoBox'>
@@ -306,9 +306,9 @@ class StarSidebar extends Component {
 
           {
             ((this.state.editMode === true) || ((this.state.editMode === false && this.state.url !== '') &&
-              (
-                <div><span>URL</span>
-                  {!this.state.editMode ? (<a target='_blank' href={this.state.url}>{this.state.url}</a>) : (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange} />)}</div>)))
+                                                (
+                                                  <div><span>URL</span>
+                                                    {!this.state.editMode ? (<a target='_blank' href={this.state.url}>{this.state.url}</a>) : (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange} />)}</div>)))
           }
         </div>
 

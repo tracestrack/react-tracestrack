@@ -19,7 +19,7 @@ function isInChina(lat, lng) {
 
   var ret = false;
 
-  var j = _CHINA_BORDER.length - 1
+  var j = _CHINA_BORDER.length - 1;
   for (var i = 0; i < _CHINA_BORDER.length; i++) {
 
     var cond1 = (_CHINA_BORDER[i][0] > lat) !== (_CHINA_BORDER[j][0] > lat);

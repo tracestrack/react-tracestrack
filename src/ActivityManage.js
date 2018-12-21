@@ -67,42 +67,42 @@ class UploadView extends React.Component {
 
 
 
-      <h3>Upload</h3>
+              <h3>Upload</h3>
 
-      <div className="form-group">
-        <input type="file" className="form-control-file" id="fileUpload" onChange={this.upload} />
-      </div>
+              <div className="form-group">
+                <input type="file" className="form-control-file" id="fileUpload" onChange={this.upload} />
+              </div>
 
-      <hr />
+              <hr />
 
-      <MapMapbox
-        trace={this.state.traceModel}
-      />
-
-
-      {this.state.trace && (<div>
-        <table>
-          <tr>
-            <td>Title</td>
-            <td>Date</td>
-            <td>Distance</td>
-          </tr>
-
-          <tr>
-            <td>{this.state.trace.title}</td>
-            <td>{this.state.trace.date}</td>
-            <td>{this.state.trace.distance}</td>
-          </tr>
-
-        </table>
+              <MapMapbox
+                trace={this.state.traceModel}
+              />
 
 
-      </div>
-      )}
+              {this.state.trace && (<div>
+                               <table>
+                                 <tr>
+                                   <td>Title</td>
+                                   <td>Date</td>
+                                   <td>Distance</td>
+                                 </tr>
 
-    </div>
+                                 <tr>
+                                   <td>{this.state.trace.title}</td>
+                                   <td>{this.state.trace.date}</td>
+                                   <td>{this.state.trace.distance}</td>
+                                 </tr>
 
-    );
+                               </table>
+
+
+                             </div>
+                                   )}
+
+            </div>
+
+           );
   }
 
 };
@@ -116,28 +116,28 @@ class Table extends React.Component {
 
   render() {
     return (<table className="activity-table">
-      <tbody>
-        <tr>
-          <th width="50" />
-          <th>Path</th>
-          <th width="200">Title</th>
-          <th width="200">Date</th>
-        </tr>
+               <tbody>
+                 <tr>
+                   <th width="50" />
+                   <th>Path</th>
+                   <th width="200">Title</th>
+                   <th width="200">Date</th>
+                 </tr>
 
-        {this.props.traces.map((row, id) =>
+                 {this.props.traces.map((row, id) =>
 
-          <tr key={row.recordName}>
-            <td>{id}</td>
-            <td>{row.path}</td>
-            <td>{row.title}</td>
-            <td>{row.date}</td>
-            <td><button record={row.recordName} className="btn btn-sm btn-outline-danger" onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
-          </tr>
+                                        <tr key={row.recordName}>
+                                          <td>{id}</td>
+                                          <td>{row.path}</td>
+                                          <td>{row.title}</td>
+                                          <td>{row.date}</td>
+                                          <td><button record={row.recordName} className="btn btn-sm btn-outline-danger" onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
+                                        </tr>
 
-        )}
-      </tbody>
-    </table>
-    );
+                                       )}
+               </tbody>
+             </table>
+           );
   }
 }
 
@@ -199,8 +199,8 @@ class ActivityManage extends React.Component {
 
   showUpload = this.showUpload.bind(this);
   showUpload() {
-      //this.setState({ showUpload: true });
-      alert("Functionality not implemented.");
+    //this.setState({ showUpload: true });
+    alert("Functionality not implemented.");
   }
 
 
@@ -304,7 +304,7 @@ class ActivityManage extends React.Component {
 function getSqDist(p1, p2) {
 
   var dx = p1.x - p2.x,
-    dy = p1.y - p2.y;
+      dy = p1.y - p2.y;
 
   return dx * dx + dy * dy;
 }
@@ -313,9 +313,9 @@ function getSqDist(p1, p2) {
 function getSqSegDist(p, p1, p2) {
 
   var x = p1.x,
-    y = p1.y,
-    dx = p2.x - x,
-    dy = p2.y - y;
+      y = p1.y,
+      dx = p2.x - x,
+      dy = p2.y - y;
 
   if (dx !== 0 || dy !== 0) {
 
@@ -342,8 +342,8 @@ function getSqSegDist(p, p1, p2) {
 function simplifyRadialDist(points, sqTolerance) {
 
   var prevPoint = points[0],
-    newPoints = [prevPoint],
-    point;
+      newPoints = [prevPoint],
+      point;
 
   for (var i = 1, len = points.length; i < len; i++) {
     point = points[i];
@@ -361,7 +361,7 @@ function simplifyRadialDist(points, sqTolerance) {
 
 function simplifyDPStep(points, first, last, sqTolerance, simplified) {
   var maxSqDist = sqTolerance,
-    index;
+      index;
 
   for (var i = first + 1; i < last; i++) {
     var sqDist = getSqSegDist(points[i], points[first], points[last]);

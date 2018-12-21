@@ -52,14 +52,14 @@ export class LiveMarkedArea extends React.Component {
           this.props.editMode &&
 
           (<MarkedInput
-            placeholder={placeholder}
-            classNames={classNames}
-            onChange={this.handleTextChange}
-            value={value} />)
+                                                         placeholder={placeholder}
+                                     classNames={classNames}
+                                     onChange={this.handleTextChange}
+                                     value={value} />)
         }
 
         <MarkedPreview classNames={classNames}
-          value={value} />
+                       value={value} />
 
       </section>
     );

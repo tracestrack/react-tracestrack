@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 import sessionManager from './SessionManager.js';
-
 const CloudKit = window.CloudKit;
 const zoneName = "Traces";
 var apiToken = process.env.REACT_APP_CloudKit_apiToken;
@@ -53,9 +51,9 @@ class CKComponent extends Component {
     let _this = this;
 
     function gotoAuthenticatedState(userIdentity) {
-        var name = userIdentity.nameComponents;
+      var name = userIdentity.nameComponents;
 
-        sessionManager.setUserName(name.givenName);
+      sessionManager.setUserName(name.givenName);
 
       if (_this.props.onLoginSuccess) {
         _this.props.onLoginSuccess();
@@ -433,8 +431,8 @@ class CKComponent extends Component {
     var _this = this;
 
     _this.demoSaveRecords(databaseScope, recordName, null, recordType, zoneName,
-      forRecordName, forRecordChangeTag, publicPermission, ownerRecordName,
-      participants, parentRecordName, fields, createShortGUID, callback);
+                          forRecordName, forRecordChangeTag, publicPermission, ownerRecordName,
+                          participants, parentRecordName, fields, createShortGUID, callback);
 
   }
 
@@ -466,8 +464,8 @@ class CKComponent extends Component {
 
     function doSave(recordChangeTag) {
       _this.demoSaveRecords(databaseScope, recordName, recordChangeTag, recordType, zoneName,
-        forRecordName, forRecordChangeTag, publicPermission, ownerRecordName,
-        participants, parentRecordName, fields, createShortGUID, callback);
+                            forRecordName, forRecordChangeTag, publicPermission, ownerRecordName,
+                            participants, parentRecordName, fields, createShortGUID, callback);
     }
 
 
@@ -778,7 +776,7 @@ class CKComponent extends Component {
 
   render() {
     return (<div>
-    </div>);
+</div>);
   }
 
 }

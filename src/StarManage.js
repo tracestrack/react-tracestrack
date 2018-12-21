@@ -29,17 +29,17 @@ class Table extends React.Component {
 
           {this.props.stars.map((row, i) =>
 
-            <tr key={row.recordName}>
-              <td>{i}</td>
-              <td>{row.title}</td>
-              <td>{row.datetime}</td>
-              <td>{row.coordinate}</td>
-              <td>{row.type}</td>
-              <td>{row.countryCode}</td>
-              <td><button className="btn btn-sm btn-outline-danger" record={row.recordName} onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
-            </tr>
+                                <tr key={row.recordName}>
+                                  <td>{i}</td>
+                                  <td>{row.title}</td>
+                                  <td>{row.datetime}</td>
+                                  <td>{row.coordinate}</td>
+                                  <td>{row.type}</td>
+                                  <td>{row.countryCode}</td>
+                                  <td><button className="btn btn-sm btn-outline-danger" record={row.recordName} onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
+                                </tr>
 
-          )}
+                               )}
         </tbody>
       </table>
     );
@@ -153,8 +153,8 @@ class StarManage extends React.Component {
   handleLoginSuccess = this.handleLoginSuccess.bind(this);
   handleLoginSuccess() {
 
-      this.stars = [];
-      this.ck.loadStarsOrderByDate(null, this.renderRecords, false);
+    this.stars = [];
+    this.ck.loadStarsOrderByDate(null, this.renderRecords, false);
 
   }
 
@@ -192,8 +192,8 @@ class StarManage extends React.Component {
           <div className="countriesVisisted">
             <p className="lead">Countries visited in the above list [{this.state.countries_visited.length}]:</p>
             {this.state.countries_visited.map((row, i) =>
-              <span>{row}</span>
-            )}
+                                              <span>{row}</span>
+                                             )}
           </div>
 
           <center>

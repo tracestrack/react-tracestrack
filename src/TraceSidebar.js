@@ -160,20 +160,20 @@ class TraceSidebar extends Component {
 
         <div className='controls'>
           {!this.state.editMode ?
-            (<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>Edit</button>) :
-            (
-              <div>
-                <div>			    <button className="btn btn-sm btn-danger" onClick={this.delete}>Delete</button></div>
-                <button className="btn btn-sm btn-secondary" onClick={this.cancel}>Cancel</button>
-                <button className="btn btn-sm btn-primary" onClick={this.save}>Save</button>
-              </div>
-            )
+           (<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>Edit</button>) :
+           (
+             <div>
+               <div>			    <button className="btn btn-sm btn-danger" onClick={this.delete}>Delete</button></div>
+               <button className="btn btn-sm btn-secondary" onClick={this.cancel}>Cancel</button>
+               <button className="btn btn-sm btn-primary" onClick={this.save}>Save</button>
+             </div>
+           )
           }
         </div>
         <h1 className='name'>
           {!this.state.editMode ?
-            this.state.title :
-            (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
+           this.state.title :
+           (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
           }
 
         </h1>
