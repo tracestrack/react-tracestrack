@@ -4,10 +4,10 @@ import {
   Route
 } from 'react-router-dom';
 
-import App from './App';
-import Account from './Account';
-import ActivityManage from './ActivityManage';
-import StarManage from './StarManage';
+import MapPage from './pages/map/MapPage.js';
+import AccountPage from './pages/account/AccountPage.js';
+import TracesPage from './pages/traces/TracesPage.js';
+import StarsPage from './pages/stars/StarsPage.js';
 
 class DevIndex extends Component {
 
@@ -20,10 +20,10 @@ const Routing = () => (
   <Router>
     <div>
       <Route exact path="/" component={DevIndex} />
-      <Route exact path="/map" component={App} />
-      <Route path="/account" component={Account} />
-      <Route path="/activities" component={ActivityManage} />
-      <Route path="/stars" component={StarManage} />
+      <Route exact path="/map" component={MapPage} />
+      <Route path="/account" component={AccountPage} />
+      <Route path="/traces" component={TracesPage} />
+      <Route path="/stars" component={StarsPage} />
     </div>
   </Router>
 );
