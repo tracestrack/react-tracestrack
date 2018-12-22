@@ -57,7 +57,7 @@ function transform(x, y) {
   lat += -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * xy + 0.2 * absX;
   lng += 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * xy + 0.1 * absX;
 
-  return { lat: lat, lng: lng }
+  return { lat: lat, lng: lng };
 }
 
 function delta(lat, lng) {
