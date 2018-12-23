@@ -1,5 +1,5 @@
 import React from 'react';
-import CKComponent from '../../datastore/Cloud.js';
+import CloudDatastore from '../../datastore/CloudDatastore.js';
 import $ from 'jquery';
 // eslint-disable-next-line
 import sessionManager from '../common/SessionManager.js';
@@ -10,15 +10,11 @@ class AccountPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { signedIn: -1 }; // -1 undecided, 0 false, 1 true
+    CloudDatastore.login()
+      .done(() => {
 
-  }
+      });
 
-  handleLoginSuccess = this.handleLoginSuccess.bind(this);
-  handleLoginSuccess() {
-    $("#apple-sign-in-button").hide();
-    $("#apple-sign-out-button").show();
-    this.setState({ signedIn: 1 });
   }
 
   render() {
@@ -26,7 +22,6 @@ class AccountPage extends React.Component {
     return (
       <div className="default">
 
-        <CKComponent onLoginSuccess={this.handleLoginSuccess} />
         <SiteHeader selected='account' />
 
         <main role="main" className="container">
@@ -37,11 +32,6 @@ class AccountPage extends React.Component {
 
             <div id='apple-sign-in-button'></div>
             <div id='apple-sign-out-button'></div>
-
-            {(this.state.signedIn === -1) &&
-             (<p>All your data is saved in Apple's iCloud. You are the only one who have access to your data. For more information, visit <a href='https://www.apple.com//icloud/'>iCloud intro page</a>.</p>)
-
-            }
 
           </div>
 
