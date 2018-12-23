@@ -5,6 +5,8 @@ export default class IDatastore {
 
   constructor() { }
 
+  login() { assert(false); }
+  
   getStars() { assert(false); }
 
   getTraces() { assert(false); }

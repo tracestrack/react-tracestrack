@@ -1,6 +1,6 @@
 import React from 'react';
 import { SiteHeader, SiteFooter } from '../common/Page.js';
-import CKComponent from '../../datastore/Cloud.js';
+import CloudDatastore from '../../datastore/CloudDatastore.js';
 import 'react-table/react-table.css';
 import { formatCoordinate, formatDate } from '../../utils/Formatter.js';
 import $ from 'jquery';
@@ -53,6 +53,17 @@ class StarsPage extends React.Component {
     this.state = { stars: [], hasMore: true, countries_visited: [] };
     this.countries_visited_dict = {};
     this.loading = false;
+
+
+    this.stars = [];
+    let _t = this;
+    CloudDatastore.getStars().then(
+      results => {
+        console.log(results);
+        _t.renderRecords(results);
+      }
+    );    
+
   }
 
   onDelete = this.onDelete.bind(this);
@@ -126,7 +137,7 @@ class StarsPage extends React.Component {
       let date = new Date(records[i].created.timestamp);
 
       this.stars.push({
-        title: records[i].fields.title.value,
+        title: records[i].fields.title ? records[i].fields.title.value : "Untitled",
         type: records[i].fields.type.value === 1 ? "Visisted" : "Want to visit",
         recordName: records[i].recordName,
         datetime: formatDate(date),
@@ -151,15 +162,6 @@ class StarsPage extends React.Component {
 
   };
 
-  handleLoginSuccess = this.handleLoginSuccess.bind(this);
-  handleLoginSuccess() {
-    const _t = this;
-    this.stars = [];
-    this.ck.loadStarsOrderByDate(null, this.renderRecords, false, function(){
-      _t.setState({ hasMore: false });      
-    });
-
-  }
 
   loadMore = this.loadMore.bind(this);
   loadMore() {
@@ -180,9 +182,6 @@ class StarsPage extends React.Component {
 
 
       <div className='default'>
-
-
-        <CKComponent ref={(_ck) => { this.ck = _ck; }} onLoginSuccess={this.handleLoginSuccess} />
 
         <SiteHeader selected='stars' />
 

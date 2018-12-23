@@ -180,11 +180,8 @@ class TracesPage extends React.Component {
 
   handleLoginSuccess = this.handleLoginSuccess.bind(this);
   handleLoginSuccess() {
-    if (window.userIdentity) {
-
-      this.traces = [];
-      this.ck.loadTracesOrderByDate(null, this.renderRecords);
-    }
+    this.traces = [];
+    this.ck.loadTracesOrderByDate(null, this.renderRecords);
   }
 
   loadMore = this.loadMore.bind(this);
@@ -252,7 +249,7 @@ class TracesPage extends React.Component {
 
         <CKComponent ref={(_ck) => { this.ck = _ck; }} onLoginSuccess={this.handleLoginSuccess} />
 
-        <SiteHeader selected='activities' />
+        <SiteHeader selected='traces' />
 
         <main role="main" className="container">
           <h1 className="mt-5">Your activity list</h1>

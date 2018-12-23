@@ -1,8 +1,5 @@
 import React from 'react';
 import CloudDatastore from '../../datastore/CloudDatastore.js';
-import $ from 'jquery';
-// eslint-disable-next-line
-import sessionManager from '../common/SessionManager.js';
 import {SiteHeader, SiteFooter} from '../common/Page.js';
 
 class AccountPage extends React.Component {
@@ -10,10 +7,7 @@ class AccountPage extends React.Component {
   constructor(props) {
     super(props);
 
-    CloudDatastore.login()
-      .done(() => {
-
-      });
+    CloudDatastore.login();
 
   }
 
