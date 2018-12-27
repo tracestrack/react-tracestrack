@@ -4,6 +4,7 @@ import CKComponent from '../../datastore/Cloud.js';
 import 'react-table/react-table.css';
 import { formatDate } from '../../utils/Formatter.js';
 import gpxParser from '../../utils/GPXParser.js';
+import Upload from './Upload.js';
 
 // eslint-disable-next-line
 class UploadView extends React.Component {
@@ -31,7 +32,6 @@ class UploadView extends React.Component {
         points.push({ x: gpx.tracks[0].points[i].lat, y: gpx.tracks[0].points[i].lon });
       }
 
-      console.log(points);
       var pp = simplify(points, 0.00001, false);
 
       var p = [];
@@ -39,9 +39,10 @@ class UploadView extends React.Component {
         p.push([pp[i].y, pp[i].x]);
       }
 
+      console.log(p);
 
       let t = { title: "HAH", distance: "20km", date: "2018" };
-      _this.setState({ trace: t, traceModel: p });
+      _this.setState({ trace: t, traceGeoJSON: p });
 
     };
     reader.readAsText(file);
@@ -51,14 +52,7 @@ class UploadView extends React.Component {
   handleMapMounted = this.handleMapMounted.bind(this)
   handleMapMounted(map) {
 
-    window.map = map;
-    let google = window.google;
 
-    /** Disable default infoWindow */
-    if (google) {
-      google.maps.InfoWindow.prototype.set = function() {
-      };
-    }
   }
 
   render() {
@@ -74,6 +68,7 @@ class UploadView extends React.Component {
 
               <hr />
 
+              <Upload geojson={this.state.traceGeoJSON} />
 
               {this.state.trace && (<div>
                                <table>
@@ -277,8 +272,10 @@ class TracesPage extends React.Component {
 
           </p>
 
+          <UploadView />
+
         </main>
-        
+
         <SiteFooter />
       </div>
     );
