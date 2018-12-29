@@ -57,7 +57,6 @@ class StarsPage extends React.Component {
     this.continuationMarker = null;
 
     this.stars = [];
-    let _t = this;
     CloudDatastore.getStars().then(this.handleResponse);    
   }
 
@@ -71,10 +70,7 @@ class StarsPage extends React.Component {
 
   loadMore = this.loadMore.bind(this);
   loadMore() {
-    var _t = this;
-    if (this.loading) {
-      return;
-    }
+    if (this.loading) return;
 
     this.loading = true;
 

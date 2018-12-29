@@ -1,6 +1,7 @@
 'strict';
 import IDatastore from './Datastore.js';
 import STAR_RESULT from './results/stars.json';
+import TRACES_RESULT from './results/traces.json';
 
 export default class MockCloudDatastore extends IDatastore {
 
@@ -12,9 +13,16 @@ export default class MockCloudDatastore extends IDatastore {
   static getStars() {
     return new Promise((resolve, reject) => {
       setTimeout(function(){
-        var ret = STAR_RESULT;
         resolve(STAR_RESULT);
       }, 250);
+    });
+  }  
+
+  static getTraces() {
+    return new Promise((resolve, reject) => {
+      setTimeout(function(){
+        resolve(TRACES_RESULT);
+      }, 500);
     });
   }  
 

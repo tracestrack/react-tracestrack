@@ -1,6 +1,7 @@
 import React from 'react';
 import { SiteHeader, SiteFooter } from '../common/Page.js';
-import CKComponent from '../../datastore/Cloud.js';
+import CloudDatastore from '../../datastore/CloudDatastore.js';
+//import CloudDatastore from '../../datastore/Mock.js';
 import 'react-table/react-table.css';
 import { formatDate } from '../../utils/Formatter.js';
 import gpxParser from '../../utils/GPXParser.js';
@@ -136,6 +137,22 @@ class TracesPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = { traces: [], showUpload: true };
+    
+    this.traces = [];
+    CloudDatastore.getTraces().then(this.handleResponse);
+  }
+
+  loadMore = this.loadMore.bind(this);
+  loadMore() {
+    CloudDatastore.getTraces({continuationMarker: this.continuationMarker}).then(this.handleResponse);
+  }
+
+  handleResponse = this.handleResponse.bind(this);
+  handleResponse(results) {
+    this.renderRecords(results.records);
+    this.continuationMarker = results.continuationMarker;
+    this.setState({moreComing: results.continuationMarker !== null});    
+    this.loading = false;
   }
 
   onDelete = this.onDelete.bind(this);
@@ -171,17 +188,6 @@ class TracesPage extends React.Component {
 
     this.setState({ traces: this.traces });
 
-  }
-
-  handleLoginSuccess = this.handleLoginSuccess.bind(this);
-  handleLoginSuccess() {
-    this.traces = [];
-    this.ck.loadTracesOrderByDate(null, this.renderRecords);
-  }
-
-  loadMore = this.loadMore.bind(this);
-  loadMore() {
-    this.ck.loadTracesOrderByDateNext(this.renderRecords);
   }
 
   showUpload = this.showUpload.bind(this);
@@ -242,8 +248,6 @@ class TracesPage extends React.Component {
     return (
       <div className='default'>
 
-        <CKComponent ref={(_ck) => { this.ck = _ck; }} onLoginSuccess={this.handleLoginSuccess} />
-
         <SiteHeader selected='traces' />
 
         <main role="main" className="container">
@@ -254,7 +258,8 @@ class TracesPage extends React.Component {
             <div>
               <Table onDelete={this.onDelete} traces={this.state.traces} />
               <center>
-                <button className="btn btn-primary" onClick={this.loadMore}>Load More</button>
+
+                {this.state.moreComing && (<button className="btn btn-primary" onClick={this.loadMore}>Load More</button>)}
               </center></div>)
           }
 
@@ -271,8 +276,6 @@ class TracesPage extends React.Component {
 
 
           </p>
-
-          <UploadView />
 
         </main>
 

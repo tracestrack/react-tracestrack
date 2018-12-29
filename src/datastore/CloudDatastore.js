@@ -28,12 +28,20 @@ CloudKit.configure({
   }]
 });
 
+
+/**
+  * CloudDatastore is stateless.
+  * To maintain states, for example continuationMarker, do so in react components.
+  */
 export default class CloudDatastore extends IDatastore {
 
+  /**
+   * The base query interface for CloudKit.
+   */
   static performQuery(
     databaseScope, zoneName, ownerRecordName, recordType,
     desiredKeys, sortByField, ascending, latitude, longitude,
-    filters, continuationMarker, callback, finishCallback, autoLoadMore
+    filters, continuationMarker, callback, autoLoadMore
   ) {
 
     var container = CloudKit.getDefaultContainer();
@@ -58,7 +66,7 @@ export default class CloudDatastore extends IDatastore {
     // Convert the filters to the appropriate format.
     var clonedMap = JSON.parse(JSON.stringify(filters));
 
-    query.filterBy = clonedMap.map(function(filter) {
+    query.filterBy = clonedMap.map(filter => {
       filter.fieldValue = { value: filter.fieldValue };
       return filter;
     });
@@ -91,15 +99,11 @@ export default class CloudDatastore extends IDatastore {
         var records = response.records;
         console.log('got ' + records.length + ' records');
 
-        callback(records);
+        callback(response);
         
         if (response.moreComing && autoLoadMore) {
           console.log('auto load more');
           database.performQuery(response).then(handleResponse);
-        }
-        else {
-          console.log('end');
-          if (finishCallback) finishCallback();
         }
       }
       return null;
@@ -119,34 +123,50 @@ export default class CloudDatastore extends IDatastore {
     container.setUpAuth()
       .then(function(userIdentity) {
         if (userIdentity) {
-
+          alert(userIdentity);
         } else {
 
         }
       });
-
   }
 
-  static getStars() {
+  static getStars(params = {continuationMarker: null}) {
     
     var databaseScope = "PRIVATE";
     var ownerRecordName = null;
     var recordType = "Star";
-    var desiredKeys = ["type", "location"];
-    var sortByField = null;
-    var ascending = null;
+    var desiredKeys = ["type", "location", "title", "countryCode"];
+    var sortByField = "___createTime";
+    var ascending = false;
     var latitude = null;
     var longitude = null;
 
-    return new Promise(function(resolve, reject) {
-    CloudDatastore.performQuery(
+    return new Promise((resolve, reject) => {
+      CloudDatastore.performQuery(
       databaseScope, zoneName, ownerRecordName, recordType,
-      desiredKeys, sortByField, ascending, latitude, longitude, [], null,
+      desiredKeys, sortByField, ascending, latitude, longitude, [], params.continuationMarker,
       records => {
         resolve(records);
-      },
-      () => { }, false);
-
+      }, false);
     });
-  }  
+  }
+
+  static getTraces(params = {continuationMarker: null}) {
+    var databaseScope = "PRIVATE";
+    var ownerRecordName = null;
+    var recordType = "Trace";
+    var desiredKeys = ['type', 'startDate', 'path', 'title', 'secondsFromGMT'];
+    var sortByField = 'startDate';
+    var ascending = false;
+
+    // private database
+    return new Promise((resolve, reject) => {
+      CloudDatastore.performQuery(
+      databaseScope, zoneName, ownerRecordName, recordType,
+      desiredKeys, sortByField, ascending, null, null, [], params.continuationMarker, records => {
+        resolve(records);
+      }, false);
+    });
+  }
+
 }
