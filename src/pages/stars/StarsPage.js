@@ -1,6 +1,7 @@
 import React from 'react';
 import { SiteHeader, SiteFooter } from '../common/Page.js';
-import CloudDatastore from '../../datastore/CloudDatastore.js';
+//import CloudDatastore from '../../datastore/CloudDatastore.js';
+import CloudDatastore from '../../datastore/Mock.js';
 import 'react-table/react-table.css';
 import { formatCoordinate, formatDate } from '../../utils/Formatter.js';
 import $ from 'jquery';
@@ -50,20 +51,34 @@ class StarsPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { stars: [], hasMore: true, countries_visited: [] };
+    this.state = { stars: [], moreComing: false, countries_visited: [] };
     this.countries_visited_dict = {};
     this.loading = false;
-
+    this.continuationMarker = null;
 
     this.stars = [];
     let _t = this;
-    CloudDatastore.getStars().then(
-      results => {
-        console.log(results);
-        _t.renderRecords(results);
-      }
-    );    
+    CloudDatastore.getStars().then(this.handleResponse);    
+  }
 
+  handleResponse = this.handleResponse.bind(this);
+  handleResponse(results) {
+    this.renderRecords(results.records);
+    this.continuationMarker = results.continuationMarker;
+    this.setState({moreComing: results.continuationMarker !== null});    
+    this.loading = false;
+  }
+
+  loadMore = this.loadMore.bind(this);
+  loadMore() {
+    var _t = this;
+    if (this.loading) {
+      return;
+    }
+
+    this.loading = true;
+
+    CloudDatastore.getStars({continuationMarker: this.continuationMarker}).then(this.handleResponse);
   }
 
   onDelete = this.onDelete.bind(this);
@@ -162,21 +177,6 @@ class StarsPage extends React.Component {
 
   };
 
-
-  loadMore = this.loadMore.bind(this);
-  loadMore() {
-    var _this = this;
-    if (this.loading) {
-      return;
-    }
-
-    this.loading = true;
-    this.ck.loadStarsOrderByDateNext(this.renderRecords, false, function() {
-      _this.setState({ hasMore: false });
-    });
-  }
-
-
   render() {
     return (
 
@@ -199,7 +199,7 @@ class StarsPage extends React.Component {
           </div>
 
           <center>
-            {this.state.hasMore && (<button type="button" className="btn btn-primary" onClick={this.loadMore}>Load More</button>)}
+            {this.state.moreComing && (<button type="button" className="btn btn-primary" onClick={this.loadMore}>Load More</button>)}
 
           </center>
 
