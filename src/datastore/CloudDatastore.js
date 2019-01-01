@@ -169,4 +169,60 @@ export default class CloudDatastore extends IDatastore {
     });
   }
 
+  static queryTraces(maxLat, maxLng, minLat, minLng, loadDetail, types) {
+    this.lastBox = [maxLat, maxLng, minLat, minLng];
+
+    var databaseScope = "PRIVATE";
+    var databaseSharedScope = "SHARED";
+    var ownerRecordName = null;
+    var recordType = "Trace";
+    var desiredKeys = [loadDetail ? "detail" : "medium", 'type', 'linkingId'];
+    var sortByField = null;
+    var ascending = null;
+    var latitude = null;
+    var longitude = null;
+    var _this = this;
+
+    maxLat = Math.round(maxLat * 1000000);
+    maxLng = Math.round(maxLng * 1000000);
+    minLat = Math.round(minLat * 1000000);
+    minLng = Math.round(minLng * 1000000);
+
+    let gt = 'GREATER_THAN';
+    let lt = 'LESS_THAN';
+
+    var filters = [
+      { fieldName: 'maxLat', comparator: gt, fieldValue: minLat },
+      { fieldName: 'maxLng', comparator: gt, fieldValue: minLng },
+      { fieldName: 'minLat', comparator: lt, fieldValue: maxLat },
+      { fieldName: 'minLng', comparator: lt, fieldValue: maxLng },
+      { fieldName: "type", comparator: 'IN', fieldValue: types }
+    ];
+
+    return new Promise((resolve, reject) => {
+      CloudDatastore.performQuery(
+      databaseScope, zoneName, ownerRecordName, recordType,
+        desiredKeys, sortByField, ascending, latitude, longitude, filters, null, function(records) {
+          alert(records);
+          _this.props.onTracesLoad(records);
+        }, true);
+    });
+  }
+
+  static getSettings() {
+    var databaseScope = "PRIVATE";
+    var ownerRecordName = null;
+    var recordType = "Setting";
+    var desiredKeys = ['types', 'lastMapZoom', 'lastMapLocation'];
+
+    // private database
+    return new Promise((resolve, reject) => {
+      CloudDatastore.performQuery(
+        databaseScope, zoneName, ownerRecordName, recordType,
+        desiredKeys, null, null, null, null, [], null, function(re) {
+          resolve(re);
+        }, true);      
+    });
+  }
+
 }

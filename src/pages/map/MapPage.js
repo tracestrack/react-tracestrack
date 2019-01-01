@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ContextMenu from './ContextMenu.js';
 import { SiteHeader } from '../common/Page.js';
-import CKComponent from '../../datastore/Cloud.js';
+//import CloudDatastore from '../../datastore/CloudDatastore.js';
+import CloudDatastore from '../../datastore/Mock.js';
 import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
 import FilterBox from './FilterBox.js';
@@ -12,15 +13,6 @@ import $ from 'jquery';
 
 var google = window.google;
 const lang = window.lang;
-
-window.checkLogin = function() {
-  if (!window.userIdentity) {
-    alert("no");
-    return false;
-  }
-  return true;
-};
-
 var settingManager;
 
 class MapPage extends Component {
@@ -36,6 +28,9 @@ class MapPage extends Component {
 
     this.lastResetTime = Date.now();
 
+    this.overlayManager = new OverlayManager();
+    this.loadedAreaManager = new LoadedAreaManager();
+    this.types = [0];
   }
 
   state = {
@@ -46,7 +41,8 @@ class MapPage extends Component {
     showStarSidebar: false,
     showFilterBox: false,
     rightClickPosition: { left: 100, top: 100 },
-    isPanoramaView: false
+    isPanoramaView: false,
+    isLoadingTraces: false
   }
 
   handleMapMounted = this.handleMapMounted.bind(this);
@@ -60,8 +56,6 @@ class MapPage extends Component {
   handleAddStar = this.handleAddStar.bind(this);
   handleStarRecordCreated = this.handleStarRecordCreated.bind(this);
   handleStarRecordRemoved = this.handleStarRecordRemoved.bind(this);
-  handleLoginSuccess = this.handleLoginSuccess.bind(this);
-
 
   onFilterApply = this.onFilterApply.bind(this);
   onSetStartMap = this.onSetStartMap.bind(this);
@@ -103,30 +97,23 @@ class MapPage extends Component {
 
   /** OnLoad */
   componentDidMount() {
-    this.setState({
-      isLoadingTraces: false
-    });
-
-    $("#apple-sign-out-button").hide();
-
-    this.overlayManager = new OverlayManager();
-    this.loadedAreaManager = new LoadedAreaManager();
-    this.types = [0];
 
   }
 
   /** Map Moved */
   handleMapBoundsChanged() {
 
-    let _this = this;
+    let _t = this;
     if (this.state.isLoadingTraces) {
       console.log('loading, skip');
       return;
     }
 
-    this.setState({ isLoadingTraces: true });
-
     let bounds = window.map.getBounds();
+    if (bounds == null) return;
+    
+    this.setState({ isLoadingTraces: true });
+    
     let latDiff = bounds.getNorthEast().lat() - bounds.getSouthWest().lat();
     let lngDiff = bounds.getNorthEast().lng() - bounds.getSouthWest().lng();
 
@@ -153,60 +140,22 @@ class MapPage extends Component {
 
     let z = window.map.getZoom();
     var loadDetail = z > 12;
-
+    
     if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
 
-      this._ck.loadTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, this.types, function() {
-        _this.setState({ isLoadingTraces: false });
-        _this.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
-      });
+
+      CloudDatastore.queryTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, [1,2,3], true).then(
+        result => {
+          _t.setState({ isLoadingTraces: false });
+          _t.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
+          _t.handleTracesLoad(result.records);
+        }
+      );
     }
     else {
       console.log('loaded');
-      _this.setState({ isLoadingTraces: false });
+      _t.setState({ isLoadingTraces: false });
     }
-  }
-
-  /** Login ok */
-  handleLoginSuccess() {
-
-
-    var _this = this;
-    var pos;
-    this._ck.loadSettings(function(re) {
-      if (re.length === 0) {
-        _this._ck.insertSetting(function(re) {
-          console.log(re);
-        });
-
-        pos = Coord(51.443416, 5.479131);
-        window.map.panTo(pos);
-
-        _this.handleMapBoundsChanged();
-        _this._ck.loadStars();
-
-      }
-      else {
-        settingManager = new SettingManager(re[0]);
-
-        var loc = settingManager.getLastMapLocation();
-        pos = Coord(loc.latitude, loc.longitude);
-
-        window.map.panTo(pos);
-        _this.setState({ zoom: settingManager.getLastMapZoom() });
-
-        _this.types = settingManager.getTypes();
-        _this.handleMapBoundsChanged();
-
-        if (_this.types.indexOf(7) || _this.types.indexOf(8)) {
-          _this._ck.loadStars();
-        }
-
-      }
-
-
-    });
-
   }
 
   /** Star record is removed */
@@ -235,6 +184,8 @@ class MapPage extends Component {
   /** Traces are loaded */
   handleTracesLoad(re) {
 
+    console.log(re);
+    
     var _this = this;
     this.setState(function(prevState, props) {
 
@@ -270,10 +221,15 @@ class MapPage extends Component {
   /** Stars are loaded */
   handleStarsLoad(re) {
 
+    console.log(re);
+
     var markers = this.state.markers;
     var showS0 = (this.types.indexOf(7) > -1 ? true : false);
     var showS1 = (this.types.indexOf(8) > -1 ? true : false);
 
+    showS0 = true;
+    showS1 = true;
+    
     for (var it in re) {
       var shouldCont = false;
       for (var m in markers) {
@@ -392,8 +348,6 @@ class MapPage extends Component {
   /** Map is loaded */
   handleMapMounted(map) {
 
-
-
     window.map = map;
     google = window.google;
 
@@ -401,6 +355,34 @@ class MapPage extends Component {
     if (google) {
       google.maps.InfoWindow.prototype.set = function() {
       };
+    }
+
+    {
+      // Load settings
+      var _t = this;
+      var pos;
+
+      settingManager = new SettingManager(() => {
+
+        var loc = settingManager.getLastMapLocation();
+        pos = Coord(loc.latitude, loc.longitude);
+        
+        window.map.panTo(pos);
+
+        _t.setState({ zoom: settingManager.getLastMapZoom() });
+        _t.types = settingManager.getTypes();
+        _t.handleMapBoundsChanged();
+
+        if (_t.types.indexOf(7) || _t.types.indexOf(8)) {
+          return;
+          CloudDatastore.getStars().then(
+            result => {
+              _t.handleStarsLoad(result.records);
+            }
+          );
+
+        }
+      });
     }
 
     var input = document.getElementById('searchTextField');
@@ -599,8 +581,6 @@ class MapPage extends Component {
         </div>
 
         <ContextMenu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
-
-        <CKComponent ref={(ck) => { this._ck = ck; }} onLoginSuccess={this.handleLoginSuccess} onStarsLoad={this.handleStarsLoad} onTracesLoad={this.handleTracesLoad} />
 
         {
           !this.state.isPanoramaView && this.state.showStarSidebar && (

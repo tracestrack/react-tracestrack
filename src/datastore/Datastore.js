@@ -3,8 +3,6 @@ const assert = require('assert').strict;
 
 export default class IDatastore {
 
-  constructor() { }
-
   login() { assert(false); }
   
   getStars() { assert(false); }
