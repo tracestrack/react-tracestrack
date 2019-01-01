@@ -1,37 +1,41 @@
+'strict';
+import CloudDatastore from '../../datastore/Mock.js';
+
 class SettingManager {
-  constructor(re) {
-    this.record = re;
-    
-    if (re.fields.lastMapLocation == null || re.fields.lastMapLocation.value == null) {
-      this.lastMapLocation = {latitude: 51.443416, longitude: 5.479131};
-    }
-    else {
-      this.lastMapLocation = re.fields.lastMapLocation.value;
-    }
-    
-    if (re.fields['types']) {
-      this.types = re.fields['types'].value;
-    }
-    if (re.fields.lastMapZoom) {
-      this.lastMapZoom = re.fields.lastMapZoom.value;
-    }
+  constructor(done) {
+
+    CloudDatastore.getSettings().then(
+      result => {
+        let re = result.records[0];
+        
+        if (re.fields['lastMapLocation'] !== null && re.fields['lastMapLocation'].value !== null) {
+          this.lastMapLocation = re.fields.lastMapLocation.value;
+        }
+        
+        if (re.fields['types'] !== null && re.fields['types'].value !== null) {
+          this.types = re.fields['types'].value;
+        }
+
+        if (re.fields['lastMapZoom'] !== null) {
+          this.lastMapZoom = re.fields.lastMapZoom.value;
+        }
+
+        done();
+        
+      }
+    );    
   }
 
   getLastMapLocation() {
-    return this.lastMapLocation;
+    return this.lastMapLocation ? this.lastMapLocation : {latitude: 1, longitude: 1};
   }
 
   getTypes() {
-    if (this.types == null) {
-      return [0,1,2,3,4,5,6];
-    }
-    else {
-      return this.types;
-    }
+    return this.types ? [0,1,2,3,4,5,6] : this.types;
   }
 
   getLastMapZoom() {
-    return (this.lastMapZoom ? this.lastMapZoom : 10);
+    return this.lastMapZoom ? this.lastMapZoom : 10;
   }
 
   packRecord() {

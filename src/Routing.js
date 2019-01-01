@@ -7,7 +7,6 @@ import {
 import MapPage from './pages/map/MapPage.js';
 import AccountPage from './pages/account/AccountPage.js';
 import TracesPage from './pages/traces/TracesPage.js';
-import Upload from './pages/traces/Upload.js';
 import StarsPage from './pages/stars/StarsPage.js';
 
 class DevIndex extends Component {
