@@ -1,5 +1,6 @@
 'strict';
 import CloudDatastore from '../../datastore/Mock.js';
+//import CloudDatastore from '../../datastore/CloudDatastore.js';
 
 class SettingManager {
   constructor(done) {
@@ -21,7 +22,6 @@ class SettingManager {
         }
 
         done();
-        
       }
     );    
   }
@@ -31,7 +31,7 @@ class SettingManager {
   }
 
   getTypes() {
-    return this.types ? [0,1,2,3,4,5,6] : this.types;
+    return this.types ? this.types : [0,1,2,3,4,5,6];
   }
 
   getLastMapZoom() {

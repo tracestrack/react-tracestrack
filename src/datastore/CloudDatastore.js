@@ -181,7 +181,6 @@ export default class CloudDatastore extends IDatastore {
     var ascending = null;
     var latitude = null;
     var longitude = null;
-    var _this = this;
 
     maxLat = Math.round(maxLat * 1000000);
     maxLng = Math.round(maxLng * 1000000);
@@ -190,6 +189,7 @@ export default class CloudDatastore extends IDatastore {
 
     let gt = 'GREATER_THAN';
     let lt = 'LESS_THAN';
+    alert(types);
 
     var filters = [
       { fieldName: 'maxLat', comparator: gt, fieldValue: minLat },
@@ -203,8 +203,7 @@ export default class CloudDatastore extends IDatastore {
       CloudDatastore.performQuery(
       databaseScope, zoneName, ownerRecordName, recordType,
         desiredKeys, sortByField, ascending, latitude, longitude, filters, null, function(records) {
-          alert(records);
-          _this.props.onTracesLoad(records);
+          resolve(records);
         }, true);
     });
   }
