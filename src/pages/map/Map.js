@@ -110,8 +110,10 @@ export const Map = withScriptjs(withGoogleMap((props) =>
                                                 zoom={props.zoom}
                                                 onClick={props.onMapLeftClick}
                                                 onZoomChanged={props.onZoomChanged}
-                                                onDragEnd={props.onDragEnd}
                                                 onRightClick={props.onMapRightClick}
+                                                onBoundsChanged={props.onBoundsChanged}
+                                                onDragStart={props.onDragStart}
+                                                onDragEnd={props.onDragEnd}
                                               >
 
 
@@ -154,7 +156,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
                                                   );
 
                                                   if (window.map.getBounds().contains(position) === false) {
-                                                    return (<div />);
+
                                                   }
 
                                                   var icon;
@@ -162,11 +164,9 @@ export const Map = withScriptjs(withGoogleMap((props) =>
                                                   switch (marker.type) {
                                                   case MarkerType.red:
                                                     icon = { url: RedStarImg, scaledSize: new window.google.maps.Size(24, 24) };
-                                                    console.log("type red");
                                                     break;
                                                   case MarkerType.green:
                                                     icon = { url: GreenStarImg, scaledSize: new window.google.maps.Size(24, 24) };
-                                                    console.log("type green");
                                                     break;
                                                   case MarkerType.searchHit:
                                                     //icon = {url: PinImg, scaledSize: new window.google.maps.Size(32, 32)};

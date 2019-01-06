@@ -31,6 +31,7 @@ class MapPage extends Component {
     this.overlayManager = new OverlayManager();
     this.loadedAreaManager = new LoadedAreaManager();
     this.types = [0];
+    this.is_dragging = false;
   }
 
   state = {
@@ -51,6 +52,8 @@ class MapPage extends Component {
   handleTraceClick = this.handleTraceClick.bind(this);
   handleMapRightClick = this.handleMapRightClick.bind(this);
   handleMapLeftClick = this.handleMapLeftClick.bind(this);
+  handleDragStart = this.handleDragStart.bind(this);
+  handleDragEnd = this.handleDragEnd.bind(this);
   handleStarsLoad = this.handleStarsLoad.bind(this);
   handleTracesLoad = this.handleTracesLoad.bind(this);
   handleAddStar = this.handleAddStar.bind(this);
@@ -86,7 +89,7 @@ class MapPage extends Component {
 
     this._ck.saveRecord(settingManager.packRecord(), function(re) {
       _this.handleMapBoundsChanged();
-      //console.log(re);		
+      //console.log(re);
     });
 
     if (b.indexOf(7) || b.indexOf(8)) {
@@ -100,8 +103,18 @@ class MapPage extends Component {
 
   }
 
+  handleDragStart(e) {
+    this.is_dragging = true;
+  }
+
+  handleDragEnd(e) {
+    this.is_dragging = false;
+    this.handleMapBoundsChanged();
+  }
+
   /** Map Moved */
   handleMapBoundsChanged() {
+    if (this.is_dragging) return;
 
     let _t = this;
     if (this.state.isLoadingTraces) {
@@ -110,10 +123,10 @@ class MapPage extends Component {
     }
 
     let bounds = window.map.getBounds();
-    if (bounds == null) return;
-    
+    if (bounds === null) return;
+
     this.setState({ isLoadingTraces: true });
-    
+
     let latDiff = bounds.getNorthEast().lat() - bounds.getSouthWest().lat();
     let lngDiff = bounds.getNorthEast().lng() - bounds.getSouthWest().lng();
 
@@ -140,16 +153,15 @@ class MapPage extends Component {
 
     let z = window.map.getZoom();
     var loadDetail = z > 12;
-    
+
     if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
 
-
-      CloudDatastore.queryTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, [1,2,3], true).then(
-        result => {
-          _t.setState({ isLoadingTraces: false });
-          _t.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
-          _t.handleTracesLoad(result.records);
-        }
+      CloudDatastore.queryTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, this.types, true).then(
+	result => {
+	  _t.setState({ isLoadingTraces: false });
+	  _t.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
+	  _t.handleTracesLoad(result.records);
+	}
       );
     }
     else {
@@ -185,7 +197,7 @@ class MapPage extends Component {
   handleTracesLoad(re) {
 
     console.log(re);
-    
+
     var _this = this;
     this.setState(function(prevState, props) {
 
@@ -193,26 +205,26 @@ class MapPage extends Component {
 
       for (var it in re) {
 
-        let isDetail = re[it].fields.detail !== undefined;
-        if (_this.overlayManager.shouldRedraw(re[it].recordName, isDetail)) {
-          let pts = re[it].fields.detail === undefined ? re[it].fields.medium.value : re[it].fields.detail.value;
+	let isDetail = re[it].fields.detail !== undefined;
+	if (_this.overlayManager.shouldRedraw(re[it].recordName, isDetail)) {
+	  let pts = re[it].fields.detail === undefined ? re[it].fields.medium.value : re[it].fields.detail.value;
 
-          let trace = Trace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
+	  let trace = Trace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
 
-          for (var it2 in ret) {
-            if (ret[it2].recordName === re[it].recordName) {
-              ret.splice(it2, 1);
-              break;
-            }
-          }
-          ret.push(trace);
-          _this.overlayManager.add(re[it].recordName, isDetail);
-        }
+	  for (var it2 in ret) {
+	    if (ret[it2].recordName === re[it].recordName) {
+	      ret.splice(it2, 1);
+	      break;
+	    }
+	  }
+	  ret.push(trace);
+	  _this.overlayManager.add(re[it].recordName, isDetail);
+	}
       }
 
       return {
-        traces: ret,
-        dbTraceCount: _this.overlayManager.getCount()
+	traces: ret,
+	dbTraceCount: _this.overlayManager.getCount()
 
       };
     });
@@ -229,25 +241,25 @@ class MapPage extends Component {
 
     showS0 = true;
     showS1 = true;
-    
+
     for (var it in re) {
       var shouldCont = false;
       for (var m in markers) {
-        if (markers[m].recordName === re[it].recordName) {
-          shouldCont = true;
-          break;
-        }
+	if (markers[m].recordName === re[it].recordName) {
+	  shouldCont = true;
+	  break;
+	}
       }
       if (shouldCont) continue;
 
       var fields = re[it].fields;
 
       if ((showS0 && fields.type.value === 0) ||
-          (showS1 && fields.type.value === 1)) {
+	  (showS1 && fields.type.value === 1)) {
 
-        var marker = Star(Coord(fields.location.value.latitude, fields.location.value.longitude), fields.type.value, re[it].recordName);
+	var marker = Star(Coord(fields.location.value.latitude, fields.location.value.longitude), fields.type.value, re[it].recordName);
 
-        markers.push(marker);
+	markers.push(marker);
       }
     }
 
@@ -258,20 +270,21 @@ class MapPage extends Component {
 
   }
 
+
   /** Left click on the map */
   handleMapLeftClick(e) {
 
     /*
       if (this.waypoints === null) {
       this.waypoints = [];
-      
+
       }
-      
+
       if (this.waypoints.length > 0) {
-      
+
       const DirectionsService = new google.maps.DirectionsService();
       this.waypoints.push({ location: e.latLng });
-      
+
       DirectionsService.route({
       origin: this.waypoints[0].location,
       destination: e.latLng,
@@ -282,17 +295,17 @@ class MapPage extends Component {
       _this.setState({
       directions: result,
       });
-      
+
       console.log(result);
       } else {
       console.error(`error fetching directions ${result}`);
       }
       });
-      
+
       }
       else {
       this.origin = e.latLng;
-      
+
       const wp = { location: e.latLng };
       this.waypoints.push(wp)
       }
@@ -303,10 +316,10 @@ class MapPage extends Component {
       var poi = Star({ lat: e.latLng.lat(), lng: e.latLng.lng() }, MarkerType.googlePlace, '', e.placeId);
 
       this.setState({
-        selectedStar: poi,
-        showStarSidebar: true,
-        showContextMenu: false,
-        showTraceSidebar: false
+	selectedStar: poi,
+	showStarSidebar: true,
+	showContextMenu: false,
+	showTraceSidebar: false
       });
 
     }
@@ -318,19 +331,19 @@ class MapPage extends Component {
       state.showTraceSidebar = false;
 
       if (this.state.selectedTrace) {
-        /** Unselect traces */
-        let traces = this.state.traces;
-        for (var it in traces) {
-          if (traces[it].linkingId === -this.state.selectedTrace.linkingId) {
-            traces[it].selected = false;
-          }
-        }
-        state.selectedTrace = null;
+	/** Unselect traces */
+	let traces = this.state.traces;
+	for (var it in traces) {
+	  if (traces[it].linkingId === -this.state.selectedTrace.linkingId) {
+	    traces[it].selected = false;
+	  }
+	}
+	state.selectedTrace = null;
       }
 
 
       if (Object.keys(state).length > 0) {
-        this.setState(state);
+	this.setState(state);
       }
     }
 
@@ -364,24 +377,22 @@ class MapPage extends Component {
 
       settingManager = new SettingManager(() => {
 
-        var loc = settingManager.getLastMapLocation();
-        pos = Coord(loc.latitude, loc.longitude);
-        
-        window.map.panTo(pos);
+	var loc = settingManager.getLastMapLocation();
+	pos = Coord(loc.latitude, loc.longitude);
 
-        _t.setState({ zoom: settingManager.getLastMapZoom() });
-        _t.types = settingManager.getTypes();
-        _t.handleMapBoundsChanged();
+	window.map.panTo(pos);
 
-        if (_t.types.indexOf(7) || _t.types.indexOf(8)) {
-          return;
-          CloudDatastore.getStars().then(
-            result => {
-              _t.handleStarsLoad(result.records);
-            }
-          );
+	_t.setState({ zoom: settingManager.getLastMapZoom() });
+	_t.types = settingManager.getTypes();
 
-        }
+	if (_t.types.indexOf(7) || _t.types.indexOf(8)) {
+	  CloudDatastore.getStars().then(
+	    result => {
+	      _t.handleStarsLoad(result.records);
+	    }
+	  );
+
+	}
       });
     }
 
@@ -397,10 +408,10 @@ class MapPage extends Component {
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-    
+
     var pos = Coord(position.coords.latitude, position.coords.longitude);
     map.panTo(pos);
-    
+
     }, function() {
     //handleLocationError(true, infoWindow, map.getCenter());
     });
@@ -422,46 +433,46 @@ class MapPage extends Component {
       var isLocality = false;
 
       if (places.length === 0) {
-        return;
+	return;
       }
       else if (places.length === 1 && places[0].types.indexOf('political') > -1) {
-        isLocality = true;
+	isLocality = true;
       }
       else {
 
-        for (var it in _this.state.markers) {
+	for (var it in _this.state.markers) {
 
-          if (_this.state.markers[it].type !== MarkerType.searchHit) {
-            markers.push(_this.state.markers[it]);
-          }
-        }
+	  if (_this.state.markers[it].type !== MarkerType.searchHit) {
+	    markers.push(_this.state.markers[it]);
+	  }
+	}
 
       }
 
       var bounds = new google.maps.LatLngBounds();
 
       places.forEach(function(place) {
-        if (!place.geometry) {
-          console.log("Returned place contains no geometry");
-        }
+	if (!place.geometry) {
+	  console.log("Returned place contains no geometry");
+	}
 
-        var marker = Star(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place);
+	var marker = Star(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place);
 
-        markers.push(marker);
+	markers.push(marker);
 
-        if (place.geometry.viewport) {
-          // Only geocodes have viewport.
-          bounds.union(place.geometry.viewport);
-        } else {
-          bounds.extend(place.geometry.location);
-        }
+	if (place.geometry.viewport) {
+	  // Only geocodes have viewport.
+	  bounds.union(place.geometry.viewport);
+	} else {
+	  bounds.extend(place.geometry.location);
+	}
 
       });
 
       if (isLocality === false) {
-        _this.setState({
-          markers: markers
-        });
+	_this.setState({
+	  markers: markers
+	});
       }
 
       map.fitBounds(bounds);
@@ -496,13 +507,13 @@ class MapPage extends Component {
     var selectedTrace = null;
     for (var it in traces) {
       if (this.state.selectedTrace && traces[it].recordName === this.state.selectedTrace.recordName) {
-        traces[it].selected = false;
+	traces[it].selected = false;
       }
       if ((traces[it].recordName === trace.recordName) || ((trace.linkingId !== 0) && (traces[it].linkingId === trace.linkingId)) || (traces[it].linkingId === -trace.linkingId)) {
-        traces[it].selected = true;
-        if (traces[it].linkingId >= 0) {
-          selectedTrace = traces[it];
-        }
+	traces[it].selected = true;
+	if (traces[it].linkingId >= 0) {
+	  selectedTrace = traces[it];
+	}
       }
     }
 
@@ -556,64 +567,65 @@ class MapPage extends Component {
     return (
       <div className='full-height'>
 
-        {
-          this.state.showFilterBox && (
-            <FilterBox onFilterApply={this.onFilterApply} types={this.types} onCancel={this.onFilterCancel} />
-          )
-        }
+	{
+	  this.state.showFilterBox && (
+	    <FilterBox onFilterApply={this.onFilterApply} types={this.types} onCancel={this.onFilterCancel} />
+	  )
+	}
 
-        <SiteHeader selected="map" />
-
-
-        <div className="header-bar">
+	<SiteHeader selected="map" />
 
 
-          <div className="shadow">
-            <input type="text" id="searchTextField" className='form-control form-control-sm' />
-          </div>
+	<div className="header-bar">
 
-          <div className="toolbox">
-            <button className="btn btn-info btn-sm" onClick={this.showFilterBox}>{lang.filter}</button>
 
-            <button className="btn btn-info btn-sm" onClick={this.onSetStartMap}>{lang.setDefaultMap}</button>
-          </div>
+	  <div className="shadow">
+	    <input type="text" id="searchTextField" className='form-control form-control-sm' />
+	  </div>
 
-        </div>
+	  <div className="toolbox">
+	    <button className="btn btn-info btn-sm" onClick={this.showFilterBox}>{lang.filter}</button>
 
-        <ContextMenu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
+	    <button className="btn btn-info btn-sm" onClick={this.onSetStartMap}>{lang.setDefaultMap}</button>
+	  </div>
 
-        {
-          !this.state.isPanoramaView && this.state.showStarSidebar && (
-            <StarSidebar star={this.state.selectedStar} ck={this._ck} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved} />
-          )
-        }
-        {
-          !this.state.isPanoramaView && this.state.showTraceSidebar && (
-            <TraceSidebar trace={this.state.selectedTrace} ck={this._ck} onTraceDeleted={this.handleTraceDeleted} />
-          )
-        }
+	</div>
 
-        {!this.state.isPanoramaView && (<div className='xxxx'>T: {this.state.dbTraceCount}, S: {this.state.dbStarCount}</div>)}
+	<ContextMenu active={this.state.showContextMenu} position={this.state.rightClickPosition} onAddStar={this.handleAddStar} />
 
-        <Map
+	{
+	  !this.state.isPanoramaView && this.state.showStarSidebar && (
+	    <StarSidebar star={this.state.selectedStar} ck={this._ck} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved} />
+	  )
+	}
+	{
+	  !this.state.isPanoramaView && this.state.showTraceSidebar && (
+	    <TraceSidebar trace={this.state.selectedTrace} ck={this._ck} onTraceDeleted={this.handleTraceDeleted} />
+	  )
+	}
 
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div className='mapContainer' />}
-          mapElement={<div style={{ height: `100%` }} />}
-          googleMapURL={this.mapURL}
-          zoom={this.state.zoom}
-          markers={this.state.markers}
-          traces={this.state.traces}
-          onMarkerClick={this.handleMarkerClick}
-          onTraceClick={this.handleTraceClick}
-          onMapMounted={this.handleMapMounted}
-          onMapLeftClick={this.handleMapLeftClick}
-          onMapRightClick={this.handleMapRightClick}
-          onDragEnd={this.handleMapBoundsChanged}
-          onZoomChanged={this.handleMapBoundsChanged}
-          directions={this.state.directions}
+	{!this.state.isPanoramaView && (<div className='xxxx'>T: {this.state.dbTraceCount}, S: {this.state.dbStarCount}</div>)}
 
-        />
+	<Map
+
+	  loadingElement={<div style={{ height: `100%` }} />}
+	  containerElement={<div className='mapContainer' />}
+	  mapElement={<div style={{ height: `100%` }} />}
+	  googleMapURL={this.mapURL}
+	  zoom={this.state.zoom}
+	  markers={this.state.markers}
+	  traces={this.state.traces}
+	  onMarkerClick={this.handleMarkerClick}
+	  onTraceClick={this.handleTraceClick}
+	  onMapMounted={this.handleMapMounted}
+	  onMapLeftClick={this.handleMapLeftClick}
+	  onMapRightClick={this.handleMapRightClick}
+	  onBoundsChanged={this.handleMapBoundsChanged}
+	  onDragStart={this.handleDragStart}
+	  onDragEnd={this.handleDragEnd}
+	  directions={this.state.directions}
+
+	/>
       </div>
 
     );
