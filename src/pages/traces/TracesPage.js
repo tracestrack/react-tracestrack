@@ -1,7 +1,7 @@
 import React from 'react';
 import { SiteHeader, SiteFooter } from '../common/Page.js';
-import CloudDatastore from '../../datastore/CloudDatastore.js';
-//import CloudDatastore from '../../datastore/Mock.js';
+//import CloudDatastore from '../../datastore/CloudDatastore.js';
+import CloudDatastore from '../../datastore/Mock.js';
 import 'react-table/react-table.css';
 import { formatDate } from '../../utils/Formatter.js';
 import gpxParser from '../../utils/GPXParser.js';
@@ -243,7 +243,6 @@ class TracesPage extends React.Component {
     });
   }
 
-
   render() {
     return (
       <div className='default'>
@@ -251,7 +250,7 @@ class TracesPage extends React.Component {
         <SiteHeader selected='traces' />
 
         <main role="main" className="container">
-          <h1 className="mt-5">Your activity list</h1>
+          <h1 className="mt-5">Your trace list</h1>
           <p className="lead"></p>
 
           {this.state.traces.length > 0 && (
@@ -265,7 +264,7 @@ class TracesPage extends React.Component {
 
 
           {this.state.traces.length === 0 && (
-            <center>There is no activities yet.</center>
+            <center>There is no traces yet.</center>
           )}
 
           <h3>Actions</h3>
@@ -273,7 +272,6 @@ class TracesPage extends React.Component {
 
             <button className="btn btn-primary" onClick={this.showUpload}>Upload</button>
             <button className="btn btn-danger" onClick={this.removeDuplis}>Remove Duplicates</button>
-
 
           </p>
 
