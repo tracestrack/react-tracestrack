@@ -173,7 +173,6 @@ export default class CloudDatastore extends IDatastore {
     this.lastBox = [maxLat, maxLng, minLat, minLng];
 
     var databaseScope = "PRIVATE";
-    var databaseSharedScope = "SHARED";
     var ownerRecordName = null;
     var recordType = "Trace";
     var desiredKeys = [loadDetail ? "detail" : "medium", 'type', 'linkingId'];

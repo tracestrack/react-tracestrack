@@ -9,7 +9,6 @@ import FilterBox from './FilterBox.js';
 import SettingManager from '../common/SettingManager.js';
 import { Map, OverlayManager, LoadedAreaManager } from './Map.js';
 import { Star, Trace, MarkerType, Coord } from '../common/Models.js';
-import $ from 'jquery';
 
 var google = window.google;
 const lang = window.lang;
@@ -370,39 +369,32 @@ class MapPage extends Component {
       };
     }
 
-    {
-      // Load settings
-      var _t = this;
-      var pos;
+    // Load settings
+    var _t = this;
+    var pos;
 
-      settingManager = new SettingManager(() => {
+    settingManager = new SettingManager(() => {
+      var loc = settingManager.getLastMapLocation();
+      pos = Coord(loc.latitude, loc.longitude);
 
-	var loc = settingManager.getLastMapLocation();
-	pos = Coord(loc.latitude, loc.longitude);
+      window.map.panTo(pos);
 
-	window.map.panTo(pos);
+      _t.setState({ zoom: settingManager.getLastMapZoom() });
+      _t.types = settingManager.getTypes();
 
-	_t.setState({ zoom: settingManager.getLastMapZoom() });
-	_t.types = settingManager.getTypes();
-
-	if (_t.types.indexOf(7) || _t.types.indexOf(8)) {
-	  CloudDatastore.getStars().then(
-	    result => {
-	      _t.handleStarsLoad(result.records);
-	    }
-	  );
-
-	}
-      });
-    }
+      if (_t.types.indexOf(7) || _t.types.indexOf(8)) {
+	CloudDatastore.getStars().then(
+	  result => {
+	    _t.handleStarsLoad(result.records);
+	  }
+	);
+      }
+    });
 
     var input = document.getElementById('searchTextField');
     input.setAttribute('spellcheck', 'false');
-    var _this = this;
 
     var searchBox = new google.maps.places.SearchBox(input);
-
-
 
     /*
     // Try HTML5 geolocation.
@@ -423,7 +415,7 @@ class MapPage extends Component {
 
     map.getStreetView().addListener("visible_changed", function(e) {
       let v = map.getStreetView().getVisible();
-      _this.setState({ isPanoramaView: v });
+      _t.setState({ isPanoramaView: v });
 
     });
 
@@ -440,10 +432,10 @@ class MapPage extends Component {
       }
       else {
 
-	for (var it in _this.state.markers) {
+	for (var it in _t.state.markers) {
 
-	  if (_this.state.markers[it].type !== MarkerType.searchHit) {
-	    markers.push(_this.state.markers[it]);
+	  if (_t.state.markers[it].type !== MarkerType.searchHit) {
+	    markers.push(_t.state.markers[it]);
 	  }
 	}
 
@@ -470,7 +462,7 @@ class MapPage extends Component {
       });
 
       if (isLocality === false) {
-	_this.setState({
+	_t.setState({
 	  markers: markers
 	});
       }
