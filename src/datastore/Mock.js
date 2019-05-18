@@ -20,6 +20,14 @@ export default class MockCloudDatastore extends IDatastore {
     });
   }
 
+  static getTrace(recordName) {
+    return new Promise((resolve, reject) => {
+      setTimeout(function(){
+        resolve(TRACES_RESULT);
+      }, 500);
+    });
+  }
+
   static getTraces() {
     return new Promise((resolve, reject) => {
       setTimeout(function(){

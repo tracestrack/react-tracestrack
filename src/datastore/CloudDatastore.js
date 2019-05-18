@@ -151,6 +151,49 @@ export default class CloudDatastore extends IDatastore {
     });
   }
 
+  static demoFetchRecord(
+    databaseScope, recordName, zoneName, callback
+  ) {
+    var container = CloudKit.getDefaultContainer();
+    var database = container.getDatabaseWithDatabaseScope(
+      CloudKit.DatabaseScope[databaseScope]
+    );
+
+    var zoneID, options;
+
+    if (zoneName) {
+      zoneID = { zoneName: zoneName };
+      options = { zoneID: zoneID };
+    }
+
+    return database.fetchRecords(recordName, options)
+      .then(function(response) {
+        if (response.hasErrors) {
+
+          // Handle the errors in your app.
+          throw response.errors[0];
+
+        } else {
+          var record = response.records[0];
+          console.log(record.modified);
+
+          // Render the fetched record.
+          callback(record);
+        }
+      });
+  }
+  
+  static getTrace(recordName) {
+    return new Promise((resolve, reject) => {
+      var databaseScope = "PRIVATE";
+
+      CloudDatastore.demoFetchRecord(
+        databaseScope, recordName, zoneName, resolve
+      );
+
+    });
+  }
+  
   static getTraces(params = {continuationMarker: null}) {
     var databaseScope = "PRIVATE";
     var ownerRecordName = null;
@@ -188,7 +231,6 @@ export default class CloudDatastore extends IDatastore {
 
     let gt = 'GREATER_THAN';
     let lt = 'LESS_THAN';
-    alert(types);
 
     var filters = [
       { fieldName: 'maxLat', comparator: gt, fieldValue: minLat },
@@ -207,6 +249,61 @@ export default class CloudDatastore extends IDatastore {
     });
   }
 
+  static saveRecord(re, callback) {
+
+    var databaseScope = "PRIVATE";
+    var recordName = re.recordName;
+
+    var forRecordName = null;
+    var forRecordChangeTag = null;
+    var publicPermission = null;
+    var ownerRecordName = null;
+    var participants = null;
+    var parentRecordName = null;
+    var fields = re.fields;
+    var createShortGUID = false;
+    var recordType = re.recordType;
+
+    var zoneID = { zoneName: zoneName };
+    var options = { zoneID: zoneID };
+
+    var _this = this;
+
+    var container = CloudKit.getDefaultContainer();
+    var database = container.getDatabaseWithDatabaseScope(
+      CloudKit.DatabaseScope[databaseScope]
+    );
+
+
+    function doSave(recordChangeTag) {
+      _this.demoSaveRecords(databaseScope, recordName, recordChangeTag, recordType, zoneName,
+                            forRecordName, forRecordChangeTag, publicPermission, ownerRecordName,
+                            participants, parentRecordName, fields, createShortGUID, callback);
+    }
+
+
+    if (recordName) {
+      database.fetchRecords(recordName, options)
+        .then(function(response) {
+          if (response.hasErrors) {
+
+            // Handle the errors in your app.
+            throw response.errors[0];
+
+          } else {
+            var record = response.records[0];
+            doSave(record.recordChangeTag);
+          }
+        });
+    }
+    else {
+      doSave();
+    }
+
+
+
+  }
+  
   static getSettings() {
     var databaseScope = "PRIVATE";
     var ownerRecordName = null;

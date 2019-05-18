@@ -7,6 +7,7 @@ export default class IDatastore {
   
   getStars() { assert(false); }
 
+  getTrace() { assert(false); }
   getTraces() { assert(false); }
 
   getSettings() { assert(false); }
@@ -14,6 +15,8 @@ export default class IDatastore {
   addStar() { assert(false); }
 
   addTrace() { assert(false); }
+
+  saveRecord() { assert(false); }
 
   uploadStar() { assert(false); }
 
