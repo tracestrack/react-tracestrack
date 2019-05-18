@@ -4,21 +4,22 @@ import CloudDatastore from '../../datastore/Mock.js';
 
 class SettingManager {
   constructor(done) {
-
+    var _this = this;
     CloudDatastore.getSettings().then(
       result => {
         let re = result.records[0];
+        _this.record = re;
         
         if (re.fields['lastMapLocation'] !== null && re.fields['lastMapLocation'].value !== null) {
-          this.lastMapLocation = re.fields.lastMapLocation.value;
+          _this.lastMapLocation = re.fields.lastMapLocation.value;
         }
         
         if (re.fields['types'] !== null && re.fields['types'].value !== null) {
-          this.types = re.fields['types'].value;
+          _this.types = re.fields['types'].value;
         }
 
         if (re.fields['lastMapZoom'] !== null) {
-          this.lastMapZoom = re.fields.lastMapZoom.value;
+          _this.lastMapZoom = re.fields.lastMapZoom.value;
         }
 
         done();

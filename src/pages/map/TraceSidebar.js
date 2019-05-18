@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { LiveMarkedArea } from '../../components/LiveMarkedArea.js';
 import { formatDistance, formatSpeed, formatDate, formatDuration } from '../../utils/Formatter.js';
+//import CloudDatastore from '../../datastore/Mock.js';
+import CloudDatastore from '../../datastore/CloudDatastore.js';
 
 class TraceSidebar extends Component {
 
   constructor(props) {
     super(props);
 
-    this.ck = props.ck;
     var state = this.convertProps2State(props);
     state.editMode = false;
 
@@ -114,35 +115,37 @@ class TraceSidebar extends Component {
 
     let _this = this;
 
-    this.ck.loadRecord(trace.recordName, trace.share, function(re) {
+    CloudDatastore.getTrace(trace.recordName).then(
+      re => {
 
-      let data = re.fields;
+        let data = re.fields;
 
-      console.log(data);
-      console.log(data.gpxFile);
+        console.log(data);
+        console.log(data.gpxFile);
 
-      _this.trace = re;
+        _this.trace = re;
 
-      let date = new Date(data.startDate.value + data.secondsFromGMT.value * 1000);
+        let date = new Date(data.startDate.value + data.secondsFromGMT.value * 1000);
 
-      var states = {
-        title: data.title.value,
-        distance: formatDistance(data.distance.value),
-        averageSpeed: formatSpeed(data.averageSpeed.value),
-        duration: formatDuration(data.duration.value),
-        startDate: formatDate(date),
-        note: data.note.value ? data.note.value : '',
-        elevation: data.elevation.value,
-        type: data.type.value,
-        linkingId: data.linkingId.value,
-        lastUpdate: new Date(re.modified.timestamp).toLocaleString(),
-        fileSize: data.gpxFile ? (data.gpxFile.value.size / 1000).toFixed(2) : null,
-        downloadURL: data.gpxFile ? data.gpxFile.value.downloadURL : null
+        var states = {
+          title: data.title.value,
+          distance: formatDistance(data.distance.value),
+          averageSpeed: formatSpeed(data.averageSpeed.value),
+          duration: formatDuration(data.duration.value),
+          startDate: formatDate(date),
+          note: data.note.value ? data.note.value : '',
+          elevation: data.elevation.value,
+          type: data.type.value,
+          linkingId: data.linkingId.value,
+          lastUpdate: new Date(re.modified.timestamp).toLocaleString(),
+          fileSize: data.gpxFile ? (data.gpxFile.value.size / 1000).toFixed(2) : null,
+          downloadURL: data.gpxFile ? data.gpxFile.value.downloadURL : null
 
-      };
-      _this.setState(states);
-    });
-
+        };
+        _this.setState(states);
+        
+      }
+    );
   }
 
   componentWillReceiveProps(props) {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ContextMenu from './ContextMenu.js';
 import { SiteHeader } from '../common/Page.js';
-//import CloudDatastore from '../../datastore/CloudDatastore.js';
-import CloudDatastore from '../../datastore/Mock.js';
+import CloudDatastore from '../../datastore/CloudDatastore.js';
+//import CloudDatastore from '../../datastore/Mock.js';
 import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
 import FilterBox from './FilterBox.js';
@@ -86,13 +86,17 @@ class MapPage extends Component {
 
     settingManager.types = b;
 
-    this._ck.saveRecord(settingManager.packRecord(), function(re) {
+    CloudDatastore.saveRecord(settingManager.packRecord(), function(re) {
       _this.handleMapBoundsChanged();
       //console.log(re);
     });
 
     if (b.indexOf(7) || b.indexOf(8)) {
-      this._ck.loadStars();
+	CloudDatastore.getStars().then(
+	  result => {
+	    _this.handleStarsLoad(result.records);
+	  }
+	);
     }
 
   }
@@ -493,6 +497,7 @@ class MapPage extends Component {
   /** Click on the trace */
   handleTraceClick(trace) {
 
+    console.log(trace);
     let traces = this.state.traces;
 
     // Use on trace to represent merged traces
@@ -501,7 +506,7 @@ class MapPage extends Component {
       if (this.state.selectedTrace && traces[it].recordName === this.state.selectedTrace.recordName) {
 	traces[it].selected = false;
       }
-      if ((traces[it].recordName === trace.recordName) || ((trace.linkingId !== 0) && (traces[it].linkingId === trace.linkingId)) || (traces[it].linkingId === -trace.linkingId)) {
+      if ((traces[it].recordName === trace.recordName) || ((trace.linkingId !== 0) && (traces[it].linkingId === trace.linkingId)) || ((trace.linkingId !== 0) && traces[it].linkingId === -trace.linkingId)) {
 	traces[it].selected = true;
 	if (traces[it].linkingId >= 0) {
 	  selectedTrace = traces[it];
