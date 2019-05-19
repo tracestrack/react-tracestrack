@@ -2,7 +2,6 @@ import React from 'react';
 import { SiteHeader, SiteFooter } from '../common/Page.js';
 //import CloudDatastore from '../../datastore/CloudDatastore.js';
 import CloudDatastore from '../../datastore/Mock.js';
-import 'react-table/react-table.css';
 import { formatCoordinate, formatDate } from '../../utils/Formatter.js';
 import $ from 'jquery';
 
