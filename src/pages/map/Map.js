@@ -36,10 +36,12 @@ export class LoadedAreaManager {
   }
 
   clear() {
+    console.log("loaded area cleared");
     this.bboxes = [];
   }
 
   addLoaded(maxLat, maxLng, minLat, minLng, loadDetail) {
+    console.log("loaded area added");
     this.bboxes.push([maxLat, maxLng, minLat, minLng, loadDetail]);
   }
 
@@ -47,7 +49,7 @@ export class LoadedAreaManager {
     for (var it in this.bboxes) {
       let bit = this.bboxes[it];
       if ((maxLat <= bit[0] && maxLng <= bit[1] && minLat >= bit[2] && minLng >= bit[3] && (bit[4])) || (!bit[4] && !loadDetail)) {
-
+        //loaded
         return true;
       }
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { SiteHeader, SiteFooter } from '../common/Page.js';
-//import CloudDatastore from '../../datastore/CloudDatastore.js';
-import CloudDatastore from '../../datastore/Mock.js';
+import CloudDatastore from '../../datastore/CloudDatastore.js';
+//import CloudDatastore from '../../datastore/Mock.js';
 import { formatDate } from '../../utils/Formatter.js';
 import gpxParser from '../../utils/GPXParser.js';
 import Upload from './Upload.js';

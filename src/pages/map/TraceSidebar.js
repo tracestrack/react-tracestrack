@@ -76,7 +76,8 @@ class TraceSidebar extends Component {
     trace.fields.type = this.state.type;
     trace.fields.title = this.state.title;
     trace.fields.note = this.state.note;
-    this.ck.saveRecord(trace, function(re) {
+
+    CloudDatastore.saveRecord(trace, function(re) {
       console.log(re);
       _this.setState({ editMode: false });
     });
@@ -115,7 +116,7 @@ class TraceSidebar extends Component {
 
     let _this = this;
 
-    CloudDatastore.getTrace(trace.recordName).then(
+    CloudDatastore.getRecord(trace.recordName).then(
       re => {
 
         let data = re.fields;

@@ -1,6 +1,6 @@
 'strict';
-import CloudDatastore from '../../datastore/Mock.js';
-//import CloudDatastore from '../../datastore/CloudDatastore.js';
+//import CloudDatastore from '../../datastore/Mock.js';
+import CloudDatastore from '../../datastore/CloudDatastore.js';
 
 class SettingManager {
   constructor(done) {

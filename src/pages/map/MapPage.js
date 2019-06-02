@@ -70,10 +70,10 @@ class MapPage extends Component {
     settingManager.lastMapZoom = window.map.getZoom();
     console.log(settingManager.lastMapLocation);
 
-    this._ck.saveRecord(settingManager.packRecord(), function(re) {
-      _this.handleMapBoundsChanged();
+    CloudDatastore.saveRecord(settingManager.packRecord(), function(re) {
       alert("Default region set.");
     });
+    
   }
 
   onFilterApply(b) {
@@ -88,7 +88,6 @@ class MapPage extends Component {
 
     CloudDatastore.saveRecord(settingManager.packRecord(), function(re) {
       _this.handleMapBoundsChanged();
-      //console.log(re);
     });
 
     if (b.indexOf(7) || b.indexOf(8)) {
@@ -159,8 +158,8 @@ class MapPage extends Component {
 
     if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
 
-      CloudDatastore.queryTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, this.types, true).then(
-	result => {
+      CloudDatastore.queryTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, this.types, function(result) {
+          console.log("XXXX:", result);
 	  _t.setState({ isLoadingTraces: false });
 	  _t.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
 	  _t.handleTracesLoad(result.records);
