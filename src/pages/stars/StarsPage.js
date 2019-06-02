@@ -1,7 +1,7 @@
 import React from 'react';
 import { SiteHeader, SiteFooter } from '../common/Page.js';
-//import CloudDatastore from '../../datastore/CloudDatastore.js';
-import CloudDatastore from '../../datastore/Mock.js';
+import CloudDatastore from '../../datastore/CloudDatastore.js';
+//import CloudDatastore from '../../datastore/Mock.js';
 import { formatCoordinate, formatDate } from '../../utils/Formatter.js';
 import $ from 'jquery';
 
@@ -107,7 +107,7 @@ class StarsPage extends React.Component {
           // eslint-disable-next-line
           $.getJSON("https://api.tomtom.com/search/2/reverseGeocode/" + it.coordinate + ".json?key=rAdhraHZaRG4cJg9j9umkAW8u9tZRxs1", function(data) {
 
-            _this.ck.loadRecord(it.recordName, false, function(re) {
+            CloudDatastore.getRecord(it.recordName, re => {
               re.fields.type = re.fields.type.value;
               re.fields.location = re.fields.location.value;
               re.fields.note = re.fields.note ? re.fields.note.value : null;
@@ -116,11 +116,10 @@ class StarsPage extends React.Component {
               re.fields.countryCode = data.addresses.length > 0 ? data.addresses[0].address.countryCode : "-";
               re.fields.countrySubdivision = data.addresses.length > 0 ? data.addresses[0].address.countrySubdivision : "-";
 
-              _this.ck.saveRecord(re, function(re2) {
+              CloudDatastore.saveRecord(re, function(re2) {
                 _this.stars[i].countryCode = re.fields.countryCode;
                 _this.setState({ stars: _this.stars });
               });
-
             });
           });
 

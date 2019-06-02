@@ -183,15 +183,12 @@ export default class CloudDatastore extends IDatastore {
       });
   }
 
-  static getRecord(recordName) {
-    return new Promise((resolve, reject) => {
-      var databaseScope = "PRIVATE";
+  static getRecord(recordName, callback) {
+    var databaseScope = "PRIVATE";
 
-      CloudDatastore.demoFetchRecord(
-        databaseScope, recordName, zoneName, resolve
-      );
-
-    });
+    return CloudDatastore.demoFetchRecord(
+      databaseScope, recordName, zoneName, callback
+    );
   }
   
   static getTraces(params = {continuationMarker: null}) {
