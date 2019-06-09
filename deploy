@@ -6,7 +6,6 @@ mv build/real_index.html build/index.html
 
 rm ../tracesapp2015.github.io/static/css/*
 rm ../tracesapp2015.github.io/static/js/*
-rm ../tracesapp2015.github.io/static/media/*
 
 cp -r build/* ../tracesapp2015.github.io
 cd ../tracesapp2015.github.io

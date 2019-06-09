@@ -11,7 +11,7 @@ import { Map, OverlayManager, LoadedAreaManager } from './Map.js';
 import { Star, Trace, MarkerType, Coord } from '../common/Models.js';
 
 var google = window.google;
-const lang = window.lang;
+
 var settingManager;
 
 class MapPage extends Component {
@@ -63,7 +63,6 @@ class MapPage extends Component {
   onSetStartMap = this.onSetStartMap.bind(this);
 
   onSetStartMap() {
-    var _this = this;
     var center = window.map.getCenter();
 
     settingManager.lastMapLocation = { latitude: center.lat(), longitude: center.lng() };
@@ -580,9 +579,9 @@ class MapPage extends Component {
 	  </div>
 
 	  <div className="toolbox">
-	    <button className="btn btn-info btn-sm" onClick={this.showFilterBox}>{lang.filter}</button>
+	    <button className="btn btn-info btn-sm" onClick={this.showFilterBox}>Filter</button>
 
-	    <button className="btn btn-info btn-sm" onClick={this.onSetStartMap}>{lang.setDefaultMap}</button>
+	    <button className="btn btn-info btn-sm" onClick={this.onSetStartMap}>Set default</button>
 	  </div>
 
 	</div>

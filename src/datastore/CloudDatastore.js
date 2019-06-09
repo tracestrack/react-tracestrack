@@ -123,7 +123,7 @@ export default class CloudDatastore extends IDatastore {
     container.setUpAuth()
       .then(function(userIdentity) {
         if (userIdentity) {
-          alert(userIdentity);
+
         } else {
 
         }
