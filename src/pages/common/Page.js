@@ -10,17 +10,6 @@ export class SiteHeader extends React.Component {
     this.state = { selected: props.selected };
   }
 
-
-  switchEn = this.switchEn.bind(this);
-  switchEn() {
-    window.localStorage.setItem('lang', 'en');
-  }
-
-  switchZh = this.switchZh.bind(this);
-  switchZh() {
-    window.localStorage.setItem('lang', 'zh-cn');
-  }
-
   render() {
     return (
 
