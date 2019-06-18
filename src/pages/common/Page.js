@@ -1,5 +1,4 @@
 import React from 'react';
-import sessionManager from '../common/SessionManager.js';
 
 export class SiteHeader extends React.Component {
 
@@ -49,19 +48,20 @@ export class SiteHeader extends React.Component {
                 }
 
               </li>
-              <li className="nav-item">
 
-
-              </li>
             </ul>
 
             <div className="my-2 my-lg-0 navBarRight">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item">
               {
                 ((this.state.selected === 'account') &&
-                 (<a className="nav-link active" href="/account">{sessionManager.getUserName()}</a>))
+                 (<a className="nav-link active" href="/account">Account</a>))
                   ||
-                  (<a className="nav-link " href="/account">{sessionManager.getUserName()}</a>)
+                  (<a className="nav-link " href="/account">Account</a>)
               }
+              </li>
+            </ul>
             </div>
 
 
@@ -80,7 +80,7 @@ export class SiteFooter extends React.Component {
       <footer className="container">
         <hr className="featurette-divider" />
 
-        <p>© 2015-2018 Traces · <a href="/privacy">Privacy</a> · <a href="https://blog.traces.website/about/">About</a></p>
+        <p>© 2015-2019 Traces · <a href="/privacy">Privacy</a> · <a href="https://blog.traces.website/about/">About</a></p>
       </footer>
 
     );

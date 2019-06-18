@@ -7,9 +7,9 @@ import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
 import FilterBox from './FilterBox.js';
 import SettingManager from '../common/SettingManager.js';
+import sessionManager from '../common/SessionManager.js';
 import { Map, OverlayManager, LoadedAreaManager } from './Map.js';
 import { Star, Trace, MarkerType, Coord } from '../common/Models.js';
-
 import AppleStyle from '../../resources/mapstyles/apple.json';
 import GrayStyle from '../../resources/mapstyles/grayscale.json';
 
@@ -23,9 +23,6 @@ class MapPage extends Component {
     super();
 
     var lang = "en";
-    if (window.localStorage.getItem('lang') === 'zh-cn') {
-      lang = 'zh-cn';
-    }
     this.mapURL = "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_GoogleMap_key + "&libraries=places&language=" + lang;
 
     this.lastResetTime = Date.now();
@@ -104,7 +101,7 @@ class MapPage extends Component {
 
   /** OnLoad */
   componentDidMount() {
-
+      //sessionManager.checkAuth();
   }
 
   handleDragStart(e) {

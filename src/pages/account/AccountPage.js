@@ -8,7 +8,6 @@ class AccountPage extends React.Component {
     super(props);
 
     CloudDatastore.login();
-
   }
 
   render() {
@@ -29,11 +28,11 @@ class AccountPage extends React.Component {
 
           </div>
 
-          <p>All data is taken from and saved to iCloud. Data is processed either in the app or in the browser. No intermediate servers process your data.</p>
+          <p>All data is taken from and saved to iCloud. <br />
+            Data is processed only in the app or in the browser. No intermediate servers have access to your data.
+          </p>
 
         </main>
-
-
 
         <SiteFooter />
       </div>

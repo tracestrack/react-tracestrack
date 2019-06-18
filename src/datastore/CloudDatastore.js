@@ -116,14 +116,14 @@ export default class CloudDatastore extends IDatastore {
 
   }
 
-  static login() {
+  static login(callback) {
 
     let container = CloudKit.getDefaultContainer();
 
     container.setUpAuth()
       .then(function(userIdentity) {
         if (userIdentity) {
-
+            callback(userIdentity);
         } else {
 
         }
