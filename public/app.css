@@ -261,3 +261,7 @@ header, h1, td {
 .navBarRight {
     color: white;
 }
+
+#logo {
+    width: 130px;
+}

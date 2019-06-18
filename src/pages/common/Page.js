@@ -17,7 +17,7 @@ export class SiteHeader extends React.Component {
       <header className="masthead">
 
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-          <a className="navbar-brand" href="/">Traces</a>
+          <a className="navbar-brand" href="/"><img id="logo" src="/logo.png" /></a>
 
 
           <div className="collapse navbar-collapse" id="navbarsExample04">
