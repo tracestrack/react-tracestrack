@@ -1,6 +1,6 @@
 {
   "name": "traces.website",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "private": false,
   "dependencies": {
     "css-loader": "2.1.1",
@@ -16,7 +16,7 @@
     "react": "^16.8.6",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.8.6",
-    "react-google-maps": "^9.4",
+    "react-google-maps": "^9.4.5",
     "react-markdown-area": "^0.3.8",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",

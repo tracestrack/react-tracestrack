@@ -3,7 +3,6 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline } from "react-
 import { MarkerType } from '../common/Models.js';
 import GreenStarImg from '../../resources/img/star_green.png';
 import RedStarImg from '../../resources/img/star_red.png';
-import AppleStyle from '../../resources/mapstyles/apple.json';
 import exports from '../../utils/transformation.js';
 
 const transform = exports;
@@ -96,7 +95,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
                                                     style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
                                                     position: window.google.maps.ControlPosition.TOP_RIGHT
                                                   },
-                                                  styles: AppleStyle,
+                                                  //styles: GrayStyle,
                                                   zoomControl: true,
                                                   clickableIcons: true,
                                                   fullscreenControl: false,

@@ -10,6 +10,9 @@ import SettingManager from '../common/SettingManager.js';
 import { Map, OverlayManager, LoadedAreaManager } from './Map.js';
 import { Star, Trace, MarkerType, Coord } from '../common/Models.js';
 
+import AppleStyle from '../../resources/mapstyles/apple.json';
+import GrayStyle from '../../resources/mapstyles/grayscale.json';
+
 var google = window.google;
 
 var settingManager;
@@ -590,12 +593,12 @@ class MapPage extends Component {
 
 	{
 	  !this.state.isPanoramaView && this.state.showStarSidebar && (
-	    <StarSidebar star={this.state.selectedStar} ck={this._ck} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved} />
+	    <StarSidebar star={this.state.selectedStar} onStarRecordCreated={this.handleStarRecordCreated} onStarRemoved={this.handleStarRecordRemoved} />
 	  )
 	}
 	{
 	  !this.state.isPanoramaView && this.state.showTraceSidebar && (
-	    <TraceSidebar trace={this.state.selectedTrace} ck={this._ck} onTraceDeleted={this.handleTraceDeleted} />
+	    <TraceSidebar trace={this.state.selectedTrace} onTraceDeleted={this.handleTraceDeleted} />
 	  )
 	}
 

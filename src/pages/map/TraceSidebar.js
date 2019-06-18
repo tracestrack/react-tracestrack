@@ -115,8 +115,7 @@ class TraceSidebar extends Component {
   loadTrace(trace) {
 
     let _this = this;
-
-    CloudDatastore.getRecord(trace.recordName).then(
+      CloudDatastore.getRecord(trace.recordName,
       re => {
 
         let data = re.fields;
