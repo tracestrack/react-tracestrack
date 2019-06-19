@@ -1,4 +1,5 @@
 import React from 'react';
+import packageJson from '../../package.alias.json';
 
 export class SiteHeader extends React.Component {
 
@@ -80,7 +81,7 @@ export class SiteFooter extends React.Component {
       <footer className="container">
         <hr className="featurette-divider" />
 
-        <p>© 2015-2019 Traces · <a href="/privacy">Privacy</a> · <a href="https://blog.traces.website/about/">About</a></p>
+        <p>© 2015-2019 TracesTrack {packageJson["version"]} | <a href="/privacy">Privacy</a> · <a href="https://blog.traces.website/about/">About</a></p>
       </footer>
 
     );
