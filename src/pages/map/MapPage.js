@@ -10,8 +10,8 @@ import SettingManager from '../common/SettingManager.js';
 import sessionManager from '../common/SessionManager.js';
 import { Map, OverlayManager, LoadedAreaManager } from './Map.js';
 import { Star, Trace, MarkerType, Coord } from '../common/Models.js';
-import AppleStyle from '../../resources/mapstyles/apple.json';
-import GrayStyle from '../../resources/mapstyles/grayscale.json';
+//import AppleStyle from '../../resources/mapstyles/apple.json';
+//import GrayStyle from '../../resources/mapstyles/grayscale.json';
 
 var google = window.google;
 

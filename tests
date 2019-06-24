@@ -1,0 +1,22 @@
+total 674
+drwxr-xr-x  21 clear          staff       672 2019-01-06 12:04 .
+drwxr-xr-x  48 clear          staff      1536 2019-01-26 20:15 ..
+-rw-r--r--   1 clear          staff     12292 2018-12-26  2018 .DS_Store
+-rw-r--r--   1 clear          staff       199 2018-12-30  2018 .env.development
+-rw-r--r--   1 clear          staff       200 2018-12-29  2018 .env.development2
+-rw-r--r--   1 clear          staff       199 2018-12-22  2018 .env.production
+drwxr-xr-x  15 clear          staff       480 2019-01-26 21:56 .git
+-rw-r--r--   1 clear          staff        47 2018-11-08  2018 .gitignore
+-rw-r--r--   1 clear          staff         0 2018-12-09  2018 .projectile
+-rw-r--r--   1 clear          staff       142 2018-12-09  2018 .travis.yml
+-rw-r--r--   1 clear          staff     16725 2018-11-14  2018 LICENSE
+-rw-r--r--   1 clear          staff       244 2018-12-09  2018 README.md
+drwxr-xr-x  23 clear          staff       736 2019-01-06 12:02 build
+drwxr-xr-x   9 clear          staff       288 2018-12-22  2018 config
+-rwxr-xr-x   1 clear          staff       351 2018-12-22  2018 deploy
+drwxr-xr-x1105 clear          staff     35360 2019-01-06 12:04 node_modules
+-rw-r--r--   1 clear          staff    616617 2019-01-06 12:04 package-lock.json
+-rw-r--r--   1 clear          staff      3347 2019-01-06 12:04 package.json
+drwxr-xr-x  20 clear          staff       640 2018-12-27  2018 public
+drwxr-xr-x   5 clear          staff       160 2018-03-11  2018 scripts
+drwxr-xr-x  11 clear          staff       352 2018-12-29  2018 src
