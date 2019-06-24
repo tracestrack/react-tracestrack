@@ -1,5 +1,6 @@
 {
   "name": "traces.website",
+  "homepage" : "http://www.tracestrack.com/",
   "version": "0.2.17",
   "private": false,
   "dependencies": {

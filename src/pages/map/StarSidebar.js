@@ -266,9 +266,9 @@ class StarSidebar extends Component {
 	{(this.state.editMode === false) &&
 	 (
 	   <div className='star-type'>
-	     <a href="#" onClick={this.setRedStar} className={this.state.type === 0 ? "selected" : ""}><img src={RedStarImg} className='starSet' alt='red star' />Want to visit</a>
+	     <button onClick={this.setRedStar} className={this.state.type === 0 ? "selected" : ""}><img src={RedStarImg} className='starSet' alt='red star' />Want to visit</button>
 
-	     <a href="#" onClick={this.setGreenStar} className={this.state.type === 1 ? "selected" : ""}><img src={GreenStarImg} className='starSet' alt='green star' />Visited</a>
+	     <button onClick={this.setGreenStar} className={this.state.type === 1 ? "selected" : ""}><img src={GreenStarImg} className='starSet' alt='green star' />Visited</button>
 	   </div>)
 	}
 
@@ -307,7 +307,7 @@ class StarSidebar extends Component {
 	    ((this.state.editMode === true) || ((this.state.editMode === false && this.state.url !== '') &&
 						(
 						  <div><span>URL</span>
-						    {!this.state.editMode ? (<a target='_blank' href={this.state.url}>{this.state.url}</a>) : (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange} />)}</div>)))
+						    {!this.state.editMode ? (<a target='_blank' rel="noopener noreferrer" href={this.state.url}>{this.state.url}</a>) : (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange} />)}</div>)))
 	  }
 	</div>
 

@@ -22,10 +22,10 @@ class ContextMenu extends Component {
 
         <DropdownContent>
 
-          <a onClick={this.props.onAddStar}>Add Star</a>
-          <a onClick={this.props.onShowAttractions}>Show Nearby Attractions</a>
-          <a onClick={this.props.onShowRestaurants}>Show Nearby Restaurants</a>
-          <a onClick={this.props.onShowWikis}>Show Nearby Wikis</a>
+          <button onClick={this.props.onAddStar}>Add Star</button>
+          <button onClick={this.props.onShowAttractions}>Show Nearby Attractions</button>
+          <button onClick={this.props.onShowRestaurants}>Show Nearby Restaurants</button>
+          <button onClick={this.props.onShowWikis}>Show Nearby Wikis</button>
 
         </DropdownContent>
       </Dropdown>

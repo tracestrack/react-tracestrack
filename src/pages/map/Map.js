@@ -47,7 +47,7 @@ export class LoadedAreaManager {
     isLoaded(maxLat, maxLng, minLat, minLng, loadDetail) {
         for (var it in this.bboxes) {
             let bit = this.bboxes[it];
-            if ((maxLat <= bit[0] && maxLng <= bit[1] && minLat >= bit[2] && minLng >= bit[3]) && (bit[4] || bit[4] == loadDetail)) {
+            if ((maxLat <= bit[0] && maxLng <= bit[1] && minLat >= bit[2] && minLng >= bit[3]) && (bit[4] || bit[4] === loadDetail)) {
                 //loaded
                 return true;
             }

@@ -7,7 +7,6 @@ import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
 import FilterBox from './FilterBox.js';
 import SettingManager from '../common/SettingManager.js';
-import sessionManager from '../common/SessionManager.js';
 import { Map, OverlayManager, LoadedAreaManager } from './Map.js';
 import { Star, Trace, MarkerType, Coord } from '../common/Models.js';
 //import AppleStyle from '../../resources/mapstyles/apple.json';
