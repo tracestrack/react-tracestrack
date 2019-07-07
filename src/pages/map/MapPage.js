@@ -130,23 +130,24 @@ class MapPage extends Component {
     let latDiff = bounds.getNorthEast().lat() - bounds.getSouthWest().lat();
     let lngDiff = bounds.getNorthEast().lng() - bounds.getSouthWest().lng();
 
+    // Current bounds
     let maxLat = bounds.getNorthEast().lat();
     let maxLng = bounds.getNorthEast().lng();
     let minLat = bounds.getSouthWest().lat();
     let minLng = bounds.getSouthWest().lng();
 
-    let nMaxLat = bounds.getNorthEast().lat() + latDiff * 0.01;
-    let nMaxLng = bounds.getNorthEast().lng() + lngDiff * 0.01;
-    let nMinLat = bounds.getSouthWest().lat() - latDiff * 0.01;
-    let nMinLng = bounds.getSouthWest().lng() - lngDiff * 0.01;
+    // Bigger bounds to load
+    let nMaxLat = bounds.getNorthEast().lat() + latDiff;
+    let nMaxLng = bounds.getNorthEast().lng() + lngDiff;
+    let nMinLat = bounds.getSouthWest().lat() - latDiff;
+    let nMinLng = bounds.getSouthWest().lng() - lngDiff;
 
-    if (Date.now() - this.lastResetTime > 60 * 1000 && this.overlayManager.getCount() > 300) {
-      // reset
+    if (Date.now() - this.lastResetTime > 60 * 1000 && this.overlayManager.getCount() > 500) {
+      // Reset
 
       this.loadedAreaManager.clear();
       this.overlayManager.clear();
       this.setState({ traces: [] });
-
       this.lastResetTime = Date.now();
 
     }
@@ -157,7 +158,6 @@ class MapPage extends Component {
     if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
 
       CloudDatastore.queryTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, this.types, function(result) {
-          console.log("XXXX:", result);
 	  _t.setState({ isLoadingTraces: false });
 	  _t.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
 	  _t.handleTracesLoad(result.records);

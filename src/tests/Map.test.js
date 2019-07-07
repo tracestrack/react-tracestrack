@@ -24,6 +24,14 @@ test('Zoom in with detail', () => {
 
 });
 
+test('Zoom out without detail', () => {
+
+    let loadedAreaManager = new LoadedAreaManager();
+    loadedAreaManager.addLoaded(4, 9, 2, 6, true);
+    expect(loadedAreaManager.isLoaded(5, 10, 1, 5, false)).toBe(false);
+
+});
+
 test('Same zoom level move', () => {
     
     let loadedAreaManager = new LoadedAreaManager();
