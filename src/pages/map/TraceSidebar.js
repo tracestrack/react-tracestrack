@@ -59,9 +59,9 @@ class TraceSidebar extends Component {
       var rn = this.state.recordName;
 
       var _this = this;
-      this.ck.removeRecord(rn, function(p) {
-        _this.props.onTraceDeleted(rn);
-      });
+        CloudDatastore.removeRecord(rn).then(records => {
+                                           _this.props.onTraceDeleted(rn);
+        });
 
     }
   }
