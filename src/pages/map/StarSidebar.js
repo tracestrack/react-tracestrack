@@ -266,9 +266,13 @@ class StarSidebar extends Component {
 	{(this.state.editMode === false) &&
 	 (
 	   <div className='star-type'>
-	     <button onClick={this.setRedStar} className={this.state.type === 0 ? "selected" : ""}><img src={RedStarImg} className='starSet' alt='red star' />Want to visit</button>
+	     <button disabled={this.state.type === 0} onClick={this.setRedStar} className={this.state.type === 0 ? "btn btn-light" : "btn"}>
+               <img src={RedStarImg} className='starSet' alt='red star' />Want to visit
+             </button>
 
-	     <button onClick={this.setGreenStar} className={this.state.type === 1 ? "selected" : ""}><img src={GreenStarImg} className='starSet' alt='green star' />Visited</button>
+	     <button disabled={this.state.type === 1}  onClick={this.setGreenStar} className={this.state.type === 1 ? "btn btn-light" : "btn"}>
+               <img src={GreenStarImg} className='starSet' alt='green star' />Visited
+             </button>
 	   </div>)
 	}
 

@@ -5,6 +5,7 @@ import CloudDatastore from '../../datastore/CloudDatastore.js';
 import { formatDate } from '../../utils/Formatter.js';
 import gpxParser from '../../utils/GPXParser.js';
 import Upload from './Upload.js';
+import SessionManager from '../common/SessionManager.js';
 
 // eslint-disable-next-line
 class UploadView extends React.Component {
@@ -138,7 +139,15 @@ class TracesPage extends React.Component {
     this.state = { traces: [], showUpload: true };
     
     this.traces = [];
-    CloudDatastore.getTraces().then(this.handleResponse);
+      SessionManager.checkAuth().then((success) => {
+
+          if (success) {
+              CloudDatastore.getTraces().then(this.handleResponse);
+          }
+          else {
+              alert("Please login.");
+          }
+      });
   }
 
   loadMore = this.loadMore.bind(this);

@@ -9,6 +9,7 @@ import FilterBox from './FilterBox.js';
 import SettingManager from '../common/SettingManager.js';
 import { Map, OverlayManager, LoadedAreaManager } from './Map.js';
 import { Star, Trace, MarkerType, Coord } from '../common/Models.js';
+import SessionManager from '../common/SessionManager.js';
 //import AppleStyle from '../../resources/mapstyles/apple.json';
 //import GrayStyle from '../../resources/mapstyles/grayscale.json';
 
@@ -363,6 +364,16 @@ class MapPage extends Component {
 
     window.map = map;
     google = window.google;
+
+      SessionManager.checkAuth().then((success) => {
+
+          if (success) {
+
+          }
+          else {
+              alert("Please login.");
+          }
+      });
 
     /** Disable default infoWindow */
     if (google) {

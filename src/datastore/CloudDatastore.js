@@ -125,7 +125,7 @@ export default class CloudDatastore extends IDatastore {
         if (userIdentity) {
             callback(userIdentity);
         } else {
-
+            callback(null);
         }
       });
   }
