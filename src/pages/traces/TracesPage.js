@@ -139,15 +139,15 @@ class TracesPage extends React.Component {
     this.state = { traces: [], showUpload: true };
     
     this.traces = [];
-      SessionManager.checkAuth().then((success) => {
+    SessionManager.checkAuth().then((success) => {
 
-          if (success) {
-              CloudDatastore.getTraces().then(this.handleResponse);
-          }
-          else {
-              alert("Please login.");
-          }
-      });
+      if (success) {
+        CloudDatastore.getTraces().then(this.handleResponse);
+      }
+      else {
+        alert("Please login.");
+      }
+    });
   }
 
   loadMore = this.loadMore.bind(this);
