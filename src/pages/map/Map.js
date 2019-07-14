@@ -154,10 +154,6 @@ export const Map = withScriptjs(withGoogleMap((props) =>
                                                         marker.coord.lat, marker.coord.lng
                                                     );
 
-                                                    if (window.map.getBounds().contains(position) === false) {
-
-                                                    }
-
                                                     var icon;
 
                                                     switch (marker.type) {
