@@ -19,7 +19,6 @@ export class SiteHeader extends React.Component {
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
           <a className="navbar-brand" href="/"><img alt="logo" id="logo" src="/logo.png" /></a>
 
-
           <div className="collapse navbar-collapse" id="navbarsExample04">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
@@ -29,9 +28,8 @@ export class SiteHeader extends React.Component {
                  ||
                  (<a className="nav-link" href="/map">Map</a>)
                 }
-
-
               </li>
+
               <li className="nav-item">
                 {((this.state.selected === 'traces') &&
                   (<a className="nav-link active" href="/traces">Traces</a>))
@@ -53,22 +51,19 @@ export class SiteHeader extends React.Component {
             </ul>
 
             <div className="my-2 my-lg-0 navBarRight">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-              {
-                ((this.state.selected === 'account') &&
-                 (<a className="nav-link active" href="/account">Account</a>))
-                  ||
-                  (<a className="nav-link " href="/account">Account</a>)
-              }
-              </li>
-            </ul>
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                  {
+                    ((this.state.selected === 'account') &&
+                     (<a className="nav-link active" href="/account">Account</a>))
+                      ||
+                      (<a className="nav-link " href="/account">Account</a>)
+                  }
+                </li>
+              </ul>
             </div>
-
-
           </div>
         </nav>
-
       </header>
     );
   }

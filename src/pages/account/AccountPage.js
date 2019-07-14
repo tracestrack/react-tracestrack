@@ -1,5 +1,4 @@
 import React from 'react';
-import CloudDatastore from '../../datastore/CloudDatastore.js';
 import {SiteHeader, SiteFooter} from '../common/Page.js';
 import SessionManager from '../common/SessionManager.js';
 import './AccountPage.css';
@@ -11,14 +10,10 @@ class AccountPage extends React.Component {
 
     this.state = { username: "" };
 
-    CloudDatastore.login();
     SessionManager.checkAuth().then((success) => {
 
       if (success) {
         this.setState({username: SessionManager.getUserName()});
-      }
-      else {
-        alert("Please login.");
       }
     });
     
@@ -38,10 +33,11 @@ class AccountPage extends React.Component {
 
             <img src='signin-icloud.png' alt='iCloud' />
 
-
-            <div className="user_info">
-              User name: {this.state.username}
-            </div>
+            {this.state.username !== "" && (
+              <div className="user_info">
+                User name: {this.state.username}
+              </div>)
+            }
 
 
             <div id='apple-sign-in-button'></div>
