@@ -56,14 +56,14 @@ class StarsPage extends React.Component {
     this.continuationMarker = null;
 
     this.stars = [];
-    CloudDatastore.getStars().then(this.handleResponse);    
+    CloudDatastore.getStars().then(this.handleResponse);
   }
 
   handleResponse = this.handleResponse.bind(this);
   handleResponse(results) {
     this.renderRecords(results.records);
     this.continuationMarker = results.continuationMarker;
-    this.setState({moreComing: results.continuationMarker !== null});    
+    this.setState({moreComing: results.continuationMarker !== null});
     this.loading = false;
   }
 
@@ -80,11 +80,12 @@ class StarsPage extends React.Component {
   onDelete(recordName, title) {
     var _this = this;
     if (window.confirm("You're going to delete trace: \n" + title)) {
-      _this.ck.removeRecord(recordName, function(p) {
-        console.log("done", p);
-        _this.stars = [];
-        _this.ck.loadStarsOrderByDate(null, _this.renderRecords);
-      });
+      CloudDatastore.removeRecord(recordName).then(
+        re => {
+          _this.stars = [];
+          CloudDatastore.getStars().then(_this.handleResponse);
+        }
+      );
     }
   }
 
