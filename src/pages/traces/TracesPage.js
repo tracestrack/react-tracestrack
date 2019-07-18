@@ -4,7 +4,6 @@ import CloudDatastore from '../../datastore/CloudDatastore.js';
 //import CloudDatastore from '../../datastore/Mock.js';
 import { formatDate } from '../../utils/Formatter.js';
 import gpxParser from '../../utils/GPXParser.js';
-import Upload from './Upload.js';
 import SessionManager from '../common/SessionManager.js';
 
 // eslint-disable-next-line
@@ -68,8 +67,6 @@ class UploadView extends React.Component {
               </div>
 
               <hr />
-
-              <Upload geojson={this.state.traceGeoJSON} />
 
               {this.state.trace && (<div>
                                <table>
@@ -136,9 +133,10 @@ class TracesPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { traces: [], showUpload: true };
     
     this.traces = [];
+    this.state = { traces: [], showUpload: true };
+
     SessionManager.checkAuth().then((success) => {
 
       if (success) {
@@ -167,13 +165,12 @@ class TracesPage extends React.Component {
   onDelete(recordName, title) {
     var _this = this;
     if (window.confirm("You're going to delete trace: \n" + title)) {
-      _this.ck.removeRecord(recordName, function(p) {
-        console.log("done", p);
-
-        _this.traces = [];
-        _this.ck.loadTracesOrderByDate(null, _this.renderRecords);
-
-      });
+      CloudDatastore.removeRecord(recordName).then(
+        re => {
+          _this.traces = [];
+          CloudDatastore.getTraces().then(_this.handleResponse);
+        }
+      );
     }
   }
 
@@ -197,13 +194,6 @@ class TracesPage extends React.Component {
     this.setState({ traces: this.traces });
 
   }
-
-  showUpload = this.showUpload.bind(this);
-  showUpload() {
-    //this.setState({ showUpload: true });
-    alert("Functionality not implemented.");
-  }
-
 
   removeDuplis = this.removeDuplis.bind(this);
   removeDuplis() {
@@ -278,7 +268,6 @@ class TracesPage extends React.Component {
           <h3>Actions</h3>
           <p>
 
-            <button className="btn btn-primary" onClick={this.showUpload}>Upload</button>
             <button className="btn btn-danger" onClick={this.removeDuplis}>Remove Duplicates</button>
 
           </p>
