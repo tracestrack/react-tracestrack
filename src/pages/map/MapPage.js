@@ -6,12 +6,15 @@ import CloudDatastore from '../../datastore/CloudDatastore.js';
 import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
 import FilterBox from './FilterBox.js';
+import UploadBox from './UploadBox.js';
 import SettingManager from '../common/SettingManager.js';
 import { Map, OverlayManager, LoadedAreaManager } from './Map.js';
 import { Star, Trace, MarkerType, Coord } from '../common/Models.js';
 import SessionManager from '../common/SessionManager.js';
 //import AppleStyle from '../../resources/mapstyles/apple.json';
 //import GrayStyle from '../../resources/mapstyles/grayscale.json';
+
+import simplify from '@turf/simplify';
 
 var google = window.google;
 
@@ -40,6 +43,7 @@ class MapPage extends Component {
     showContextMenu: false,
     showStarSidebar: false,
     showFilterBox: false,
+    showUploadBox: true,
     rightClickPosition: { left: 100, top: 100 },
     isPanoramaView: false,
     isLoadingTraces: false
@@ -72,7 +76,7 @@ class MapPage extends Component {
     CloudDatastore.saveRecord(settingManager.packRecord(), function(re) {
       alert("Default region set.");
     });
-    
+
   }
 
   onFilterApply(b) {
@@ -561,6 +565,11 @@ class MapPage extends Component {
     this.setState({ showFilterBox: true });
   }
 
+  showUploadBox = this.showUploadBox.bind(this);
+  showUploadBox() {
+    this.setState({ showFilterBox: true });
+  }
+
   onFilterCancel = this.onFilterCancel.bind(this);
   onFilterCancel() {
     this.setState({ showFilterBox: false });
@@ -578,6 +587,12 @@ class MapPage extends Component {
 	  )
 	}
 
+	{
+	  this.state.showUploadBox && (
+	    <UploadBox />
+	  )
+	}
+
 	<SiteHeader selected="map" />
 
 
@@ -591,7 +606,9 @@ class MapPage extends Component {
 	  <div className="toolbox">
 	    <button className="btn btn-info btn-sm" onClick={this.showFilterBox}>Filter</button>
 
-	    <button className="btn btn-info btn-sm" onClick={this.onSetStartMap}>Set default</button>
+	    <button className="btn btn-info btn-sm" onClick={this.onSetStartMap}>Set current map region as default</button>
+
+	    <button className="btn btn-info btn-sm" onClick={this.showUpload}>Upload GPX</button>
 	  </div>
 
 	</div>

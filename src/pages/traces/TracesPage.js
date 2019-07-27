@@ -192,7 +192,6 @@ class TracesPage extends React.Component {
     }
 
     this.setState({ traces: this.traces });
-
   }
 
   removeDuplis = this.removeDuplis.bind(this);
