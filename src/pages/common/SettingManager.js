@@ -9,8 +9,8 @@ class SettingManager {
       result => {
         let re = result.records[0];
         _this.record = re;
-        
-        if (re.fields['lastMapLocation'] !== null && re.fields['lastMapLocation'].value !== null) {
+
+        if ('lastMapLocation' in re.fields && re.fields['lastMapLocation'].value !== null) {
           _this.lastMapLocation = re.fields.lastMapLocation.value;
         }
         
@@ -18,7 +18,7 @@ class SettingManager {
           _this.types = re.fields['types'].value;
         }
 
-        if (re.fields['lastMapZoom'] !== null) {
+        if ('lastMapZoom' in re.fields) {
           _this.lastMapZoom = re.fields.lastMapZoom.value;
         }
 
@@ -28,7 +28,7 @@ class SettingManager {
   }
 
   getLastMapLocation() {
-    return this.lastMapLocation ? this.lastMapLocation : {latitude: 1, longitude: 1};
+    return this.lastMapLocation ? this.lastMapLocation : {latitude:  48.862427, longitude: 2.338650};
   }
 
   getTypes() {

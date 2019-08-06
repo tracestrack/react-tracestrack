@@ -43,7 +43,7 @@ class MapPage extends Component {
     showContextMenu: false,
     showStarSidebar: false,
     showFilterBox: false,
-    showUploadBox: true,
+    showUploadBox: false,
     rightClickPosition: { left: 100, top: 100 },
     isPanoramaView: false,
     isLoadingTraces: false
@@ -565,9 +565,10 @@ class MapPage extends Component {
     this.setState({ showFilterBox: true });
   }
 
-  showUploadBox = this.showUploadBox.bind(this);
-  showUploadBox() {
-    this.setState({ showFilterBox: true });
+  showUpload = this.showUpload.bind(this);
+  showUpload() {
+    //this.setState({ showFilterBox: true });
+    alert("Under development");
   }
 
   onFilterCancel = this.onFilterCancel.bind(this);

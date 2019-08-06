@@ -25,7 +25,8 @@ class FilterBox extends Component {
 
         {
           Object.keys(Types()).map((key, index) => (
-            <div className="form-check form-check-inline">
+
+            <div className="form-check form-check-inline" key={key}>
 
               <label className="form-check-label">
                 <input className="form-check-input" type="checkbox" name="selected" value={index} defaultChecked={this.props.types.indexOf(index) > -1} />
