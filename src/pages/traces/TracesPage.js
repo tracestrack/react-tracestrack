@@ -2,9 +2,16 @@ import React from 'react';
 import { SiteHeader, SiteFooter } from '../common/Page.js';
 import CloudDatastore from '../../datastore/CloudDatastore.js';
 //import CloudDatastore from '../../datastore/Mock.js';
-import { formatDate } from '../../utils/Formatter.js';
+import { formatDistance, formatSpeed, formatDate, formatDuration, formatAltitude } from '../../utils/Formatter.js';
 import gpxParser from '../../utils/GPXParser.js';
 import SessionManager from '../common/SessionManager.js';
+import icon_walking from "../../resources/img/walking.png";
+import icon_bike from "../../resources/img/bike.png";
+import icon_running from "../../resources/img/running.png";
+import icon_bus from "../../resources/img/bus.png";
+import icon_train from "../../resources/img/train.png";
+import icon_ferry from "../../resources/img/ferry.png";
+import icon_flight from "../../resources/img/flight.png";
 
 // eslint-disable-next-line
 class UploadView extends React.Component {
@@ -95,6 +102,19 @@ class UploadView extends React.Component {
 
 };
 
+function getImageURLForType(type) {
+    let icons  = [
+        icon_walking,
+        icon_bike,
+        icon_running,
+        icon_bus,
+        icon_train,
+        icon_ferry,
+        icon_flight
+    ];
+    return <img src={icons[type]} alt="type icon"/>;
+}
+
 class Table extends React.Component {
 
   delete(rn, title) {
@@ -107,18 +127,27 @@ class Table extends React.Component {
                <tbody>
                  <tr>
                    <th width="50" />
-                   <th>Path</th>
-                   <th width="200">Title</th>
-                   <th width="200">Date</th>
+                   <th width="60">Type</th>
+                   <th width="250">Title</th>
+                   <th width="250">Date</th>
+                   <th width="150">Distance</th>
+                   <th width="180">Duration</th>
+                   <th width="200">Average Speed</th>
+                   <th width="200">Elevation</th>
+                   <th width="200"></th>
                  </tr>
 
                  {this.props.traces.map((row, id) =>
 
                                         <tr key={row.recordName}>
                                           <td>{id}</td>
-                                          <td>{row.path}</td>
+                                          <td>{getImageURLForType(row.type)}</td>
                                           <td>{row.title}</td>
                                           <td>{row.date}</td>
+                                          <td>{row.distance}</td>
+                                          <td>{row.duration}</td>
+                                          <td>{row.avgSpeed}</td>
+                                          <td>{row.elevation}</td>
                                           <td><button record={row.recordName} className="btn btn-sm btn-outline-danger" onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
                                         </tr>
 
@@ -184,10 +213,14 @@ class TracesPage extends React.Component {
       let date = new Date(records[i].fields.startDate.value + records[i].fields.secondsFromGMT.value * 1000);
 
       this.traces.push({
-        path: records[i].fields.path.value,
+        type: records[i].fields.type.value,
         title: records[i].fields.title.value,
         date: formatDate(date),
-        recordName: records[i].recordName
+        recordName: records[i].recordName.value,
+        distance: formatDistance(records[i].fields.distance.value),
+        duration: formatDuration(records[i].fields.duration.value),
+        avgSpeed: formatSpeed(records[i].fields.averageSpeed.value),
+        elevation: formatAltitude(Math.max(records[i].fields.elevation.value, 0))
       });
     }
 

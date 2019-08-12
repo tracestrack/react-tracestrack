@@ -3,25 +3,30 @@ export function formatDistance(v) {
   return v.toFixed(2) + " KM";
 }
 
+export function formatAltitude(v) {
+  return v.toFixed(0) + " M";
+}
+
 export function formatSpeed(v) {
   var ret = v * 3.6;
   return ret.toFixed(2) + " KM/H";
 }
 
-export function formatDate(date) {
-
-  return date.getUTCFullYear() + "/" + (date.getUTCMonth() + 1) + "/" + (date.getUTCDate()) + " " + date.getUTCHours() + ":" + date.getUTCMinutes();
-
+function padZeroForTwoDigits(num) {
+    return String(num).padStart(2, '0');
 }
+
+export function formatDate(date) {
+    return date.getUTCFullYear() + "/" + padZeroForTwoDigits(date.getUTCMonth() + 1) + "/" + padZeroForTwoDigits(date.getUTCDate()) + " " + padZeroForTwoDigits(date.getUTCHours()) + ":" + padZeroForTwoDigits(date.getUTCMinutes());
+}
+
 export function formatDuration(sec_num) {
+  sec_num = Math.floor(sec_num);
   var hours   = Math.floor(sec_num / 3600);
   var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
   var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-  if (hours   < 10) {hours   = "0"+hours;}
-  if (minutes < 10) {minutes = "0"+minutes;}
-  if (seconds < 10) {seconds = "0"+seconds;}
-  return hours+':'+minutes+':'+seconds;
+  return padZeroForTwoDigits(hours) + ':' + padZeroForTwoDigits(minutes) + ':' + padZeroForTwoDigits(seconds);
 }
 
 export function formatCoordinate(lat, lng) {

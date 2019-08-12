@@ -136,6 +136,13 @@ header, h1, td {
 
 }
 
+.activity-table tr {
+    line-height: 40px;
+}
+.activity-table tr td img {
+    width: 24px;
+}
+
 .header-bar {
     width: 100%;
     height: 40px;

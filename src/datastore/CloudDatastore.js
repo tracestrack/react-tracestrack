@@ -195,7 +195,7 @@ export default class CloudDatastore extends IDatastore {
     var databaseScope = "PRIVATE";
     var ownerRecordName = null;
     var recordType = "Trace";
-    var desiredKeys = ['type', 'startDate', 'path', 'title', 'secondsFromGMT'];
+      var desiredKeys = ['type', 'startDate', 'title', 'secondsFromGMT', 'distance', 'averageSpeed', 'duration', 'elevation'];
     var sortByField = 'startDate';
     var ascending = false;
 
