@@ -7,10 +7,15 @@ pipeline {
 
     }
     stages {
-        stage('Build') {
+        stage('Install dependencies') {
             steps {
                 sh 'npm version'
                 sh 'npm install'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
             }
         }
         stage('Test') {
@@ -20,7 +25,9 @@ pipeline {
         }
         stage('Deliver') { 
             steps {
-                sh 'cd ${WORKSPACE}; ./deploy'
+                dir("${env.WORKSPACE}"){
+                    sh './deploy'
+                }
             }
         }
     }
