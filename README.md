@@ -1,6 +1,6 @@
 # Tracestrack
 
-![ci](https://travis-ci.org/TracesApp2015/react-traces-website.svg?branch=master)
+![ci](https://travis-ci.org/TracesApp2015/react-tracestrack.svg?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/86730338d43b4a5a9b468a6d83404942)](https://www.codacy.com/app/TracesApp2015/react-tracestrack?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TracesApp2015/react-tracestrack&amp;utm_campaign=Badge_Grade)
 
 This is an open source online website for [Traces app](http://traces.website/).
