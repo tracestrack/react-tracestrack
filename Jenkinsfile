@@ -26,7 +26,7 @@ pipeline {
         stage('Deliver') { 
             steps {
                 dir("${env.WORKSPACE}"){
-                    sh './deploy'
+                    sh './deploy.sh'
                 }
             }
         }
