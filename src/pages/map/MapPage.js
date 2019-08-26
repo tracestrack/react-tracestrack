@@ -14,7 +14,7 @@ import SessionManager from '../common/SessionManager.js';
 //import AppleStyle from '../../resources/mapstyles/apple.json';
 //import GrayStyle from '../../resources/mapstyles/grayscale.json';
 
-import simplify from '@turf/simplify';
+//import simplify from '@turf/simplify';
 
 var google = window.google;
 

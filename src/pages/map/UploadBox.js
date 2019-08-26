@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Types } from '../common/Models.js';
-import $ from 'jquery';
+//import $ from 'jquery';
 import "../../resources/FilterBox.css";
 
 class UploadBox extends Component {
