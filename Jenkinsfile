@@ -36,11 +36,11 @@ pipeline {
         }
         stage('Version Bump') { 
             steps {
-		sh 'git log'
+		sh 'git tag'
 		sh 'npm version patch'
 		sh 'git add package.json'
 		sh 'git commit -m snapshot'
-		sh 'git push'
+		sh 'git push origin --tags'
             }
         }
     }
