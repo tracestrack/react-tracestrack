@@ -19,6 +19,7 @@ pipeline {
         stage('Build') {
             steps {
 		sh 'cp /root/.env.production ./'
+		sh 'npm version patch'
                 sh 'npm run build'
             }
         }
