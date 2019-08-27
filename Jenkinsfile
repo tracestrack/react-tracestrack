@@ -19,10 +19,6 @@ pipeline {
         stage('Build') {
             steps {
 		sh 'cp /root/.env.production ./'
-		sh 'npm version patch'
-		sh 'git add package.json'
-		sh 'git commit -m "New Version"'
-		sh 'git push'
                 sh 'npm run build'
             }
         }
@@ -36,6 +32,14 @@ pipeline {
                 dir("${env.WORKSPACE}"){
                     sh './deploy.sh'
                 }
+            }
+        }
+        stage('Version Bump') { 
+            steps {
+		sh 'npm version patch'
+		sh 'git add package.json'
+		sh 'git commit -m snapshot'
+		sh 'git push'
             }
         }
     }
