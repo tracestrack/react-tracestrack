@@ -20,6 +20,9 @@ pipeline {
             steps {
 		sh 'cp /root/.env.production ./'
 		sh 'npm version patch'
+		sh 'git add package.json'
+		sh 'git commit -m "New Version"'
+		sh 'git push'
                 sh 'npm run build'
             }
         }
