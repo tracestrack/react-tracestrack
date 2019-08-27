@@ -6,6 +6,9 @@ pipeline {
         }
 
     }
+    environment { 
+        CI = 'true'
+    }
     stages {
         stage('Install dependencies') {
             steps {
@@ -15,12 +18,13 @@ pipeline {
         }
         stage('Build') {
             steps {
+		sh 'cp /root/.env.production ./'
                 sh 'npm run build'
             }
         }
         stage('Test') {
             steps {
-                sh 'CI=true npm test'
+                sh 'npm test'
             }
         }
         stage('Deliver') { 
