@@ -38,8 +38,11 @@ pipeline {
             steps {
 		sh 'git tag'
 		sh 'npm version patch'
+		sh 'git status'
 		sh 'git add package.json'
 		sh 'git commit -m snapshot'
+		sh 'git status'
+		sh 'git push'
 		sh 'git push origin --tags'
             }
         }
