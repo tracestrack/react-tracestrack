@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 mv build/index.html build/404.html
 mv build/real_index.html build/index.html
 
