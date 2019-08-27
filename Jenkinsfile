@@ -36,6 +36,7 @@ pipeline {
         }
         stage('Version Bump') { 
             steps {
+		sh 'git log'
 		sh 'npm version patch'
 		sh 'git add package.json'
 		sh 'git commit -m snapshot'
