@@ -38,7 +38,6 @@ pipeline {
             steps {
 		sh 'git tag'
 		sh 'npm version patch'
-		sh 'git remote add gh git@github.com:TracesApp2015/react-tracestrack.git'
 		sh 'git push gh --tags'
             }
         }
