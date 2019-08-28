@@ -1,6 +1,6 @@
-import { LoadedAreaManager } from '../pages/map/Map.js';
+import { LoadedAreaManager } from "../pages/map/Map.js";
 
-test('Test same area', () => {
+test("Test same area", () => {
 
     let loadedAreaManager = new LoadedAreaManager();
     loadedAreaManager.addLoaded(5, 10, 1, 5, false);
@@ -8,7 +8,7 @@ test('Test same area', () => {
 
 });
 
-test('Zoom in', () => {
+test("Zoom in", () => {
 
     let loadedAreaManager = new LoadedAreaManager();
     loadedAreaManager.addLoaded(5, 10, 1, 5, false);
@@ -16,7 +16,7 @@ test('Zoom in', () => {
 
 });
 
-test('Zoom in with detail', () => {
+test("Zoom in with detail", () => {
 
     let loadedAreaManager = new LoadedAreaManager();
     loadedAreaManager.addLoaded(5, 10, 1, 5, false);
@@ -24,7 +24,7 @@ test('Zoom in with detail', () => {
 
 });
 
-test('Zoom out without detail', () => {
+test("Zoom out without detail", () => {
 
     let loadedAreaManager = new LoadedAreaManager();
     loadedAreaManager.addLoaded(4, 9, 2, 6, true);
@@ -32,7 +32,7 @@ test('Zoom out without detail', () => {
 
 });
 
-test('Same zoom level move', () => {
+test("Same zoom level move", () => {
     
     let loadedAreaManager = new LoadedAreaManager();
     loadedAreaManager.addLoaded(10, 10, 0, 0, false);

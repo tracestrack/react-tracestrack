@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import { Coord, MarkerType } from '../common/Models.js';
-import { LiveMarkedArea } from '../../components/LiveMarkedArea.js';
-import GreenStarImg from '../../resources/img/star_green.png';
-import RedStarImg from '../../resources/img/star_red.png';
+import React, { Component } from "react";
+import { Coord, MarkerType } from "../common/Models.js";
+import { LiveMarkedArea } from "../../components/LiveMarkedArea.js";
+import GreenStarImg from "../../resources/img/star_green.png";
+import RedStarImg from "../../resources/img/star_red.png";
 import "../../resources/Sidebar.css";
-import { formatDate } from '../../utils/Formatter.js';
-import $ from 'jquery';
-//import CloudDatastore from '../../datastore/Mock.js';
-import CloudDatastore from '../../datastore/CloudDatastore.js';
+import { formatDate } from "../../utils/Formatter.js";
+import $ from "jquery";
+//import CloudDatastore from "../../datastore/Mock.js";
+import CloudDatastore from "../../datastore/CloudDatastore.js";
 
 class StarSidebar extends Component {
 
@@ -33,10 +33,10 @@ class StarSidebar extends Component {
       }
 
       var ret = {
-	title: '',
-	note: '',
+	title: "",
+	note: "",
 	type: data.type,
-	url: '',
+	url: "",
 	coordinate: data.coord,
 	editMode: false
       };
@@ -89,9 +89,9 @@ class StarSidebar extends Component {
     CloudDatastore.getRecord(star.recordName).then(
       re => {
 	var state = {
-	  title: re.fields.title.value ? re.fields.title.value : 'non',
+	  title: re.fields.title.value ? re.fields.title.value : "non",
 	  note: re.fields.note ? re.fields.note.value : "",
-	  url: re.fields.url ? re.fields.url.value : '',
+	  url: re.fields.url ? re.fields.url.value : "",
 	  creation: formatDate(new Date(re.created.timestamp))
 	};
 	_this.setState(state);
@@ -117,11 +117,11 @@ class StarSidebar extends Component {
 
     var geocoder = new window.google.maps.Geocoder();
     let _this = this;
-    geocoder.geocode({ 'location': latlng }, function(results, status) {
+    geocoder.geocode({ "location": latlng }, function(results, status) {
 
       console.log(results);
 
-      if (status === 'OK') {
+      if (status === "OK") {
 	if (results[0]) {
 
 	  _this.setState({
@@ -130,10 +130,10 @@ class StarSidebar extends Component {
 
 
 	} else {
-	  window.alert('No results found');
+	  window.alert("No results found");
 	}
       } else {
-	//window.alert('Geocoder failed due to: ' + status);
+	//window.alert("Geocoder failed due to: " + status);
       }
     });
 
@@ -155,7 +155,7 @@ class StarSidebar extends Component {
     function createNoteFromGooglePlace(place) {
 
       var photos = place.photos;
-      var md = '';
+      var md = "";
       var count = 3;
       console.log(place);
       for (var it in photos) {
@@ -177,7 +177,7 @@ class StarSidebar extends Component {
     };
 
     let _this = this;
-    let MAP = '__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED';
+    let MAP = "__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED";
     var service = new window.google.maps.places.PlacesService(window.map.context[MAP]);
     service.getDetails(request, function(place, status) {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
@@ -215,7 +215,7 @@ class StarSidebar extends Component {
 
     star.fields = {};
 
-    star.recordName = this.props.star.recordName ? this.props.star.recordName : '';
+    star.recordName = this.props.star.recordName ? this.props.star.recordName : "";
 
     star.fields.location = { latitude: this.state.coordinate.lat, longitude: this.state.coordinate.lng };
     star.recordType = "Star";
@@ -238,7 +238,7 @@ class StarSidebar extends Component {
 	  editMode: false
 	});
 
-	if (typeof _this.props.onStarRecordCreated === 'function') {
+	if (typeof _this.props.onStarRecordCreated === "function") {
 	  _this.props.onStarRecordCreated(re);
 	}
     });
@@ -261,22 +261,22 @@ class StarSidebar extends Component {
 
   render() {
     return (
-      <div className='sidebar-right'>
+      <div className="sidebar-right">
 
 	{(this.state.editMode === false) &&
 	 (
-	   <div className='star-type'>
+	   <div className="star-type">
 	     <button disabled={this.state.type === 0} onClick={this.setRedStar} className={this.state.type === 0 ? "btn btn-light" : "btn"}>
-               <img src={RedStarImg} className='starSet' alt='red star' />Want to visit
+               <img src={RedStarImg} className="starSet" alt="red star" />Want to visit
              </button>
 
 	     <button disabled={this.state.type === 1}  onClick={this.setGreenStar} className={this.state.type === 1 ? "btn btn-light" : "btn"}>
-               <img src={GreenStarImg} className='starSet' alt='green star' />Visited
+               <img src={GreenStarImg} className="starSet" alt="green star" />Visited
              </button>
 	   </div>)
 	}
 
-	<div className='controls'>
+	<div className="controls">
 	  {!this.state.editMode ?
 	   (<button className="btn btn-sm btn-primary" onClick={this.enterEditMode}>Edit</button>) :
 	   (
@@ -288,13 +288,13 @@ class StarSidebar extends Component {
 	   )
 	  }
 	</div>
-	<h1 className='name'>
+	<h1 className="name">
 	  {!this.state.editMode ?
 	   this.state.title :
-	   (<input type='text' placeholder='Name' defaultValue={this.state.title} onChange={this.titleChange} />)
+	   (<input type="text" placeholder="Name" defaultValue={this.state.title} onChange={this.titleChange} />)
 	  }
 	</h1>
-	<div className='infoBox'>
+	<div className="infoBox">
 
 	  <div><span>Address</span>
 	    {this.state.address}</div>
@@ -308,10 +308,10 @@ class StarSidebar extends Component {
 
 
 	  {
-	    ((this.state.editMode === true) || ((this.state.editMode === false && this.state.url !== '') &&
+	    ((this.state.editMode === true) || ((this.state.editMode === false && this.state.url !== "") &&
 						(
 						  <div><span>URL</span>
-						    {!this.state.editMode ? (<a target='_blank' rel="noopener noreferrer" href={this.state.url}>{this.state.url}</a>) : (<input type='text' placeholder='URL' defaultValue={this.state.url} onChange={this.urlChange} />)}</div>)))
+						    {!this.state.editMode ? (<a target="_blank" rel="noopener noreferrer" href={this.state.url}>{this.state.url}</a>) : (<input type="text" placeholder="URL" defaultValue={this.state.url} onChange={this.urlChange} />)}</div>)))
 	  }
 	</div>
 

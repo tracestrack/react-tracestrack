@@ -1,9 +1,9 @@
-import React from 'react';
-import { SiteHeader, SiteFooter } from '../common/Page.js';
-import CloudDatastore from '../../datastore/CloudDatastore.js';
-//import CloudDatastore from '../../datastore/Mock.js';
-import { formatCoordinate, formatDate } from '../../utils/Formatter.js';
-import $ from 'jquery';
+import React from "react";
+import { SiteHeader, SiteFooter } from "../common/Page.js";
+import CloudDatastore from "../../datastore/CloudDatastore.js";
+//import CloudDatastore from "../../datastore/Mock.js";
+import { formatCoordinate, formatDate } from "../../utils/Formatter.js";
+import $ from "jquery";
 
 class Table extends React.Component {
 
@@ -176,9 +176,9 @@ class StarsPage extends React.Component {
     return (
 
 
-      <div className='default'>
+      <div className="default">
 
-        <SiteHeader selected='stars' />
+        <SiteHeader selected="stars" />
 
         <main role="main" className="container">
           <h1 className="mt-5">Your star list</h1>
