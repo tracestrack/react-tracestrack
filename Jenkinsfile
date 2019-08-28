@@ -27,14 +27,20 @@ pipeline {
                 sh 'npm test'
             }
         }
-        stage('Deliver') { 
+        stage('Deliver (Master)') { 
+            when {
+                branch 'master'
+            }
             steps {
                 dir("${env.WORKSPACE}"){
                     sh './deploy.sh'
                 }
             }
         }
-        stage('Version Bump') { 
+        stage('Version Bump (Master)') { 
+            when {
+                branch 'master'
+            }
             steps {
 		sh 'git tag'
 		sh 'npm version patch'
