@@ -1,4 +1,4 @@
-pipeline {
+˘pipeline {
     agent {
         docker {
             image 'react-tracestrack-node'
@@ -39,6 +39,7 @@ pipeline {
 		sh 'git tag'
 		sh 'npm version patch'
 		sh 'git push gh --tags'
+                sh 'git push'
             }
         }
     }
