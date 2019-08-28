@@ -2,7 +2,6 @@ pipeline {
     agent {
         docker {
             image 'react-tracestrack-node'
-            args '-p 3000:3000'
         }
 
     }
