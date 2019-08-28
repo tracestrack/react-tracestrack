@@ -227,52 +227,6 @@ class TracesPage extends React.Component {
     this.setState({ traces: this.traces });
   }
 
-  removeDuplis = this.removeDuplis.bind(this);
-  removeDuplis() {
-    var _this = this;
-    this.ck.loadTracesOrderByDateNext(function(records) {
-
-      document.body.scrollTop = document.body.scrollHeight;
-      _this.renderRecords(records);
-
-    }, true, function() {
-
-      var m = {};
-      var traces = _this.state.traces;
-      for (var i in traces) {
-        if (m[traces[i].path] === null) {
-          m[traces[i].path] = [traces[i]];
-        }
-        else {
-          m[traces[i].path].push(traces[i]);
-        }
-      }
-
-      if (window.confirm("You have " + Object.keys(m).length + " unique Traces. Found " + (traces.length - Object.keys(m).length) + " duplicates. Are you sure to remove them?")) {
-
-        var count = 0;
-        Object.keys(m).forEach(function(key) {
-
-          for (var i = 0; i < m[key].length - 1; i++) {
-            count++;
-            // eslint-disable-next-line
-            setTimeout(function() {
-
-              return function(k) {
-
-                _this.ck.removeRecord(m[key][k].recordName, function(p) {
-                  console.log("done", p);
-                });
-              }(i);
-
-            }, 600 * count);
-          }
-        });
-
-      }
-    });
-  }
-
   render() {
     return (
       <div className='default'>
@@ -296,13 +250,6 @@ class TracesPage extends React.Component {
           {this.state.traces.length === 0 && (
             <center>There is no traces yet.</center>
           )}
-
-          <h3>Actions</h3>
-          <p>
-
-            <button className="btn btn-danger" onClick={this.removeDuplis}>Remove Duplicates</button>
-
-          </p>
 
         </main>
 
