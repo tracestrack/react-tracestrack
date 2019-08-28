@@ -39,7 +39,7 @@ pipeline {
 		sh 'git tag'
 		sh 'npm version patch'
 		sh 'git push gh --tags'
-                sh 'git push'
+                sh 'git push gh master'
             }
         }
     }
