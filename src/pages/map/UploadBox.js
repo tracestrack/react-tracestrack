@@ -1,9 +1,21 @@
 import React, { Component } from 'react';
-import { Types } from '../common/Models.js';
+import { TraceTypes } from '../common/Models.js';
 //import $ from 'jquery';
 import "../../resources/FilterBox.css";
 
 class UploadBox extends Component {
+
+  onChangeHandler = this.onChangeHandler.bind(this);
+  onChangeHandler() {
+    const selectedFile = document.getElementById('upload').files[0];
+    var fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent){
+      var textFromFileLoaded = fileLoadedEvent.target.result;
+      console.log(textFromFileLoaded);
+    };
+
+    fileReader.readAsText(selectedFile, "UTF-8");
+  }
 
   render() {
 
@@ -14,11 +26,11 @@ class UploadBox extends Component {
         <h4>Types</h4>
 
         {
-          Object.keys(Types()).map((key, index) => (
+          Object.keys(TraceTypes()).map((key, index) => (
             <div className="form-check form-check-inline">
 
               <label className="form-check-label">
-                <input className="form-check-input" type="checkbox" name="selected" value={index} />
+                <input className="form-check-input" type="radio" name="selected" value={index} />
 
                 {key}
               </label>
@@ -26,9 +38,15 @@ class UploadBox extends Component {
 
           ))
         }
-    
+
+        <h4>File</h4>
+        <div className="custom-file">
+          <input type="file" name="file" id="upload" onChange={this.onChangeHandler}/>
+        </div>
+
         <div className="box-apply">
           <button type="button" className="btn btn-primary btn-sm">Apply</button>
+          <button type="button" onClick={this.props.onCancel} className="btn btn-secondary btn-sm">Cancel</button>
         </div>
 
       </div>

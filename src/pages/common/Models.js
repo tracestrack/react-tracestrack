@@ -33,7 +33,7 @@ export function Coord(lat, lng) {
   return {lat: lat, lng: lng};
 }
 
-export function Types() {
+export function TraceTypes() {
 
   return {
     "Walking": 0,
@@ -42,10 +42,20 @@ export function Types() {
     "Driving": 3,
     "Railway": 4,
     "Waterway": 5,
-    "Skyway": 6,
+    "Skyway": 6
+  };
+
+}
+
+export function StarTypes() {
+  return {
     "Visited": 7,
     "Want to visit": 8
   };
 
+}
+
+export function Types() {
+  return { ...TraceTypes(), ...StarTypes() };
 }
 

@@ -565,15 +565,20 @@ class MapPage extends Component {
     this.setState({ showFilterBox: true });
   }
 
-  showUpload = this.showUpload.bind(this);
-  showUpload() {
-    //this.setState({ showFilterBox: true });
-    alert("Under development");
-  }
-
   onFilterCancel = this.onFilterCancel.bind(this);
   onFilterCancel() {
     this.setState({ showFilterBox: false });
+  }
+
+  showUpload = this.showUpload.bind(this);
+  showUpload() {
+    this.setState({ showUploadBox: true });
+    //alert("Under development");
+  }
+
+  onUploadCancel = this.onUploadCancel.bind(this);
+  onUploadCancel() {
+    this.setState({ showUploadBox: false });
   }
 
   /** Render the app */
@@ -590,7 +595,7 @@ class MapPage extends Component {
 
 	{
 	  this.state.showUploadBox && (
-	    <UploadBox />
+	    <UploadBox onCancel={this.onUploadCancel}/>
 	  )
 	}
 
