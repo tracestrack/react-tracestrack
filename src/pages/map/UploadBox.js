@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import { TraceTypes } from '../common/Models.js';
 //import $ from 'jquery';
 import "../../resources/FilterBox.css";
+import GPX from 'gpx-parser-builder';
+
+function readGPXFile(strGPX) {
+  const gpx = GPX.parse(strGPX);
+  window.console.dir(gpx.metadata);
+  window.console.dir(gpx.wpt);
+  window.console.dir(gpx.trk);
+}
 
 class UploadBox extends Component {
 
@@ -11,7 +19,7 @@ class UploadBox extends Component {
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent){
       var textFromFileLoaded = fileLoadedEvent.target.result;
-      console.log(textFromFileLoaded);
+      readGPXFile(textFromFileLoaded);
     };
 
     fileReader.readAsText(selectedFile, "UTF-8");
