@@ -580,6 +580,12 @@ class MapPage extends Component {
     //alert("Under development");
   }
 
+  onUploadApply = this.onUploadApply.bind(this);
+  onUploadApply() {
+    alert("function under development");
+    this.setState({ showUploadBox: false });
+  }
+
   onUploadCancel = this.onUploadCancel.bind(this);
   onUploadCancel() {
     this.setState({ showUploadBox: false });
@@ -599,7 +605,7 @@ class MapPage extends Component {
 
 	{
 	  this.state.showUploadBox && (
-	    <UploadBox onCancel={this.onUploadCancel}/>
+	    <UploadBox onCancel={this.onUploadCancel} onApply={this.onUploadApply} />
 	  )
 	}
 

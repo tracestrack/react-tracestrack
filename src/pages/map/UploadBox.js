@@ -53,7 +53,7 @@ class UploadBox extends Component {
         </div>
 
         <div className="box-apply">
-          <button type="button" className="btn btn-primary btn-sm">Apply</button>
+          <button type="button" onClick={this.props.onApply} className="btn btn-primary btn-sm">Apply</button>
           <button type="button" onClick={this.props.onCancel} className="btn btn-secondary btn-sm">Cancel</button>
         </div>
 
