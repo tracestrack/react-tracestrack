@@ -67,7 +67,7 @@ export class OverlayManager {
     }
 
     shouldRedraw(recordName, isDetail) {
-        if (this.overlayDict[recordName] === null) {
+        if (recordName in this.overlayDict === false) {
             return true;
         }
         return isDetail && !this.overlayDict[recordName];

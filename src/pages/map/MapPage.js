@@ -224,7 +224,11 @@ class MapPage extends Component {
 	  }
 	  ret.push(trace);
 	  _this.overlayManager.add(re[it].recordName, isDetail);
+          console.log("overlay added");
 	}
+        else {
+          console.log("XXX");
+        }
       }
 
       return {
