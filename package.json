@@ -1,7 +1,7 @@
 {
   "name": "tracestrack.com",
   "homepage": "http://www.tracestrack.com/",
-  "version": "0.3.23",
+  "version": "0.3.24",
   "private": false,
   "dependencies": {
     "@turf/simplify": "^5.1.5",
