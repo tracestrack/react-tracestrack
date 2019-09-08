@@ -86,8 +86,7 @@ class StarSidebar extends Component {
   loadStar(star) {
     let _this = this;
 
-    CloudDatastore.getRecord(star.recordName).then(
-      re => {
+    CloudDatastore.getRecord(star.recordName, (re) => {
 	var state = {
 	  title: re.fields.title.value ? re.fields.title.value : "non",
 	  note: re.fields.note ? re.fields.note.value : "",
