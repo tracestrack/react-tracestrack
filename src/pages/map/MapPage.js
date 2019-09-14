@@ -14,7 +14,6 @@ import SessionManager from '../common/SessionManager.js';
 //import AppleStyle from '../../resources/mapstyles/apple.json';
 //import GrayStyle from '../../resources/mapstyles/grayscale.json';
 
-//import simplify from '@turf/simplify';
 
 var google = window.google;
 
@@ -591,6 +590,12 @@ class MapPage extends Component {
     this.setState({ showUploadBox: false });
   }
 
+  onUploadPreview = this.onUploadPreview.bind(this);
+  onUploadPreview(r) {
+    this.setState({ uploadedTrace: r });
+    console.log(r);
+  }
+
   /** Render the app */
   render() {
 
@@ -605,7 +610,7 @@ class MapPage extends Component {
 
 	{
 	  this.state.showUploadBox && (
-	    <UploadBox onCancel={this.onUploadCancel} onApply={this.onUploadApply} />
+	    <UploadBox onCancel={this.onUploadCancel} onApply={this.onUploadApply} onPreview={this.onUploadPreview}/>
 	  )
 	}
 
@@ -653,6 +658,7 @@ class MapPage extends Component {
 	  zoom={this.state.zoom}
 	  markers={this.state.markers}
 	  traces={this.state.traces}
+	  uploadedTrace={this.state.uploadedTrace}
 	  onMarkerClick={this.handleMarkerClick}
 	  onTraceClick={this.handleTraceClick}
 	  onMapMounted={this.handleMapMounted}

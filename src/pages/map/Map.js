@@ -147,6 +147,19 @@ export const Map = withScriptjs(withGoogleMap((props) =>
                                                     );
                                                 })}
 
+                                                {props.uploadedTrace && (
+                                                        <Polyline
+                                                          key="uploadedTrace"
+                                                          path={props.uploadedTrace.medium}
+                                                          options={{
+                                                            strokeColor: '0x333333',
+                                                            strokeOpacity: 0.7,
+                                                            strokeWeight: 4
+                                                          }}
+                                                        />
+                                                )}
+
+
                                                 {props.markers && props.markers.map((marker, index) => {
                                                     const onClick = () => props.onMarkerClick(marker);
 
