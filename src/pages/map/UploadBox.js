@@ -1,14 +1,41 @@
 import React, { Component } from 'react';
 import { TraceTypes } from '../common/Models.js';
-//import $ from 'jquery';
 import "../../resources/FilterBox.css";
 import GPX from 'gpx-parser-builder';
+import simplify from 'simplify-js';
+
+function processPointsInGPXFile(points) {
+
+  let xypoints = [];
+  for (var i in points) {
+    xypoints.push({x: parseFloat(points[i].lng), y: parseFloat(points[i].lat)});
+  }
+
+  let detail = simplify(xypoints, 0.00001, true);
+  let medium = simplify(xypoints, 0.0001, true);
+  let coarse = simplify(xypoints, 0.005, true);
+  console.log(xypoints.length, detail.length, medium.length, coarse.length);
+}
+
+function createPoint(lat, lng, alt, date) {
+  return {lat: lat, lng: lng, alt: alt, date: date};
+}
 
 function readGPXFile(strGPX) {
+  let points = [];
   const gpx = GPX.parse(strGPX);
   window.console.dir(gpx.metadata);
-  window.console.dir(gpx.wpt);
-  window.console.dir(gpx.trk);
+  //window.console.dir(gpx.wpt);
+  let track = gpx.trk[0];
+  let title = track['name'];
+  for (var i in track.trkseg) {
+    let trkpt = track.trkseg[0].trkpt;
+    for (var p in trkpt) {
+      points.push(createPoint(trkpt[p]["$"].lat, trkpt[p]["$"].lon, trkpt[p]["ele"], trkpt[p]["time"]));
+    }
+  }
+
+  processPointsInGPXFile(points);
 }
 
 class UploadBox extends Component {
