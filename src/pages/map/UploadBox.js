@@ -35,12 +35,12 @@ function readGPXFile(strGPX) {
   //window.console.dir(gpx.wpt);
   let track = gpx.trk[0];
   let title = track['name'];
-  for (var i in track.trkseg) {
-    let trkpt = track.trkseg[0].trkpt;
-    for (var p in trkpt) {
-      points.push(createPoint(trkpt[p]["$"].lat, trkpt[p]["$"].lon, trkpt[p]["ele"], trkpt[p]["time"]));
-    }
+  let trkpt = track.trkseg[0].trkpt;
+  for (var p in trkpt) {
+    points.push(createPoint(trkpt[p]["$"].lat, trkpt[p]["$"].lon, trkpt[p]["ele"], trkpt[p]["time"]));
   }
+
+  console.log(title);
 
   return processPointsInGPXFile(points);
 }
