@@ -15,13 +15,12 @@ class Table extends React.Component {
   render() {
     return (
 
-      <table className="activity-table">
+      <table className="activity-table table table-hover table-striped">
         <tbody>
-          <tr>
+          <tr className="thead-dark">
             <th width="40"></th>
             <th width="350">Title</th>
-            <th width="150">Creation</th>
-            <th width="150">Coordinate</th>
+            <th width="150">Date</th>
             <th width="120">Type</th>
             <th width="80">Country</th>
             <th width="100" />
@@ -33,7 +32,6 @@ class Table extends React.Component {
                                   <td>{i}</td>
                                   <td>{row.title}</td>
                                   <td>{row.datetime}</td>
-                                  <td>{row.coordinate}</td>
                                   <td>{row.type}</td>
                                   <td>{row.countryCode}</td>
                                   <td><button className="btn btn-sm btn-outline-danger" record={row.recordName} onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
