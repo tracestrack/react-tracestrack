@@ -150,7 +150,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
                                                 {props.uploadedTrace && (
                                                         <Polyline
                                                           key="uploadedTrace"
-                                                          path={props.uploadedTrace.medium}
+                                                          path={props.uploadedTrace.detail}
                                                           options={{
                                                             strokeColor: '0x333333',
                                                             strokeOpacity: 0.7,

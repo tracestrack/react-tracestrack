@@ -1,10 +1,10 @@
 
-.filterBox {
+.uploadBox {
   color: black;
   position: absolute;
   top: 100px;
-  left: calc(50% - 200px);
-  height: 300px;
+  left: 10px;
+  height: 630px;
   width: 400px;
   z-index: 100;
   background-color: rgba(255, 255, 255, 0.95);  
@@ -13,9 +13,7 @@
   padding: 15px;
 }
 
-
 .box-apply {
-
   position: absolute;
   bottom: 10px;
   height: 40px;

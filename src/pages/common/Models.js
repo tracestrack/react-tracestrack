@@ -29,6 +29,35 @@ export function Trace(detail, type, recordName, zoneRecordName, share, linkingId
   };
 }
 
+export function CKTraceModel() {
+  let model = {
+    title: "",
+    type: 0,
+    startDate: "",
+    maxLat: 0,
+    maxLng: 0,
+    minLat: 0,
+    minLng: 0,
+    hashString: "",
+    distance: 0,
+    averageSpeed: 0,
+    duration: 0,
+    lowAlt: 0,
+    highAlt: 0,
+    elevation: 0,
+    note: "",
+    secondsFromGMT: 0,
+    linkingId: 0,
+    coarse: [],
+    medium: [],
+    detail: [],
+    gpxFile: ""
+  };
+
+  Object.seal(model);
+  return model;
+}
+
 export function Coord(lat, lng) {
   return {lat: lat, lng: lng};
 }

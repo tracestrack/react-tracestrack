@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { TraceTypes } from '../common/Models.js';
-import "../../resources/FilterBox.css";
+import { TraceTypes, CKTraceModel } from '../common/Models.js';
+import "../../resources/UploadBox.css";
 import GPX from 'gpx-parser-builder';
 import simplify from 'simplify-js';
 
@@ -40,13 +40,22 @@ function readGPXFile(strGPX) {
     points.push(createPoint(trkpt[p]["$"].lat, trkpt[p]["$"].lon, trkpt[p]["ele"], trkpt[p]["time"]));
   }
 
-  console.log(title);
+  let simplifiedPoints = processPointsInGPXFile(points);
+  let model = CKTraceModel();
+  model.title = title;
+  model.detail = simplifiedPoints.detail;
+  model.medium = simplifiedPoints.medium;
+  model.coarse = simplifiedPoints.coarse;
 
-  return processPointsInGPXFile(points);
+  return model;
 }
 
 class UploadBox extends Component {
 
+  state = {
+    title: "Undefined title"
+  };
+  
   onChangeHandler = this.onChangeHandler.bind(this);
   onChangeHandler() {
     const selectedFile = document.getElementById('upload').files[0];
@@ -54,8 +63,9 @@ class UploadBox extends Component {
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent){
       let textFromFileLoaded = fileLoadedEvent.target.result;
-      let result = readGPXFile(textFromFileLoaded);
-      _this.props.onPreview(result);
+      let ckTraceModel = readGPXFile(textFromFileLoaded);
+      _this.setState({title: ckTraceModel.title});
+      _this.props.onPreview(ckTraceModel);
     };
 
     fileReader.readAsText(selectedFile, "UTF-8");
@@ -64,32 +74,64 @@ class UploadBox extends Component {
   render() {
 
     return (
-      <div className='filterBox'>
+      <div className='uploadBox'>
         <h3>Upload GPX file</h3>
 
-        <h4>Types</h4>
-
-        {
-          Object.keys(TraceTypes()).map((key, index) => (
-            <div className="form-check form-check-inline">
-
-              <label className="form-check-label">
-                <input className="form-check-input" type="radio" name="selected" value={index} />
-
-                {key}
-              </label>
-            </div>
-
-          ))
-        }
-
-        <h4>File</h4>
+        <h4>Select a local GPX file</h4>
         <div className="custom-file">
           <input type="file" name="file" id="upload" onChange={this.onChangeHandler}/>
         </div>
+        
+        <h4>Trace Information</h4>
+        <table className="table">
+          <tbody>
+            <tr>
+              <td>Title</td>
+              <td>
+                <input type="text" value={this.state.title} />
+              </td>
+            </tr>
+            <tr>
+              <td>Type</td>
+              <td>
+                <select className="form-control" id="exampleFormControlSelect1">
+                  {
+                    Object.keys(TraceTypes()).map((key, index) => (
+                      <option value={index}>{key}</option>
+                    ))
+                  }
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>Start Time</td>
+              <td>
+
+              </td>
+            </tr>
+            <tr>
+              <td>Distance</td>
+              <td>
+
+              </td>
+            </tr>
+            <tr>
+              <td>Duration</td>
+              <td>
+
+              </td>
+            </tr>
+            <tr>
+              <td>Avg. Speed</td>
+              <td>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
         <div className="box-apply">
-          <button type="button" onClick={this.props.onApply} className="btn btn-primary btn-sm">Apply</button>
+          <button type="button" onClick={this.props.onApply} className="btn btn-primary btn-sm">Upload</button>
           <button type="button" onClick={this.props.onCancel} className="btn btn-secondary btn-sm">Cancel</button>
         </div>
 
