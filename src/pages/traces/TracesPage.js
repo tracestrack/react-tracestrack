@@ -33,18 +33,18 @@ class Table extends React.Component {
   }
 
   render() {
-    return (<table className="activity-table">
+    return (<table className="activity-table table table-hover table-striped">
                <tbody>
-                 <tr>
+                 <tr className="thead-dark">
                    <th width="50" />
                    <th width="60">Type</th>
-                   <th width="250">Title</th>
-                   <th width="250">Date</th>
-                   <th width="150">Distance</th>
-                   <th width="180">Duration</th>
-                   <th width="200">Average Speed</th>
-                   <th width="200">Elevation</th>
-                   <th width="200"></th>
+                   <th width="350">Title</th>
+                   <th width="200">Date</th>
+                   <th width="130">Distance</th>
+                   <th width="130">Duration</th>
+                   <th width="150">Avg. Speed</th>
+                   <th width="100">Climbing</th>
+                   <th width="90"></th>
                  </tr>
 
                  {this.props.traces.map((row, id) =>
