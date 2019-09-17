@@ -1,40 +1,18 @@
 import React, { Component } from 'react';
 import { TraceTypes, CKTraceModel } from '../common/Models.js';
+import { formatDate, formatDistance, formatDuration, formatSpeed } from '../../utils/Formatter.js';
 import "../../resources/UploadBox.css";
 import GPX from 'gpx-parser-builder';
-import simplify from 'simplify-js';
-
-function transformXYtoLatLng(points) {
-  return points.map((t) => {
-    return {lat: t.y, lng:  t.x};
-  });
-}
-
-function processPointsInGPXFile(points) {
-
-  let xypoints = [];
-  for (var i in points) {
-    xypoints.push({x: parseFloat(points[i].lng), y: parseFloat(points[i].lat)});
-  }
-
-  let detail = transformXYtoLatLng(simplify(xypoints, 0.00001, true));
-  let medium = transformXYtoLatLng(simplify(xypoints, 0.0001, true));
-  let coarse = transformXYtoLatLng(simplify(xypoints, 0.005, true));
-
-  return {detail: detail, medium: medium, coarse: coarse};
-}
-
-function createPoint(lat, lng, alt, date) {
-  return {lat: lat, lng: lng, alt: alt, date: date};
-}
+import { createPoint, processPointsInGPXFile, getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
+       calculateAvgSpeed} from "./UploadModel.js";
 
 function readGPXFile(strGPX) {
   let points = [];
   const gpx = GPX.parse(strGPX);
-  window.console.dir(gpx.metadata);
-  //window.console.dir(gpx.wpt);
   let track = gpx.trk[0];
   let title = track['name'];
+  let date = gpx['metadata']['time'];
+  
   let trkpt = track.trkseg[0].trkpt;
   for (var p in trkpt) {
     points.push(createPoint(trkpt[p]["$"].lat, trkpt[p]["$"].lon, trkpt[p]["ele"], trkpt[p]["time"]));
@@ -46,6 +24,13 @@ function readGPXFile(strGPX) {
   model.detail = simplifiedPoints.detail;
   model.medium = simplifiedPoints.medium;
   model.coarse = simplifiedPoints.coarse;
+  model.startDate = date;
+  model.distance = calculateDistanceOfTrace(points);
+  model.duration = calculateDuration(points);
+  model.averageSpeed = calculateAvgSpeed(points);
+  
+  let firstPt = simplifiedPoints.detail[0];
+  model.secondsFromGMT = getTimezoneOffset(firstPt.lat, firstPt.lng) * 60;
 
   return model;
 }
@@ -53,18 +38,29 @@ function readGPXFile(strGPX) {
 class UploadBox extends Component {
 
   state = {
-    title: "Undefined title"
+    title: ""
   };
   
   onChangeHandler = this.onChangeHandler.bind(this);
   onChangeHandler() {
     const selectedFile = document.getElementById('upload').files[0];
+    
     let _this = this;
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent){
       let textFromFileLoaded = fileLoadedEvent.target.result;
       let ckTraceModel = readGPXFile(textFromFileLoaded);
-      _this.setState({title: ckTraceModel.title});
+
+      let date = new Date(ckTraceModel.startDate.getTime() + ckTraceModel.secondsFromGMT * 1000);
+      console.log(ckTraceModel.startDate);
+      console.log(date);
+
+      _this.setState({title: ckTraceModel.title,
+                      date: formatDate(date),
+                      distance: formatDistance(ckTraceModel.distance),
+                      duration: formatDuration(ckTraceModel.duration),
+                      avgSpeed: formatSpeed(ckTraceModel.averageSpeed)
+                     });
       _this.props.onPreview(ckTraceModel);
     };
 
@@ -106,25 +102,25 @@ class UploadBox extends Component {
             <tr>
               <td>Start Time</td>
               <td>
-
+                {this.state.date}
               </td>
             </tr>
             <tr>
               <td>Distance</td>
               <td>
-
+                {this.state.distance}
               </td>
             </tr>
             <tr>
               <td>Duration</td>
               <td>
-
+                {this.state.duration}
               </td>
             </tr>
             <tr>
               <td>Avg. Speed</td>
               <td>
-
+                {this.state.avgSpeed}
               </td>
             </tr>
           </tbody>
