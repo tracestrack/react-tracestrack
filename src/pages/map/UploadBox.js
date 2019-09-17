@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TraceTypes, CKTraceModel } from '../common/Models.js';
-import { formatDate } from '../../utils/Formatter.js';
+import { formatDate, formatDistance, formatDuration } from '../../utils/Formatter.js';
 import "../../resources/UploadBox.css";
 import GPX from 'gpx-parser-builder';
 import { createPoint, processPointsInGPXFile, getTimezoneOffset, calculateDistanceOfTrace, calculateDuration } from "./UploadModel.js";
@@ -55,8 +55,8 @@ class UploadBox extends Component {
 
       _this.setState({title: ckTraceModel.title,
                       date: formatDate(date),
-                      distance: ckTraceModel.distance,
-                      duration: ckTraceModel.duration
+                      distance: formatDistance(ckTraceModel.distance),
+                      duration: formatDuration(ckTraceModel.duration)
                      });
       _this.props.onPreview(ckTraceModel);
     };

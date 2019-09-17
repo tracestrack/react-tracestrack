@@ -33,8 +33,14 @@ export function getTimezoneOffset(lat, lng, date) {
 
 export function calculateDistanceOfTrace(points) {
   return points.reduce((accumulator, currentValue, index, array) => {
-    if (index == 0) return 0.0;
+    if (index === 0) return 0.0;
     let v = haversine([currentValue.lat, currentValue.lng], [array[index-1].lat, array[index-1].lng], {unit: 'meter', format: '[lat,lon]'});
     return accumulator + v;
   }, 0);
+}
+
+export function calculateDuration(points) {
+  if (points.length <= 1)
+    return 0;
+  return (points[points.length - 1].date - points[0].date) / 1000;
 }

@@ -1,4 +1,4 @@
-import { getTimezoneOffset, calculateDistanceOfTrace, createPoint } from "../pages/map/UploadModel.js";
+import { getTimezoneOffset, calculateDistanceOfTrace, calculateDuration, createPoint } from "../pages/map/UploadModel.js";
 import haversine from "haversine";
 
 it("test timezone offset", () => {
@@ -50,4 +50,17 @@ it("test calculateDistanceOfTrace", () => {
                      createPoint(p3.latitude, p3.longitude, 0, new Date())
                     ];
   expect(calculateDistanceOfTrace(threePoints)).toBe(haversine(p1, p2, {unit: 'meter'}) + haversine(p3, p2, {unit: 'meter'}));
+});
+
+it("test duration", () => {
+  const d1 = new Date('2019-09-15T10:20:00Z');
+  const d2 = new Date('2019-09-15T10:21:00Z');
+  const d3 = new Date('2019-09-15T10:21:30Z');
+
+  let onePoint = [createPoint(0, 0, 0, d1)];
+  expect(calculateDuration(onePoint)).toBe(0);
+  let twoPoints = [createPoint(0, 0, 0, d1), createPoint(0, 0, 0, d2)];
+  expect(calculateDuration(twoPoints)).toBe(60);
+  let threePoints = [createPoint(0, 0, 0, d1), createPoint(0, 0, 0, d2), createPoint(0, 0, 0, d3)];
+  expect(calculateDuration(threePoints)).toBe(90);
 });
