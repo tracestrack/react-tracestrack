@@ -1,5 +1,10 @@
 import simplify from 'simplify-js';
 import moment from "moment-timezone";
+import haversine from "haversine";
+
+export function createPoint(lat, lng, alt, date) {
+  return {lat: lat, lng: lng, alt: alt, date: date};
+}
 
 export function processPointsInGPXFile(points) {
   function transformXYtoLatLng(points) {
@@ -23,6 +28,13 @@ export function processPointsInGPXFile(points) {
 export function getTimezoneOffset(lat, lng, date) {
   var tzlookup = require("tz-lookup");
   let tz = tzlookup(lat, lng);
-  console.log(tz);
   return moment(date).tz(tz)._offset; // by minutes
+}
+
+export function calculateDistanceOfTrace(points) {
+  return points.reduce((accumulator, currentValue, index, array) => {
+    if (index == 0) return 0.0;
+    let v = haversine([currentValue.lat, currentValue.lng], [array[index-1].lat, array[index-1].lng], {unit: 'meter', format: '[lat,lon]'});
+    return accumulator + v;
+  }, 0);
 }

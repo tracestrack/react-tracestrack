@@ -4,6 +4,7 @@
   "version": "0.3.23",
   "private": false,
   "dependencies": {
+    "haversine": "1.1.1",
     "moment-timezone": "0.5.25",
     "tz-lookup": "6.1.24",
     "simplify-js": "1.2.3",

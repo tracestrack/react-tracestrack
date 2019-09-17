@@ -3,11 +3,7 @@ import { TraceTypes, CKTraceModel } from '../common/Models.js';
 import { formatDate } from '../../utils/Formatter.js';
 import "../../resources/UploadBox.css";
 import GPX from 'gpx-parser-builder';
-import { processPointsInGPXFile, getTimezoneOffset } from "./UploadModel.js";
-
-function createPoint(lat, lng, alt, date) {
-  return {lat: lat, lng: lng, alt: alt, date: date};
-}
+import { createPoint, processPointsInGPXFile, getTimezoneOffset, calculateDistanceOfTrace, calculateDuration } from "./UploadModel.js";
 
 function readGPXFile(strGPX) {
   let points = [];
@@ -28,6 +24,8 @@ function readGPXFile(strGPX) {
   model.medium = simplifiedPoints.medium;
   model.coarse = simplifiedPoints.coarse;
   model.startDate = date;
+  model.distance = calculateDistanceOfTrace(points);
+  model.duration = calculateDuration(points);
   
   let firstPt = simplifiedPoints.detail[0];
   model.secondsFromGMT = getTimezoneOffset(firstPt.lat, firstPt.lng) * 60;
@@ -44,7 +42,6 @@ class UploadBox extends Component {
   onChangeHandler = this.onChangeHandler.bind(this);
   onChangeHandler() {
     const selectedFile = document.getElementById('upload').files[0];
-
     
     let _this = this;
     var fileReader = new FileReader();
