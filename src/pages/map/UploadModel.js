@@ -44,3 +44,9 @@ export function calculateDuration(points) {
     return 0;
   return (points[points.length - 1].date - points[0].date) / 1000;
 }
+
+export function calculateAvgSpeed(points) {
+  if (points.length <= 1)
+    return 0;
+  return calculateDistanceOfTrace(points) / calculateDuration(points);
+}

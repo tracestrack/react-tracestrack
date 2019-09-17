@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { TraceTypes, CKTraceModel } from '../common/Models.js';
-import { formatDate, formatDistance, formatDuration } from '../../utils/Formatter.js';
+import { formatDate, formatDistance, formatDuration, formatSpeed } from '../../utils/Formatter.js';
 import "../../resources/UploadBox.css";
 import GPX from 'gpx-parser-builder';
-import { createPoint, processPointsInGPXFile, getTimezoneOffset, calculateDistanceOfTrace, calculateDuration } from "./UploadModel.js";
+import { createPoint, processPointsInGPXFile, getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
+       calculateAvgSpeed} from "./UploadModel.js";
 
 function readGPXFile(strGPX) {
   let points = [];
@@ -26,6 +27,7 @@ function readGPXFile(strGPX) {
   model.startDate = date;
   model.distance = calculateDistanceOfTrace(points);
   model.duration = calculateDuration(points);
+  model.averageSpeed = calculateAvgSpeed(points);
   
   let firstPt = simplifiedPoints.detail[0];
   model.secondsFromGMT = getTimezoneOffset(firstPt.lat, firstPt.lng) * 60;
@@ -36,7 +38,7 @@ function readGPXFile(strGPX) {
 class UploadBox extends Component {
 
   state = {
-    title: "Undefined title"
+    title: ""
   };
   
   onChangeHandler = this.onChangeHandler.bind(this);
@@ -56,7 +58,8 @@ class UploadBox extends Component {
       _this.setState({title: ckTraceModel.title,
                       date: formatDate(date),
                       distance: formatDistance(ckTraceModel.distance),
-                      duration: formatDuration(ckTraceModel.duration)
+                      duration: formatDuration(ckTraceModel.duration),
+                      avgSpeed: formatSpeed(ckTraceModel.averageSpeed)
                      });
       _this.props.onPreview(ckTraceModel);
     };
@@ -117,7 +120,7 @@ class UploadBox extends Component {
             <tr>
               <td>Avg. Speed</td>
               <td>
-
+                {this.state.avgSpeed}
               </td>
             </tr>
           </tbody>
