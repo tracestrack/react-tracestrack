@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import { TraceTypes, CKTraceModel } from '../common/Models.js';
 import { formatDate, formatDistance, formatDuration, formatSpeed } from '../../utils/Formatter.js';
 import "../../resources/UploadBox.css";
+import $ from "jquery";
 import GPX from 'gpx-parser-builder';
 import { createPoint, processPointsInGPXFile, getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
          calculateAvgSpeed, calculateLowAlt, calculateHighAlt, calculateElevation} from "./UploadModel.js";
+
+function getType() {
+  return parseInt($("#typeSelector").val());
+}
 
 function readGPXFile(strGPX) {
   let points = [];
@@ -21,6 +26,7 @@ function readGPXFile(strGPX) {
   let simplifiedPoints = processPointsInGPXFile(points);
   let model = CKTraceModel();
   model.title = title;
+  model.type = getType();
   model.detail = simplifiedPoints.detail;
   model.medium = simplifiedPoints.medium;
   model.coarse = simplifiedPoints.coarse;
@@ -31,6 +37,13 @@ function readGPXFile(strGPX) {
   model.lowAlt = calculateLowAlt(points);
   model.highAlt = calculateHighAlt(points);
   model.elevation = calculateElevation(points);
+  model.linkingId = 0;
+  model.note = "";
+  model.hashString = "";
+  model.maxLat = 0;
+  model.maxLng =  0;
+  model.minLat = 0;
+  model.minLng = 0;
   
   let firstPt = points[0];
   model.secondsFromGMT = getTimezoneOffset(firstPt.lat, firstPt.lng) * 60;
@@ -91,7 +104,7 @@ class UploadBox extends Component {
             <tr>
               <td>Type</td>
               <td>
-                <select className="form-control" id="exampleFormControlSelect1">
+                <select className="form-control" id="typeSelector">
                   {
                     Object.keys(TraceTypes()).map((key, index) => (
                       <option value={index}>{key}</option>
