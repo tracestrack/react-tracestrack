@@ -51,7 +51,7 @@ export function calculateDuration(points) {
 
 export function calculateAvgSpeed(points) {
   let duration = calculateDuration(points);
-  if (duration == 0)
+  if (duration === 0)
     return 0;
   return calculateDistanceOfTrace(points) / duration;
 }
