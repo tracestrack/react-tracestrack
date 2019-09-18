@@ -87,6 +87,12 @@ export class OverlayManager {
     }
 }
 
+function convertCKPointToLatLng(points) {
+  return points.map((curr) => {
+    return {lat: curr.lat / 1000000.0, lng: curr.lng / 1000000.0};
+  });
+}
+
 export const Map = withScriptjs(withGoogleMap((props) =>
 
                                               <GoogleMap
@@ -151,7 +157,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
                                                 {props.uploadedTrace && (
                                                         <Polyline
                                                           key="uploadedTrace"
-                                                          path={props.uploadedTrace.detail}
+                                                          path={convertCKPointToLatLng(props.uploadedTrace.detail)}
                                                           options={{
                                                             strokeColor: '0x333333',
                                                             strokeOpacity: 0.7,

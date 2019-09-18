@@ -7,9 +7,13 @@ export function createPoint(lat, lng, alt, date) {
 }
 
 export function processPointsInGPXFile(points) {
-  function transformXYtoLatLng(points) {
+  
+  if (points.length <= 1)
+    return [];
+
+  function transformXYtoCKLatLng(points) {
     return points.map((t) => {
-      return {lat: t.y, lng:  t.x};
+      return {lat: Math.round(t.y * 1000000), lng: Math.round(t.x * 1000000)};
     });
   }
   
@@ -18,9 +22,9 @@ export function processPointsInGPXFile(points) {
     xypoints.push({x: parseFloat(points[i].lng), y: parseFloat(points[i].lat)});
   }
 
-  let detail = transformXYtoLatLng(simplify(xypoints, 0.00001, true));
-  let medium = transformXYtoLatLng(simplify(xypoints, 0.0001, true));
-  let coarse = transformXYtoLatLng(simplify(xypoints, 0.005, true));
+  let detail = transformXYtoCKLatLng(simplify(xypoints, 0.00001, true));
+  let medium = transformXYtoCKLatLng(simplify(xypoints, 0.0001, true));
+  let coarse = transformXYtoCKLatLng(simplify(xypoints, 0.005, true));
 
   return {detail: detail, medium: medium, coarse: coarse};
 }

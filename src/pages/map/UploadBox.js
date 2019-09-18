@@ -32,7 +32,7 @@ function readGPXFile(strGPX) {
   model.highAlt = calculateHighAlt(points);
   model.elevation = calculateElevation(points);
   
-  let firstPt = simplifiedPoints.detail[0];
+  let firstPt = points[0];
   model.secondsFromGMT = getTimezoneOffset(firstPt.lat, firstPt.lng) * 60;
 
   return model;
@@ -55,8 +55,6 @@ class UploadBox extends Component {
       let ckTraceModel = readGPXFile(textFromFileLoaded);
 
       let date = new Date(ckTraceModel.startDate.getTime() + ckTraceModel.secondsFromGMT * 1000);
-      console.log(ckTraceModel.startDate);
-      console.log(date);
 
       _this.setState({title: ckTraceModel.title,
                       date: formatDate(date),

@@ -1,6 +1,48 @@
 import { getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
-         createPoint, calculateElevation, calculateHighAlt, calculateLowAlt } from "../pages/map/UploadModel.js";
+         createPoint, calculateElevation, calculateHighAlt, calculateLowAlt,
+         processPointsInGPXFile} from "../pages/map/UploadModel.js";
 import haversine from "haversine";
+
+it("test processPointsInGPXFile", () => {
+  const d = null;
+  const p1 = createPoint(51.417864, 5.445850, 0, d);
+  const p2 = createPoint(51.411864, 5.441850, 0, d);
+  const p3 = createPoint(51.414371, 5.438404, 0, d);
+
+  let onePoint = [p1];
+  let onePointProcessed = processPointsInGPXFile(onePoint);
+  expect(onePointProcessed).toStrictEqual([]);
+  let twoPoints = [p1, p2];
+  let twoPointsProcessed = processPointsInGPXFile(twoPoints);
+  expect(twoPointsProcessed.detail).toStrictEqual([
+    {lat: 51417864, lng: 5445850},
+    {lat: 51411864, lng: 5441850}
+  ]);
+  expect(twoPointsProcessed.medium).toStrictEqual([
+    {lat: 51417864, lng: 5445850},
+    {lat: 51411864, lng: 5441850}
+  ]);
+  expect(twoPointsProcessed.coarse).toStrictEqual([
+    {lat: 51417864, lng: 5445850},
+    {lat: 51411864, lng: 5441850}
+  ]);
+  let threePoints = [p1, p2, p3];
+  let threePointsProcessed = processPointsInGPXFile(threePoints);
+  expect(threePointsProcessed.detail).toStrictEqual([
+    {lat: 51417864, lng: 5445850},
+    {lat: 51411864, lng: 5441850},
+    {lat: 51414371, lng: 5438404},
+  ]);
+  expect(threePointsProcessed.medium).toStrictEqual([
+    {lat: 51417864, lng: 5445850},
+    {lat: 51411864, lng: 5441850},
+    {lat: 51414371, lng: 5438404},
+  ]);
+  expect(threePointsProcessed.coarse).toStrictEqual([
+    {lat: 51417864, lng: 5445850},
+    {lat: 51414371, lng: 5438404}
+  ]);
+});
 
 it("test timezone offset", () => {
   let summerDate = new Date('2019-09-15T10:20:30Z');
