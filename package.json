@@ -1,7 +1,7 @@
 {
   "name": "tracestrack.com",
   "homepage": "http://www.tracestrack.com/",
-  "version": "0.3.27",
+  "version": "0.3.28",
   "private": false,
   "dependencies": {
     "haversine": "1.1.1",
