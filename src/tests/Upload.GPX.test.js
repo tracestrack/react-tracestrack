@@ -1,4 +1,5 @@
-import { getTimezoneOffset, calculateDistanceOfTrace, calculateDuration, createPoint } from "../pages/map/UploadModel.js";
+import { getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
+         createPoint, calculateElevation, calculateHighAlt, calculateLowAlt } from "../pages/map/UploadModel.js";
 import haversine from "haversine";
 
 it("test timezone offset", () => {
@@ -63,4 +64,32 @@ it("test duration", () => {
   expect(calculateDuration(twoPoints)).toBe(60);
   let threePoints = [createPoint(0, 0, 0, d1), createPoint(0, 0, 0, d2), createPoint(0, 0, 0, d3)];
   expect(calculateDuration(threePoints)).toBe(90);
+});
+
+it("test altitude elevation", () => {
+  const d = null;
+  const p1 = createPoint(0, 0, 10.1, d);
+  const p2 = createPoint(0, 0, 11.1, d);
+  const p3 = createPoint(0, 0, 9.1, d);
+
+  let onePoint = [p1];
+  expect(calculateElevation(onePoint)).toBe(0);
+  let twoPoints = [p1, p2];
+  expect(calculateElevation(twoPoints)).toBe(1 * 0.95);
+  let threePoints = [p1, p2, p3];
+  expect(calculateElevation(threePoints)).toBe(1 * 0.95);
+});
+
+it("test min altitude", () => {
+  const d = null;
+  const p1 = createPoint(0, 0, 10.1, d);
+  const p2 = createPoint(0, 0, 11.1, d);
+  const p3 = createPoint(0, 0, 9.1, d);
+
+  let onePoint = [p1];
+  expect(calculateLowAlt(onePoint)).toBe(10.1);
+  let twoPoints = [p1, p2];
+  expect(calculateLowAlt(twoPoints)).toBe(10.1);
+  let threePoints = [p1, p2, p3];
+  expect(calculateLowAlt(threePoints)).toBe(9.1);
 });

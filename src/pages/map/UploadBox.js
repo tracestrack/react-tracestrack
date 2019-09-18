@@ -4,7 +4,7 @@ import { formatDate, formatDistance, formatDuration, formatSpeed } from '../../u
 import "../../resources/UploadBox.css";
 import GPX from 'gpx-parser-builder';
 import { createPoint, processPointsInGPXFile, getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
-       calculateAvgSpeed} from "./UploadModel.js";
+         calculateAvgSpeed, calculateLowAlt, calculateHighAlt, calculateElevation} from "./UploadModel.js";
 
 function readGPXFile(strGPX) {
   let points = [];
@@ -28,6 +28,9 @@ function readGPXFile(strGPX) {
   model.distance = calculateDistanceOfTrace(points);
   model.duration = calculateDuration(points);
   model.averageSpeed = calculateAvgSpeed(points);
+  model.lowAlt = calculateLowAlt(points);
+  model.highAlt = calculateHighAlt(points);
+  model.elevation = calculateElevation(points);
   
   let firstPt = simplifiedPoints.detail[0];
   model.secondsFromGMT = getTimezoneOffset(firstPt.lat, firstPt.lng) * 60;

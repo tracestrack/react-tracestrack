@@ -46,7 +46,29 @@ export function calculateDuration(points) {
 }
 
 export function calculateAvgSpeed(points) {
-  if (points.length <= 1)
+  let duration = calculateDuration(points);
+  if (duration == 0)
     return 0;
-  return calculateDistanceOfTrace(points) / calculateDuration(points);
+  return calculateDistanceOfTrace(points) / duration;
+}
+
+export function calculateLowAlt(points) {
+  return points.reduce((accumulator, currentValue) => {
+    return Math.min(accumulator, currentValue.alt);
+  }, 99999);
+}
+
+export function calculateHighAlt(points) {
+  return points.reduce((accumulator, currentValue) => {
+    return Math.max(accumulator, currentValue.alt);
+  }, -9999);
+}
+
+export function calculateElevation(points) {
+  let ele = points.reduce((accumulator, currentValue, index, array) => {
+    if (index === 0) return 0.0;
+    let ele = currentValue.alt - array[index-1].alt;
+    return ele > 0 ? accumulator + ele : accumulator;
+  }, 0);
+  return ele * 0.95;
 }
