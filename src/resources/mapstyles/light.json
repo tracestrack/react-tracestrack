@@ -27,6 +27,15 @@
         ]
     },
     {
+        "featureType": "landscape.natural",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
         "featureType": "poi",
         "elementType": "all",
         "stylers": [
@@ -68,6 +77,57 @@
         "stylers": [
             {
                 "visibility": "on"
+            },
+            {
+                "hue": "#ff0095"
+            },
+            {
+                "saturation": "91"
+            },
+            {
+                "lightness": "-7"
+            },
+            {
+                "gamma": "1.46"
+            },
+            {
+                "weight": "0.87"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.attraction",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.attraction",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.attraction",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.attraction",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "on"
             }
         ]
     },
@@ -103,10 +163,10 @@
         "elementType": "labels.icon",
         "stylers": [
             {
-                "visibility": "simplified"
+                "visibility": "on"
             },
             {
-                "hue": "#008eff"
+                "hue": "#0078ff"
             }
         ]
     },
