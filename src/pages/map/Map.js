@@ -4,6 +4,7 @@ import { MarkerType } from '../common/Models.js';
 import GreenStarImg from '../../resources/img/star_green.png';
 import RedStarImg from '../../resources/img/star_red.png';
 import exports from '../../utils/transformation.js';
+import LightStyle from "../../resources/mapstyles/light.json";
 
 const transform = exports;
 
@@ -95,7 +96,7 @@ export const Map = withScriptjs(withGoogleMap((props) =>
                                                         style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
                                                         position: window.google.maps.ControlPosition.TOP_RIGHT
                                                     },
-                                                    //styles: GrayStyle,
+                                                  styles: LightStyle,
                                                     zoomControl: true,
                                                     clickableIcons: true,
                                                     fullscreenControl: false,
