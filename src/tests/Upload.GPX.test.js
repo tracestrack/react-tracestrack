@@ -1,13 +1,14 @@
 import { getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
          createPoint, calculateElevation, calculateHighAlt, calculateLowAlt,
-         processPointsInGPXFile} from "../pages/map/UploadModel.js";
+         processPointsInGPXFile, calculateBoundingBox} from "../pages/map/UploadModel.js";
 import haversine from "haversine";
 
+const DATE = null;
+
 it("test processPointsInGPXFile", () => {
-  const d = null;
-  const p1 = createPoint(51.417864, 5.445850, 0, d);
-  const p2 = createPoint(51.411864, 5.441850, 0, d);
-  const p3 = createPoint(51.414371, 5.438404, 0, d);
+  const p1 = createPoint(51.417864, 5.445850, 0, DATE);
+  const p2 = createPoint(51.411864, 5.441850, 0, DATE);
+  const p3 = createPoint(51.414371, 5.438404, 0, DATE);
 
   let onePoint = [p1];
   let onePointProcessed = processPointsInGPXFile(onePoint);
@@ -109,10 +110,9 @@ it("test duration", () => {
 });
 
 it("test altitude elevation", () => {
-  const d = null;
-  const p1 = createPoint(0, 0, 10.1, d);
-  const p2 = createPoint(0, 0, 11.1, d);
-  const p3 = createPoint(0, 0, 9.1, d);
+  const p1 = createPoint(0, 0, 10.1, DATE);
+  const p2 = createPoint(0, 0, 11.1, DATE);
+  const p3 = createPoint(0, 0, 9.1, DATE);
 
   let onePoint = [p1];
   expect(calculateElevation(onePoint)).toBe(0);
@@ -123,10 +123,9 @@ it("test altitude elevation", () => {
 });
 
 it("test min altitude", () => {
-  const d = null;
-  const p1 = createPoint(0, 0, 10.1, d);
-  const p2 = createPoint(0, 0, 11.1, d);
-  const p3 = createPoint(0, 0, 9.1, d);
+  const p1 = createPoint(0, 0, 10.1, DATE);
+  const p2 = createPoint(0, 0, 11.1, DATE);
+  const p3 = createPoint(0, 0, 9.1, DATE);
 
   let onePoint = [p1];
   expect(calculateLowAlt(onePoint)).toBe(10.1);
@@ -134,4 +133,28 @@ it("test min altitude", () => {
   expect(calculateLowAlt(twoPoints)).toBe(10.1);
   let threePoints = [p1, p2, p3];
   expect(calculateLowAlt(threePoints)).toBe(9.1);
+});
+
+it("test calculate bounding box", () => {
+  const p1 = createPoint(51.443348, 5.479333, 0, DATE); // Eindhoven
+  const p2 = createPoint(48.857218, 2.341885, 0, DATE); // Paris
+  const p3 = createPoint(37.803254, -122.417321, 0, DATE); // San Francisco
+  const p4 = createPoint(-23.591268, -46.614789, 0, DATE); // São Paulo
+  const p5 = createPoint(-33.855866, 151.216202, 0, DATE); // Sydney
+  
+  let onePoint = [p1];
+  expect(calculateBoundingBox(onePoint)).toEqual({
+    maxLat: 51.443348, minLat: 51.443348, maxLng: 5.479333, minLng: 5.479333
+  });
+  
+  let p1p2 = [p1, p2];
+  expect(calculateBoundingBox(p1p2)).toEqual({
+    maxLat: 51.443348, minLat: 48.857218, maxLng: 5.479333, minLng: 2.341885
+  });
+
+  let p15 = [p1, p2, p3, p4, p5];
+  expect(calculateBoundingBox(p15)).toEqual({
+    maxLat: 51.443348, minLat: -33.855866, maxLng: 151.216202, minLng: -122.417321
+  });
+  
 });

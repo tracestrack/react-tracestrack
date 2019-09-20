@@ -5,7 +5,9 @@ import "../../resources/UploadBox.css";
 import $ from "jquery";
 import GPX from 'gpx-parser-builder';
 import { createPoint, processPointsInGPXFile, getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
-         calculateAvgSpeed, calculateLowAlt, calculateHighAlt, calculateElevation} from "./UploadModel.js";
+         calculateAvgSpeed, calculateLowAlt, calculateHighAlt, calculateElevation,
+         calculateBoundingBox
+       } from "./UploadModel.js";
 
 function getType() {
   return parseInt($("#typeSelector").val());
@@ -40,10 +42,11 @@ function readGPXFile(strGPX) {
   model.linkingId = 0;
   model.note = "";
   model.hashString = "";
-  model.maxLat = 0;
-  model.maxLng =  0;
-  model.minLat = 0;
-  model.minLng = 0;
+  let bbox = calculateBoundingBox(points);
+  model.maxLat = bbox.maxLat;
+  model.maxLng = bbox.maxLng;
+  model.minLat = bbox.minLat;
+  model.minLng = bbox.minLng;
   
   let firstPt = points[0];
   model.secondsFromGMT = getTimezoneOffset(firstPt.lat, firstPt.lng) * 60;

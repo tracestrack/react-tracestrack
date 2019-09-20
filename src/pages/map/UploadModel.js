@@ -76,3 +76,15 @@ export function calculateElevation(points) {
   }, 0);
   return ele * 0.95;
 }
+
+export function calculateBoundingBox(points) {
+  let init = {maxLat: -90, minLat: 90, maxLng: -180, minLng: 180};
+  return points.reduce((accumulator, currentValue) => {
+    return {
+      maxLat: Math.max(accumulator.maxLat, currentValue.lat),
+      minLat: Math.min(accumulator.minLat, currentValue.lat),
+      maxLng: Math.max(accumulator.maxLng, currentValue.lng),
+      minLng: Math.min(accumulator.minLng, currentValue.lng)
+    };
+  }, init);
+}
