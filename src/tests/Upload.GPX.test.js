@@ -1,6 +1,10 @@
-import { getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
-         createPoint, calculateElevation, calculateHighAlt, calculateLowAlt,
-         processPointsInGPXFile, calculateBoundingBox} from "../pages/map/UploadModel.js";
+import {
+  getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
+  createPoint, calculateElevation, calculateHighAlt, calculateLowAlt,
+  processPointsInGPXFile, calculateBoundingBox,
+  calculateSHA256
+} from "../pages/map/UploadModel.js";
+
 import haversine from "haversine";
 
 const DATE = null;
@@ -157,4 +161,29 @@ it("test calculate bounding box", () => {
     maxLat: 51.443348, minLat: -33.855866, maxLng: 151.216202, minLng: -122.417321
   });
   
+});
+
+it("test calculate sha1", () => {
+  let gpxString = `<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Traces">
+    <metadata>
+        <link href="http://traces.website">
+            <text>Traces App</text>
+        </link>
+        <time>2017-12-16T16:15:01Z</time>
+    </metadata>
+    <trk>
+        <name>Evening Walking</name>
+        <trkseg>
+            <trkpt lat="32.0763239963279" lon="34.7661344334807"><ele>13</ele><time>2017-12-16T16:15:01Z</time></trkpt>
+<trkpt lat="32.0761664584578" lon="34.7662506066587"><ele>-9</ele><time>2017-12-16T16:15:23Z</time></trkpt>
+<trkpt lat="32.0760057354645" lon="34.76614574905"><ele>-4</ele><time>2017-12-16T16:15:38Z</time></trkpt>
+<trkpt lat="32.0758218365089" lon="34.766069054636"><ele>-2</ele><time>2017-12-16T16:15:53Z</time></trkpt>
+<trkpt lat="32.0756430086047" lon="34.7660288215007"><ele>-4</ele><time>2017-12-16T16:16:09Z</time></trkpt>
+<trkpt lat="32.0754729816989" lon="34.7661096230473"><ele>-3</ele><time>2017-12-16T16:16:26Z</time></trkpt>";
+        </trkseg>
+    </trk>
+</gpx>`;
+  
+  expect(calculateSHA256(gpxString)).toBe("9e05eab1ef11211c7111a128aa440d2875534114234dbd9a56a6c64b9a7f9355");
 });

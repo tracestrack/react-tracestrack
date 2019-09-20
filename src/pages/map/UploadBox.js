@@ -6,7 +6,7 @@ import $ from "jquery";
 import GPX from 'gpx-parser-builder';
 import { createPoint, processPointsInGPXFile, getTimezoneOffset, calculateDistanceOfTrace, calculateDuration,
          calculateAvgSpeed, calculateLowAlt, calculateHighAlt, calculateElevation,
-         calculateBoundingBox
+         calculateBoundingBox, calculateSHA256
        } from "./UploadModel.js";
 
 function getType() {
@@ -41,7 +41,7 @@ function readGPXFile(strGPX) {
   model.elevation = calculateElevation(points);
   model.linkingId = 0;
   model.note = "";
-  model.hashString = "";
+  model.hashString = calculateSHA256(strGPX);
   let bbox = calculateBoundingBox(points);
   model.maxLat = bbox.maxLat;
   model.maxLng = bbox.maxLng;

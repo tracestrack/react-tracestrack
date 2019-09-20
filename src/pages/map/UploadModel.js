@@ -88,3 +88,8 @@ export function calculateBoundingBox(points) {
     };
   }, init);
 }
+
+export function calculateSHA256(gpxString) {
+  let sha256 = require('js-sha256');
+  return sha256(gpxString);
+}
