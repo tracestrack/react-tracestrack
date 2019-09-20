@@ -12,7 +12,14 @@ import StarsPage from './pages/stars/StarsPage.js';
 class DevIndex extends Component {
 
   render() {
-    return (<center><a href='/real_index.html'>Real index</a></center>);
+    return (<center>
+              <ul>
+                <li><a href='/real_index.html'>Real index</a></li>
+                <li><a href='/map'>Map</a></li>
+                <li><a href='/traces'>Trace list</a></li>
+                <li><a href='/stars'>Star list</a></li>
+              </ul>
+            </center>);
   }
 }
 
