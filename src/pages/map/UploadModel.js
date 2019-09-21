@@ -42,11 +42,12 @@ export function getTimezoneOffset(lat, lng, date) {
 }
 
 export function calculateDistanceOfTrace(points) {
-  return points.reduce((accumulator, currentValue, index, array) => {
+  let value = points.reduce((accumulator, currentValue, index, array) => {
     if (index === 0) return 0.0;
     let v = haversine([currentValue.lat, currentValue.lng], [array[index-1].lat, array[index-1].lng], {unit: 'meter', format: '[lat,lon]'});
     return accumulator + v;
   }, 0);
+  return Math.round(value * 100) / 100;
 }
 
 export function calculateDuration(points) {
@@ -59,7 +60,7 @@ export function calculateAvgSpeed(points) {
   let duration = calculateDuration(points);
   if (duration === 0)
     return 0;
-  return calculateDistanceOfTrace(points) / duration;
+  return (calculateDistanceOfTrace(points) / duration);
 }
 
 export function calculateLowAlt(points) {

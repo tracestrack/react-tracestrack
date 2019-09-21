@@ -91,13 +91,13 @@ it("test calculateDistanceOfTrace", () => {
   let twoPoints = [createPoint(p1.latitude, p1.longitude, 0, new Date()),
                    createPoint(p2.latitude, p2.longitude, 0, new Date())
                   ];
-  expect(calculateDistanceOfTrace(twoPoints)).toBe(haversine(p1, p2, {unit: 'meter'}));
+  expect(calculateDistanceOfTrace(twoPoints)).toBe(331281.53);
 
   let threePoints = [createPoint(p1.latitude, p1.longitude, 0, new Date()),
                      createPoint(p2.latitude, p2.longitude, 0, new Date()),
                      createPoint(p3.latitude, p3.longitude, 0, new Date())
                     ];
-  expect(calculateDistanceOfTrace(threePoints)).toBe(haversine(p1, p2, {unit: 'meter'}) + haversine(p3, p2, {unit: 'meter'}));
+  expect(calculateDistanceOfTrace(threePoints)).toBe(331774.66);
 });
 
 it("test duration", () => {
