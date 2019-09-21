@@ -32,3 +32,8 @@ export function formatDuration(sec_num) {
 export function formatCoordinate(lat, lng) {
   return lat.toFixed(6) + ", " + lng.toFixed(6);
 }
+
+export function formatGPXDownloadFilename(title) {
+  if (title === "") {return "Unnamed.gpx";}
+  return title.replace(/<|>|:|"|\/|\\|\?|\*/gi, "") + ".gpx";
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { LiveMarkedArea } from '../../components/LiveMarkedArea.js';
-import { formatDistance, formatSpeed, formatDate, formatDuration } from '../../utils/Formatter.js';
+import { formatDistance, formatSpeed, formatDate, formatDuration, formatGPXDownloadFilename } from '../../utils/Formatter.js';
 //import CloudDatastore from '../../datastore/Mock.js';
 import CloudDatastore from '../../datastore/CloudDatastore.js';
 
@@ -119,9 +119,7 @@ class TraceSidebar extends Component {
       re => {
 
         let data = re.fields;
-
-        console.log(data);
-        console.log(data.gpxFile);
+        let filename = formatGPXDownloadFilename(data.title.value);
 
         _this.trace = re;
 
@@ -139,8 +137,8 @@ class TraceSidebar extends Component {
           linkingId: data.linkingId.value,
           lastUpdate: new Date(re.modified.timestamp).toLocaleString(),
           fileSize: data.gpxFile ? (data.gpxFile.value.size / 1000).toFixed(2) : null,
-          downloadURL: data.gpxFile ? data.gpxFile.value.downloadURL : null
-
+          // eslint-disable-next-line
+          downloadURL: data.gpxFile ? data.gpxFile.value.downloadURL.replace("${f}", filename) : null
         };
         _this.setState(states);
         
