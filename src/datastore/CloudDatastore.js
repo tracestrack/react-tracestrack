@@ -387,6 +387,7 @@ export default class CloudDatastore extends IDatastore {
       .then(function(response) {
         if (response.hasErrors) {
           // Handle the errors in your app.
+          console.log(response.errors);
           throw response.errors[0];
         } else {
           callback(response._results[0]);

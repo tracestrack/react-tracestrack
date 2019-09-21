@@ -12,9 +12,15 @@ export function processPointsInGPXFile(points) {
     return [];
 
   function transformXYtoCKLatLng(points) {
-    return points.map((t) => {
-      return {lat: Math.round(t.y * 1000000), lng: Math.round(t.x * 1000000)};
-    });
+    
+    let array = [];
+
+    Object.keys(points).forEach(function(key, index) {
+      let t = this[key];
+      array.push(Math.round(t.y * 1000000), Math.round(t.x * 1000000));
+    }, points);
+
+    return array;
   }
   
   let xypoints = [];
@@ -57,15 +63,15 @@ export function calculateAvgSpeed(points) {
 }
 
 export function calculateLowAlt(points) {
-  return points.reduce((accumulator, currentValue) => {
+  return Math.round(points.reduce((accumulator, currentValue) => {
     return Math.min(accumulator, currentValue.alt);
-  }, 99999);
+  }, 99999));
 }
 
 export function calculateHighAlt(points) {
-  return points.reduce((accumulator, currentValue) => {
+  return Math.round(points.reduce((accumulator, currentValue) => {
     return Math.max(accumulator, currentValue.alt);
-  }, -9999);
+  }, -9999));
 }
 
 export function calculateElevation(points) {
@@ -74,12 +80,12 @@ export function calculateElevation(points) {
     let ele = currentValue.alt - array[index-1].alt;
     return ele > 0 ? accumulator + ele : accumulator;
   }, 0);
-  return ele * 0.95;
+  return Math.round(ele * 0.95);
 }
 
 export function calculateBoundingBox(points) {
   let init = {maxLat: -90, minLat: 90, maxLng: -180, minLng: 180};
-  return points.reduce((accumulator, currentValue) => {
+  let bbox = points.reduce((accumulator, currentValue) => {
     return {
       maxLat: Math.max(accumulator.maxLat, currentValue.lat),
       minLat: Math.min(accumulator.minLat, currentValue.lat),
@@ -87,6 +93,12 @@ export function calculateBoundingBox(points) {
       minLng: Math.min(accumulator.minLng, currentValue.lng)
     };
   }, init);
+  return {
+    maxLat: bbox.maxLat * 1000000,
+    maxLng: bbox.maxLng * 1000000,
+    minLat: bbox.minLat * 1000000,
+    minLng: bbox.minLng * 1000000
+  };
 }
 
 export function calculateSHA256(gpxString) {

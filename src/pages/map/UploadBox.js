@@ -18,7 +18,6 @@ function readGPXFile(strGPX) {
   const gpx = GPX.parse(strGPX);
   let track = gpx.trk[0];
   let title = track['name'];
-  let date = gpx['metadata']['time'];
   
   let trkpt = track.trkseg[0].trkpt;
   for (var p in trkpt) {
@@ -32,7 +31,7 @@ function readGPXFile(strGPX) {
   model.detail = simplifiedPoints.detail;
   model.medium = simplifiedPoints.medium;
   model.coarse = simplifiedPoints.coarse;
-  model.startDate = date;
+  model.startDate = new Date(points[0].date).getTime();
   model.distance = calculateDistanceOfTrace(points);
   model.duration = calculateDuration(points);
   model.averageSpeed = calculateAvgSpeed(points);
@@ -47,6 +46,7 @@ function readGPXFile(strGPX) {
   model.maxLng = bbox.maxLng;
   model.minLat = bbox.minLat;
   model.minLng = bbox.minLng;
+  model.gpxFile = null;
   
   let firstPt = points[0];
   model.secondsFromGMT = getTimezoneOffset(firstPt.lat, firstPt.lng) * 60;
@@ -70,7 +70,7 @@ class UploadBox extends Component {
       let textFromFileLoaded = fileLoadedEvent.target.result;
       let ckTraceModel = readGPXFile(textFromFileLoaded);
 
-      let date = new Date(ckTraceModel.startDate.getTime() + ckTraceModel.secondsFromGMT * 1000);
+      let date = new Date(ckTraceModel.startDate + ckTraceModel.secondsFromGMT * 1000);
 
       _this.setState({title: ckTraceModel.title,
                       date: formatDate(date),

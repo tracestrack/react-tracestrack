@@ -591,9 +591,18 @@ class MapPage extends Component {
   }
 
   onUploadPreview = this.onUploadPreview.bind(this);
-  onUploadPreview(r) {
-    this.setState({ uploadedTrace: r });
-    console.log(r);
+  onUploadPreview(ckModel) {
+    this.setState({ uploadedTrace: ckModel });
+
+    let trace = {};
+    trace.recordName = "";
+    trace.recordType = "Trace";
+    trace.fields = ckModel;
+    
+    console.log(trace);
+    CloudDatastore.saveRecord(trace, re => {
+      console.log("SAVE RE: ", re);
+    });
   }
 
   /** Render the app */

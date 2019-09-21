@@ -20,32 +20,32 @@ it("test processPointsInGPXFile", () => {
   let twoPoints = [p1, p2];
   let twoPointsProcessed = processPointsInGPXFile(twoPoints);
   expect(twoPointsProcessed.detail).toStrictEqual([
-    {lat: 51417864, lng: 5445850},
-    {lat: 51411864, lng: 5441850}
+    51417864, 5445850,
+    51411864, 5441850
   ]);
   expect(twoPointsProcessed.medium).toStrictEqual([
-    {lat: 51417864, lng: 5445850},
-    {lat: 51411864, lng: 5441850}
+    51417864, 5445850,
+    51411864, 5441850
   ]);
   expect(twoPointsProcessed.coarse).toStrictEqual([
-    {lat: 51417864, lng: 5445850},
-    {lat: 51411864, lng: 5441850}
+    51417864, 5445850,
+    51411864, 5441850
   ]);
   let threePoints = [p1, p2, p3];
   let threePointsProcessed = processPointsInGPXFile(threePoints);
   expect(threePointsProcessed.detail).toStrictEqual([
-    {lat: 51417864, lng: 5445850},
-    {lat: 51411864, lng: 5441850},
-    {lat: 51414371, lng: 5438404},
+    51417864, 5445850,
+    51411864, 5441850,
+    51414371, 5438404,
   ]);
   expect(threePointsProcessed.medium).toStrictEqual([
-    {lat: 51417864, lng: 5445850},
-    {lat: 51411864, lng: 5441850},
-    {lat: 51414371, lng: 5438404},
+    51417864, 5445850,
+    51411864, 5441850,
+    51414371, 5438404
   ]);
   expect(threePointsProcessed.coarse).toStrictEqual([
-    {lat: 51417864, lng: 5445850},
-    {lat: 51414371, lng: 5438404}
+    51417864, 5445850,
+    51414371, 5438404
   ]);
 });
 
@@ -121,9 +121,9 @@ it("test altitude elevation", () => {
   let onePoint = [p1];
   expect(calculateElevation(onePoint)).toBe(0);
   let twoPoints = [p1, p2];
-  expect(calculateElevation(twoPoints)).toBe(1 * 0.95);
+  expect(calculateElevation(twoPoints)).toBe(1);
   let threePoints = [p1, p2, p3];
-  expect(calculateElevation(threePoints)).toBe(1 * 0.95);
+  expect(calculateElevation(threePoints)).toBe(1);
 });
 
 it("test min altitude", () => {
@@ -132,11 +132,11 @@ it("test min altitude", () => {
   const p3 = createPoint(0, 0, 9.1, DATE);
 
   let onePoint = [p1];
-  expect(calculateLowAlt(onePoint)).toBe(10.1);
+  expect(calculateLowAlt(onePoint)).toBe(10);
   let twoPoints = [p1, p2];
-  expect(calculateLowAlt(twoPoints)).toBe(10.1);
+  expect(calculateLowAlt(twoPoints)).toBe(10);
   let threePoints = [p1, p2, p3];
-  expect(calculateLowAlt(threePoints)).toBe(9.1);
+  expect(calculateLowAlt(threePoints)).toBe(9);
 });
 
 it("test calculate bounding box", () => {
@@ -148,17 +148,17 @@ it("test calculate bounding box", () => {
   
   let onePoint = [p1];
   expect(calculateBoundingBox(onePoint)).toEqual({
-    maxLat: 51.443348, minLat: 51.443348, maxLng: 5.479333, minLng: 5.479333
+    maxLat: 51443348, minLat: 51443348, maxLng: 5479333, minLng: 5479333
   });
   
   let p1p2 = [p1, p2];
   expect(calculateBoundingBox(p1p2)).toEqual({
-    maxLat: 51.443348, minLat: 48.857218, maxLng: 5.479333, minLng: 2.341885
+    maxLat: 51443348, minLat: 48857218, maxLng: 5479333, minLng: 2341885
   });
 
   let p15 = [p1, p2, p3, p4, p5];
   expect(calculateBoundingBox(p15)).toEqual({
-    maxLat: 51.443348, minLat: -33.855866, maxLng: 151.216202, minLng: -122.417321
+    maxLat: 51443348, minLat: -33855866, maxLng: 151216202, minLng: -122417321
   });
   
 });
