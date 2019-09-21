@@ -94,10 +94,10 @@ export function calculateBoundingBox(points) {
     };
   }, init);
   return {
-    maxLat: bbox.maxLat * 1000000,
-    maxLng: bbox.maxLng * 1000000,
-    minLat: bbox.minLat * 1000000,
-    minLng: bbox.minLng * 1000000
+    maxLat: Math.round(bbox.maxLat * 1000000),
+    maxLng: Math.round(bbox.maxLng * 1000000),
+    minLat: Math.round(bbox.minLat * 1000000),
+    minLng: Math.round(bbox.minLng * 1000000)
   };
 }
 

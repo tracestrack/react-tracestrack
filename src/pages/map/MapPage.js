@@ -611,6 +611,8 @@ class MapPage extends Component {
   onUploadPreview = this.onUploadPreview.bind(this);
   onUploadPreview(ckModel) {
     this.setState({ uploadedTrace: ckModel });
+    const bounds = new google.maps.LatLngBounds({lat: ckModel.minLat / 1000000, lng: ckModel.minLng / 1000000}, {lat: ckModel.maxLat / 1000000, lng: ckModel.maxLng / 1000000});
+    window.map.fitBounds(bounds);
   }
 
   /** Render the app */

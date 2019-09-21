@@ -10,7 +10,7 @@ import haversine from "haversine";
 const DATE = null;
 
 it("test processPointsInGPXFile", () => {
-  const p1 = createPoint(51.417864, 5.445850, 0, DATE);
+  const p1 = createPoint(51.4178642, 5.4458504, 0, DATE);
   const p2 = createPoint(51.411864, 5.441850, 0, DATE);
   const p3 = createPoint(51.414371, 5.438404, 0, DATE);
 
@@ -140,7 +140,7 @@ it("test min altitude", () => {
 });
 
 it("test calculate bounding box", () => {
-  const p1 = createPoint(51.443348, 5.479333, 0, DATE); // Eindhoven
+  const p1 = createPoint(51.443348, 5.47933344, 0, DATE); // Eindhoven
   const p2 = createPoint(48.857218, 2.341885, 0, DATE); // Paris
   const p3 = createPoint(37.803254, -122.417321, 0, DATE); // San Francisco
   const p4 = createPoint(-23.591268, -46.614789, 0, DATE); // São Paulo
