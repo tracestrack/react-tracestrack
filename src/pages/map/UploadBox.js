@@ -46,7 +46,6 @@ function readGPXFile(strGPX) {
   model.maxLng = bbox.maxLng;
   model.minLat = bbox.minLat;
   model.minLng = bbox.minLng;
-  model.gpxFile = null;
   
   let firstPt = points[0];
   model.secondsFromGMT = getTimezoneOffset(firstPt.lat, firstPt.lng) * 60;
@@ -61,8 +60,8 @@ class UploadBox extends Component {
   };
   
   onChangeHandler = this.onChangeHandler.bind(this);
-  onChangeHandler() {
-    const selectedFile = document.getElementById('upload').files[0];
+  onChangeHandler(event) {
+    const selectedFile = event.target.files[0];
     
     let _this = this;
     var fileReader = new FileReader();
@@ -78,6 +77,8 @@ class UploadBox extends Component {
                       duration: formatDuration(ckTraceModel.duration),
                       avgSpeed: formatSpeed(ckTraceModel.averageSpeed)
                      });
+
+      ckTraceModel.gpxFile = selectedFile;
       _this.props.onPreview(ckTraceModel);
     };
 

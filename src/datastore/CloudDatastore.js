@@ -3,36 +3,38 @@ import IDatastore from './Datastore.js';
 const CloudKit = window.CloudKit;
 const zoneName = "Traces";
 
-CloudKit.configure({
-  locale: 'en-us',
+if (CloudKit) {
+  CloudKit.configure({
+    locale: 'en-us',
 
-  containers: [{
+    containers: [{
 
-    // Change this to a container identifier you own.
-    containerIdentifier: 'iCloud.fr.tsingtsai.Traces',
+      // Change this to a container identifier you own.
+      containerIdentifier: 'iCloud.fr.tsingtsai.Traces',
 
-    apiTokenAuth: {
-      // And generate a web token through CloudKit Dashboard.
-      apiToken: process.env.REACT_APP_CloudKit_apiToken,
-      persist: true, // Sets a cookie.
-      signInButton: {
-        id: 'apple-sign-in-button',
-        theme: 'white-with-outline' // Other options: 'white', 'white-with-outline'.
+      apiTokenAuth: {
+        // And generate a web token through CloudKit Dashboard.
+        apiToken: process.env.REACT_APP_CloudKit_apiToken,
+        persist: true, // Sets a cookie.
+        signInButton: {
+          id: 'apple-sign-in-button',
+          theme: 'white-with-outline' // Other options: 'white', 'white-with-outline'.
+        },
+        signOutButton: {
+          id: 'apple-sign-out-button',
+          theme: 'white-with-outline'
+        }
       },
-      signOutButton: {
-        id: 'apple-sign-out-button',
-        theme: 'white-with-outline'
-      }
-    },
-    environment: process.env.REACT_APP_CloudKit_environment
-  }]
-});
+      environment: process.env.REACT_APP_CloudKit_environment
+    }]
+  });
+}
 
 
 /**
-  * CloudDatastore is stateless.
-  * To maintain states, for example continuationMarker, do so in react components.
-  */
+ * CloudDatastore is stateless.
+ * To maintain states, for example continuationMarker, do so in react components.
+ */
 export default class CloudDatastore extends IDatastore {
 
   /**
@@ -123,9 +125,9 @@ export default class CloudDatastore extends IDatastore {
     container.setUpAuth()
       .then(function(userIdentity) {
         if (userIdentity) {
-            callback(userIdentity);
+          callback(userIdentity);
         } else {
-            callback(null);
+          callback(null);
         }
       });
   }
@@ -143,11 +145,11 @@ export default class CloudDatastore extends IDatastore {
 
     return new Promise((resolve, reject) => {
       CloudDatastore.performQuery(
-      databaseScope, zoneName, ownerRecordName, recordType,
-      desiredKeys, sortByField, ascending, latitude, longitude, [], params.continuationMarker,
-      records => {
-        resolve(records);
-      }, false);
+        databaseScope, zoneName, ownerRecordName, recordType,
+        desiredKeys, sortByField, ascending, latitude, longitude, [], params.continuationMarker,
+        records => {
+          resolve(records);
+        }, false);
     });
   }
 
@@ -195,17 +197,17 @@ export default class CloudDatastore extends IDatastore {
     var databaseScope = "PRIVATE";
     var ownerRecordName = null;
     var recordType = "Trace";
-      var desiredKeys = ['type', 'startDate', 'title', 'secondsFromGMT', 'distance', 'averageSpeed', 'duration', 'elevation'];
+    var desiredKeys = ['type', 'startDate', 'title', 'secondsFromGMT', 'distance', 'averageSpeed', 'duration', 'elevation'];
     var sortByField = 'startDate';
     var ascending = false;
 
     // private database
     return new Promise((resolve, reject) => {
       CloudDatastore.performQuery(
-      databaseScope, zoneName, ownerRecordName, recordType,
-      desiredKeys, sortByField, ascending, null, null, [], params.continuationMarker, records => {
-        resolve(records);
-      }, false);
+        databaseScope, zoneName, ownerRecordName, recordType,
+        desiredKeys, sortByField, ascending, null, null, [], params.continuationMarker, records => {
+          resolve(records);
+        }, false);
     });
   }
 
@@ -272,7 +274,7 @@ export default class CloudDatastore extends IDatastore {
 
     function doSave(recordChangeTag) {
       return _this.demoSaveRecords(databaseScope, recordName, recordChangeTag, recordType, zoneName,
-                            forRecordName, forRecordChangeTag, publicPermission, ownerRecordName,
+                                   forRecordName, forRecordChangeTag, publicPermission, ownerRecordName,
                                    participants, parentRecordName, fields, createShortGUID, callback);
     }
 
