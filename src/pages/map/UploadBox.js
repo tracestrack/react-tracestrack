@@ -18,7 +18,7 @@ function readGPXFile(strGPX) {
   const gpx = GPX.parse(strGPX);
   let track = gpx.trk[0];
   let title = track['name'];
-  
+
   let trkpt = track.trkseg[0].trkpt;
   for (var p in trkpt) {
     points.push(createPoint(trkpt[p]["$"].lat, trkpt[p]["$"].lon, trkpt[p]["ele"], trkpt[p]["time"]));
@@ -45,7 +45,7 @@ function readGPXFile(strGPX) {
   model.maxLng = bbox.maxLng;
   model.minLat = bbox.minLat;
   model.minLng = bbox.minLng;
-  
+
   let firstPt = points[0];
   model.secondsFromGMT = getTimezoneOffset(firstPt.lat, firstPt.lng) * 60;
 
@@ -57,11 +57,11 @@ class UploadBox extends Component {
   state = {
     title: ""
   };
-  
+
   onChangeHandler = this.onChangeHandler.bind(this);
   onChangeHandler(event) {
     const selectedFile = event.target.files[0];
-    
+
     let _this = this;
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent){
@@ -102,7 +102,7 @@ class UploadBox extends Component {
         <div className="custom-file">
           <input type="file" name="file" id="upload" onChange={this.onChangeHandler}/>
         </div>
-        
+
         <h4>Trace Information</h4>
         <table className="table">
           <tbody>
@@ -156,6 +156,7 @@ class UploadBox extends Component {
           <button type="button" onClick={this.props.onCancel} className="btn btn-secondary btn-sm">Cancel</button>
         </div>
 
+        <span className="badge badge-info">Tip: Refresh the page to show the uploaded trace</span>
       </div>
     );
   }
