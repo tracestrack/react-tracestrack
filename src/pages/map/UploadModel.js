@@ -28,8 +28,8 @@ export function processPointsInGPXFile(points) {
     xypoints.push({x: parseFloat(points[i].lng), y: parseFloat(points[i].lat)});
   }
 
-  let detail = transformXYtoCKLatLng(simplify(xypoints, 0.00001, true));
-  let medium = transformXYtoCKLatLng(simplify(xypoints, 0.0001, true));
+  let detail = transformXYtoCKLatLng(simplify(xypoints, 0.00002, true));
+  let medium = transformXYtoCKLatLng(simplify(xypoints, 0.0002, true));
   let coarse = transformXYtoCKLatLng(simplify(xypoints, 0.005, true));
 
   return {detail: detail, medium: medium, coarse: coarse};
