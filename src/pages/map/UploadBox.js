@@ -27,7 +27,6 @@ function readGPXFile(strGPX) {
   let simplifiedPoints = processPointsInGPXFile(points);
   let model = CKTraceModel();
   model.title = title;
-  model.type = getType();
   model.detail = simplifiedPoints.detail;
   model.medium = simplifiedPoints.medium;
   model.coarse = simplifiedPoints.coarse;
@@ -79,10 +78,18 @@ class UploadBox extends Component {
                      });
 
       ckTraceModel.gpxFile = selectedFile;
+      _this.ckTraceModel = ckTraceModel;
       _this.props.onPreview(ckTraceModel);
     };
 
     fileReader.readAsText(selectedFile, "UTF-8");
+  }
+
+  onApply = this.onApply.bind(this);
+  onApply(event) {
+    this.ckTraceModel.title = $("#traceName").val();
+    this.ckTraceModel.type = getType();
+    this.props.onApply(this.ckTraceModel);
   }
 
   render() {
@@ -102,7 +109,7 @@ class UploadBox extends Component {
             <tr>
               <td>Title</td>
               <td>
-                <input type="text" value={this.state.title} />
+                <input type="text" id="traceName" defaultValue={this.state.title} />
               </td>
             </tr>
             <tr>
@@ -111,7 +118,7 @@ class UploadBox extends Component {
                 <select className="form-control" id="typeSelector">
                   {
                     Object.keys(TraceTypes()).map((key, index) => (
-                      <option value={index}>{key}</option>
+                      <option key={index} value={index}>{key}</option>
                     ))
                   }
                 </select>
@@ -145,7 +152,7 @@ class UploadBox extends Component {
         </table>
 
         <div className="box-apply">
-          <button type="button" onClick={this.props.onApply} className="btn btn-primary btn-sm">Upload</button>
+          <button type="button" onClick={this.onApply} className="btn btn-primary btn-sm">Upload</button>
           <button type="button" onClick={this.props.onCancel} className="btn btn-secondary btn-sm">Cancel</button>
         </div>
 

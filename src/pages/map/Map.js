@@ -88,9 +88,14 @@ export class OverlayManager {
 }
 
 function convertCKPointToLatLng(points) {
-  return points.map((curr) => {
-    return {lat: curr.lat / 1000000.0, lng: curr.lng / 1000000.0};
-  });
+
+  let coords = [];
+  
+  for (var i = 0; i < points.length; i += 2) {
+    coords.push({lat: points[i] / 1000000.0, lng: points[i + 1] / 1000000.0});
+  }
+
+  return coords;
 }
 
 export const Map = withScriptjs(withGoogleMap((props) =>

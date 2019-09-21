@@ -78,11 +78,16 @@ class MapPage extends Component {
 
   }
 
-  onFilterApply(b) {
-
+  reset() {
     this.loadedAreaManager.clear();
     this.overlayManager.clear();
     this.setState({ traces: [], isLoadingTraces: false, showFilterBox: false });
+  }
+
+  onFilterApply(b) {
+
+    this.reset();
+    
     this.types = b;
     var _this = this;
 
@@ -576,33 +581,36 @@ class MapPage extends Component {
   showUpload = this.showUpload.bind(this);
   showUpload() {
     this.setState({ showUploadBox: true });
-    //alert("Under development");
   }
 
   onUploadApply = this.onUploadApply.bind(this);
-  onUploadApply() {
-    alert("function under development");
-    this.setState({ showUploadBox: false });
-  }
-
-  onUploadCancel = this.onUploadCancel.bind(this);
-  onUploadCancel() {
-    this.setState({ showUploadBox: false });
-  }
-
-  onUploadPreview = this.onUploadPreview.bind(this);
-  onUploadPreview(ckModel) {
-    this.setState({ uploadedTrace: ckModel });
-
+  onUploadApply(ckModel) {
     let trace = {};
+    let _this = this;
     trace.recordName = "";
     trace.recordType = "Trace";
     trace.fields = ckModel;
     
     console.log(trace);
+
     CloudDatastore.saveRecord(trace, re => {
       console.log("SAVE RE: ", re);
+      _this.setState({ uploadedTrace: null });
+      _this.reset();
+      _this.handleMapBoundsChanged();
     });
+    
+    this.setState({ showUploadBox: false });
+  }
+
+  onUploadCancel = this.onUploadCancel.bind(this);
+  onUploadCancel() {
+    this.setState({ showUploadBox: false, uploadedTrace: null });
+  }
+
+  onUploadPreview = this.onUploadPreview.bind(this);
+  onUploadPreview(ckModel) {
+    this.setState({ uploadedTrace: ckModel });
   }
 
   /** Render the app */
