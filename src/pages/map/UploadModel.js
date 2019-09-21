@@ -60,7 +60,7 @@ export function calculateAvgSpeed(points) {
   let duration = calculateDuration(points);
   if (duration === 0)
     return 0;
-  return (calculateDistanceOfTrace(points) / duration);
+  return Math.round(calculateDistanceOfTrace(points) / duration * 100) / 100;
 }
 
 export function calculateLowAlt(points) {
