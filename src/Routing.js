@@ -29,7 +29,7 @@ const Routing = () => (
     <div>
       <Route exact path="/" component={DevIndex} />
       <Route exact path="/map" component={MapPage} />
-      <Route exact path="/login" component={LoginPage} />
+      <Route path="/login" component={LoginPage} />
       <Route path="/account" component={AccountPage} />
       <Route path="/traces" component={TracesPage} />
       <Route path="/stars" component={StarsPage} />

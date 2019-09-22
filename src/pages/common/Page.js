@@ -17,7 +17,7 @@ export class SiteHeader extends React.Component {
       <header className="masthead">
 
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-          <a className="navbar-brand" href="/"><img alt="logo" id="logo" src="/logo.png" /></a>
+          <a className="navbar-brand" href="/"><img alt="logo" id="logo" src="/images/logo.png" /></a>
 
           <div className="collapse navbar-collapse" id="navbarsExample04">
             <ul className="navbar-nav mr-auto">
@@ -81,7 +81,7 @@ export class HomepageHeader extends React.Component {
           <div className="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <img width="160" alt="logo" id="logo" src="/logo.png" />
+                <img width="160" alt="logo" id="logo" src="/images/logo.png" />
               </li>
             </ul>
           </div>
@@ -99,7 +99,7 @@ export class SiteFooter extends React.Component {
           <div className="row">
             <div className="col-12 col-md">
               <small className="d-block mb-3 text-muted">© Tracestrack 2015-2019</small>
-              <img className="mb-2 rounded" src="/logo-sm.png" alt="" width="24" height="24" /><small className="mb-3 text-muted"> Build: {packageJson["version"]}</small>
+              <img className="mb-2 rounded" src="/images/logo-sm.png" alt="" width="24" height="24" /><small className="mb-3 text-muted"> Build: {packageJson["version"]}</small>
               </div>
               <div className="col-6 col-md">
                 <h5>Features</h5>
