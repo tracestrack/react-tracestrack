@@ -104,8 +104,8 @@ export class SiteFooter extends React.Component {
               <div className="col-6 col-md">
                 <h5>Features</h5>
                 <ul className="list-unstyled text-small">
-                  <li><a className="text-muted" href="#">iOS App</a></li>
-                  <li><a className="text-muted" href="#">Web</a></li>
+                  <li><a className="text-muted" href="/placeholder">iOS App</a></li>
+                  <li><a className="text-muted" href="/placeholder">Web</a></li>
                 </ul>
               </div>
               <div className="col-6 col-md">
@@ -118,8 +118,8 @@ export class SiteFooter extends React.Component {
               <div className="col-6 col-md">
                 <h5>About</h5>
                 <ul className="list-unstyled text-small">
-                  <li><a className="text-muted" href="#">Privacy</a></li>
-                  <li><a className="text-muted" href="#">Terms</a></li>
+                  <li><a className="text-muted" href="/privacy">Privacy</a></li>
+                  <li><a className="text-muted" href="/terms">Terms</a></li>
                 </ul>
               </div>
             </div>
