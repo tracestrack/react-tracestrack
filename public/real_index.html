@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
+    <link rel="icon" href="/favicon.ico">
 
     <title>Traces - Manage and visualize your traces</title>
 
@@ -13,122 +13,135 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="css_index.css" rel="stylesheet">
+    <link href="/css/homepage.css" rel="stylesheet">
   </head>
   <body>
 
     <header>
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="/">Traces</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/apps/">Apps</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/account">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://blog.traces.website/">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://blog.traces.website/help/">Help</a>
-            </li>
-          </ul>
 
+        <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <img width="160" alt="logo" id="logo" src="/logo.png" /
+                   </li>
+          </ul>
         </div>
       </nav>
     </header>
 
     <main role="main">
 
-      <div id="myCarousel" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-          <li data-target="#myCarousel" data-slide-to="1"></li>
-          <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img class="first-slide" src="images/car_bg.jpg" alt="First slide">
-            <div class="container">
-              <div class="carousel-caption text-left">
-                <h1>Visualize where you have been in a single map</h1>
-                <p>You can upload GPX file directly through your browser. Apple account is required. Register an Apple account and start <i>Tracing</i> today, even without iOS devices!</p>
-                <p><a class="btn btn-lg btn-primary" href="/account" role="button">Sign in with Apple account</a></p>
-              </div>
-            </div>
-          </div>
+      <div class="jumbotron">
+        <div class="container">
+          <p class="display-4">The missing map that every explorer needs</p>
+          <p class="lead">Tracestrack helps you manage where you have been and plan where to go.</p>
+          <hr class="my-4">
+          <a href="/login" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Login with Apple account</a>
+          <a href="https://apps.apple.com/app/traces/id1015383536" class="btn btn-lg" role="button" aria-pressed="true">Download from AppStore</a>
         </div>
       </div>
 
 
-      <!-- Marketing messaging and featurettes
-      ================================================== -->
-      <!-- Wrap the rest of the page in another container to center all the content. -->
+      <div class="container">
 
-      <div class="container marketing">
+        <div class="container marketing">
 
-        <!-- START THE FEATURETTES -->
+          <!-- START THE FEATURETTES -->
 
-        <div class="row featurette">
-          <div class="col-md-7">
-            <h2 class="featurette-heading">Categorize your traces. <span class="text-muted">Show you what you want.</span></h2>
-            <p class="lead">Seven most typical types of traces are defined, which are, Walking, Cycling, Running, Bus/Car, Train, Boating and Flight. Different types are marked with different colors. You can select which types to show on your map.</p>
+          <div class="row featurette align-items-center">
+            <div class="col-md-9">
+              <h2 class="featurette-heading">Categorize your traces. <span class="text-muted">Filter what you want to see.</span></h2>
+              <p class="lead">Seven common types of traces are defined:
+                <span class="badge badge-pill badge-secondary">Walking</span>
+                <span class="badge badge-pill badge-success">Cycling</span>
+                <span class="badge badge-pill badge-danger">Running</span>
+                <span class="badge badge-pill badge-warning">Driving</span>
+                <span class="badge badge-pill badge-info">Railway</span>
+                <span class="badge badge-pill badge-light">Waterway</span>
+                <span class="badge badge-pill badge-dark">Flight</span>.
+                Different types are marked with different colors. You can select which types to show on your map.</p>
+            </div>
+            <div class="col-md-3">
+              <img height="250" src="images/types.png" alt="Generic placeholder image">
+            </div>
           </div>
-          <div class="col-md-5">
-            <img class="featurette-image img-fluid mx-auto" src="images/types.png" alt="Generic placeholder image">
+
+          <hr class="featurette-divider">
+
+          <div class="row featurette align-items-center">
+            <div class="col-md-9 order-md-2">
+              <h2 class="featurette-heading">Mark your places. <span class="text-muted">Visited or yet to be.</span></h2>
+              <p class="lead">Mark locations as <b>Visited</b> or <b>Want to visit</b>. Then you know where to go during your next trip! Tracestrack will also automatically count the countries you visited.</p>
+            </div>
+            <div class="col-md-3 order-md-1">
+              <img height="220" src="images/visit_status.png" alt="Generic placeholder image">
+            </div>
           </div>
+
+          <hr class="featurette-divider">
+
+          <div class="row featurette align-items-center">
+            <div class="col-md-9">
+              <h2 class="featurette-heading">Secured by Apple's iCloud. <span class="text-muted">Your data is safe.</span></h2>
+              <p class="lead">Your data is processed at client side and saved in iCloud. We have no server handling your data. Apple made apps, such as Photos, Notes, Contacts, Messages, all use the same iCloud technology as Tracestrack does. Without your credential, even the developers cannot access your data.</p>
+            </div>
+            <div class="col-md-3">
+              <img height="220" src="images/icloud.png" alt="Generic placeholder image">
+            </div>
+          </div>
+
+          <hr class="featurette-divider align-items-center">
+
+          <div class="row featurette align-items-center">
+            <div class="col-md-3">
+              <img height="220" src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" alt="Generic placeholder image">
+            </div>
+            <div class="col-md-9">
+              <h2 class="featurette-heading">Tracestrack is open source! <span class="text-muted">Star and fork on Github</span></h2>
+              <p class="lead">
+                Starting as a hobby project, Tracestrack is becoming bigger and bigger. If you happen to know javascript and react, please help contribute to the project at <a href="https://github.com/tracestrack/react-tracestrack">@react-tracestrack</a>. If you want to report a bug or feature request, please take a look at the <a href="https://github.com/tracestrack/react-tracestrack/issues">Issues</a>.
+              </p>
+            </div>
+          </div>
+          <!-- /END THE FEATURETTES -->
         </div>
 
-        <hr class="featurette-divider">
+        <!-- FOOTER -->
 
-        <div class="row featurette">
-          <div class="col-md-7 order-md-2">
-            <h2 class="featurette-heading">Mark your places. <span class="text-muted">Visited or yet to be.</span></h2>
-            <p class="lead">Mark locations as <b>Visited</b> or <b>Want to visit</b>. You know where to go during your next trip! Traces will also automatically count the countries you visited.</p>
-          </div>
-          <div class="col-md-5 order-md-1">
-            <img class="featurette-image img-fluid mx-auto" src="images/visit_status.png" alt="Generic placeholder image">
-          </div>
-        </div>
-
-        <hr class="featurette-divider">
-
-        <div class="row featurette">
-          <div class="col-md-7">
-            <h2 class="featurette-heading">Secured by Apple's iCloud. <span class="text-muted">Your data is safe.</span></h2>
-            <p class="lead">Your data is processed at client side and saved in iCloud. We don't have any server handling your data. Apple made apps, such as Photos, Notes, Contacts, Messages, all use the same iCloud technology as Traces does. Without your authorization, even the developers cannot access your data.</p>
-          </div>
-          <div class="col-md-5">
-            <img class="featurette-image img-fluid mx-auto" src="images/icloud.png" alt="Generic placeholder image">
-          </div>
-        </div>
-
-        <hr class="featurette-divider">
-
-        <!-- /END THE FEATURETTES -->
-
-      </div><!-- /.container -->
-
-
-      <!-- FOOTER -->
-      <footer class="container">
-        <p class="float-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2015-2018 Traces &middot; <a href="/privacy">Privacy</a> &middot; <a href="https://blog.traces.website/about/">About</a></p>
-      </footer>
+        <footer class="pt-4 my-md-5 pt-md-5 border-top">
+          <div class="row">
+            <div class="col-12 col-md">
+              <small class="d-block mb-3 text-muted">© Tracestrack 2015-2019</small>
+              <img class="mb-2 rounded" src="/logo-sm.png" alt="" width="24" height="24">
+              </div>
+              <div class="col-6 col-md">
+                <h5>Features</h5>
+                <ul class="list-unstyled text-small">
+                  <li><a class="text-muted" href="#">iOS App</a></li>
+                  <li><a class="text-muted" href="#">Web</a></li>
+                </ul>
+              </div>
+              <div class="col-6 col-md">
+                <h5>Resources</h5>
+                <ul class="list-unstyled text-small">
+                  <li><a class="text-muted" href="https://medium.com/tracestrack">Blog</a></li>
+                  <li><a class="text-muted" href="https://medium.com/tracestrack">Support</a></li>
+                </ul>
+              </div>
+              <div class="col-6 col-md">
+                <h5>About</h5>
+                <ul class="list-unstyled text-small">
+                  <li><a class="text-muted" href="#">Privacy</a></li>
+                  <li><a class="text-muted" href="#">Terms</a></li>
+                </ul>
+              </div>
+            </div>
+          </footer>
     </main>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   </body>
 </html>
 
