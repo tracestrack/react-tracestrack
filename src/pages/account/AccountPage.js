@@ -10,13 +10,11 @@ class AccountPage extends React.Component {
 
     this.state = { username: "" };
 
-    SessionManager.checkAuth().then((success) => {
-
-      if (success) {
+    SessionManager.checkAuth((user) => {
         this.setState({username: SessionManager.getUserName()});
-      }
+    }, (e) => {
+      window.location.href ="/";
     });
-    
   }
 
   render() {
@@ -44,11 +42,6 @@ class AccountPage extends React.Component {
             <div id='apple-sign-out-button'></div>
 
           </div>
-
-
-          <p>All data is taken from and saved to iCloud. <br />
-            Data is processed only in the app or in the browser. No intermediate servers have access to your data.
-          </p>
 
         </main>
 

@@ -118,16 +118,30 @@ export default class CloudDatastore extends IDatastore {
 
   }
 
-  static login(callback) {
+  static login(onAuth, onUnauth) {
 
     let container = CloudKit.getDefaultContainer();
 
-    container.setUpAuth()
+    function gotoAuthenticatedState(userIdentity) {
+      onAuth(userIdentity);
+      container
+        .whenUserSignsOut()
+        .then(gotoUnauthenticatedState);
+    }
+    function gotoUnauthenticatedState(error) {
+      onUnauth(error);
+      container
+        .whenUserSignsIn()
+        .then(gotoAuthenticatedState)
+        .catch(gotoUnauthenticatedState);
+    }
+    
+    return container.setUpAuth()
       .then(function(userIdentity) {
-        if (userIdentity) {
-          callback(userIdentity);
+        if(userIdentity) {
+          gotoAuthenticatedState(userIdentity);
         } else {
-          callback(null);
+          gotoUnauthenticatedState();
         }
       });
   }

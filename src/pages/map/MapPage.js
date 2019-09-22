@@ -109,7 +109,10 @@ class MapPage extends Component {
 
   /** OnLoad */
   componentDidMount() {
-      //sessionManager.checkAuth();
+    SessionManager.checkAuth(null, (e) => {
+      alert("Please login.");
+      window.location.href = "/login";
+    });
   }
 
   handleDragStart(e) {
@@ -376,16 +379,6 @@ class MapPage extends Component {
 
     window.map = map;
     google = window.google;
-
-      SessionManager.checkAuth().then((success) => {
-
-          if (success) {
-
-          }
-          else {
-              alert("Please login.");
-          }
-      });
 
     /** Disable default infoWindow */
     if (google) {

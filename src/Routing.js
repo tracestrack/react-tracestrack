@@ -8,6 +8,7 @@ import MapPage from './pages/map/MapPage.js';
 import AccountPage from './pages/account/AccountPage.js';
 import TracesPage from './pages/traces/TracesPage.js';
 import StarsPage from './pages/stars/StarsPage.js';
+import LoginPage from './pages/account/LoginPage.js';
 
 class DevIndex extends Component {
 
@@ -28,6 +29,7 @@ const Routing = () => (
     <div>
       <Route exact path="/" component={DevIndex} />
       <Route exact path="/map" component={MapPage} />
+      <Route exact path="/login" component={LoginPage} />
       <Route path="/account" component={AccountPage} />
       <Route path="/traces" component={TracesPage} />
       <Route path="/stars" component={StarsPage} />

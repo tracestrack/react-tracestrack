@@ -4,6 +4,7 @@ import CloudDatastore from "../../datastore/CloudDatastore.js";
 //import CloudDatastore from "../../datastore/Mock.js";
 import { formatCoordinate, formatDate } from "../../utils/Formatter.js";
 import $ from "jquery";
+import SessionManager from '../common/SessionManager.js';
 
 class Table extends React.Component {
 
@@ -54,7 +55,13 @@ class StarsPage extends React.Component {
     this.continuationMarker = null;
 
     this.stars = [];
-    CloudDatastore.getStars().then(this.handleResponse);
+
+    SessionManager.checkAuth((u) => {
+      CloudDatastore.getStars().then(this.handleResponse);
+    }, (e) => {
+      alert("Please login.");
+      window.location.href = "/login";
+    });
   }
 
   handleResponse = this.handleResponse.bind(this);
