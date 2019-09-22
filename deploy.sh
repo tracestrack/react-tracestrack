@@ -8,7 +8,6 @@ git clone --depth 1 git@github.com:tracestrack/tracestrack.github.io.git
 
 rm tracestrack.github.io/static/css/*
 rm tracestrack.github.io/static/js/*
-rm precache-manifest*
 
 cp -r build/* tracestrack.github.io
 cd tracestrack.github.io
