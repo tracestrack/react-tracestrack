@@ -1,8 +1,10 @@
 # Tracestrack
 
-![ci](https://travis-ci.org/TracesApp2015/react-tracestrack.svg?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/86730338d43b4a5a9b468a6d83404942)](https://www.codacy.com/app/TracesApp2015/react-tracestrack?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TracesApp2015/react-tracestrack&amp;utm_campaign=Badge_Grade)
-[![codecov](https://codecov.io/gh/TracesApp2015/react-tracestrack/branch/master/graph/badge.svg)](https://codecov.io/gh/TracesApp2015/react-tracestrack)
+![ci](https://travis-ci.org/tracestrack/react-tracestrack.svg?branch=master)
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/86730338d43b4a5a9b468a6d83404942)](https://www.codacy.com/manual/TracesApp2015/react-tracestrack?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TracesApp2015/react-tracestrack&amp;utm_campaign=Badge_Grade)
+
+[![codecov](https://codecov.io/gh/tracestrack/react-tracestrack/branch/master/graph/badge.svg)](https://codecov.io/gh/tracestrack/react-tracestrack)
 
 This is an open source online website for [Traces app](http://traces.website/).
 
