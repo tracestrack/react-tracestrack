@@ -153,7 +153,7 @@ class StarsPage extends React.Component {
 
       this.stars.push({
         title: records[i].fields.title ? records[i].fields.title.value : "Untitled",
-        type: records[i].fields.type.value === 1 ? "Visisted" : "Want to visit",
+        type: records[i].fields.type ? (records[i].fields.type.value === 1 ? "Visisted" : "Want to visit") : "Nil",
         recordName: records[i].recordName,
         datetime: formatDate(date),
         coordinate: formatCoordinate(records[i].fields.location.value.latitude, records[i].fields.location.value.longitude),

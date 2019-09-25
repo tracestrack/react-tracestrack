@@ -270,6 +270,9 @@ class MapPage extends Component {
 
       var fields = re[it].fields;
 
+      if (fields.type === undefined) {
+        fields.type = {value: 0};
+      }
       if ((showS0 && fields.type.value === 0) ||
 	  (showS1 && fields.type.value === 1)) {
 
@@ -491,6 +494,10 @@ class MapPage extends Component {
   /** When star is added by click on the context menu*/
   handleAddStar() {
 
+    alert("Under development");
+    return;
+
+    // eslint-disable-next-line    
     let loc = this.state.rightClickEvent.latLng;
     var markers = this.state.markers;
 
