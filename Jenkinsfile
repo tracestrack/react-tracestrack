@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'react-tracestrack-node'
-        }
-
-    }
+    agent any 
     environment { 
         CI = 'true'
     }
@@ -17,7 +12,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-		sh 'cp /root/.env.production ./'
+              	sh 'cp /Users/clear/.jenkins/.env.production ./'
                 sh 'npm run build'
             }
         }
@@ -41,9 +36,9 @@ pipeline {
                 branch 'master'
             }
             steps {
-		sh 'git tag'
-		sh 'npm version patch'
-		sh 'git push gh --tags'
+            		sh 'git tag'
+	            	sh 'npm version patch'
+            		sh 'git push gh --tags'
                 sh 'git push gh master'
             }
         }
