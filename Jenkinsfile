@@ -37,6 +37,7 @@ pipeline {
             }
             steps {
             		sh 'git tag'
+                sh 'git checkout -b master'
 	            	sh 'npm version patch'
             		sh 'git push gh --tags'
                 sh 'git push gh master'
