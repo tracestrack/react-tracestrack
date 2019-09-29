@@ -15,6 +15,7 @@ The goal is to create a website to see where you have been, and plan your next t
 * React
 * Apple CloudKit
 * Google Maps
+* TomTom Rest API
 
 ## Contributor
 
