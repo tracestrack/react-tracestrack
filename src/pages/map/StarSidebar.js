@@ -8,6 +8,8 @@ import { formatDate } from "../../utils/Formatter.js";
 import $ from "jquery";
 //import CloudDatastore from "../../datastore/Mock.js";
 import CloudDatastore from "../../datastore/CloudDatastore.js";
+import {getReverseGeocode} from '../../services/tomtom.js';
+
 
 class StarSidebar extends Component {
 
@@ -113,29 +115,12 @@ class StarSidebar extends Component {
   }
 
   loadAddress(latlng) {
-
-    var geocoder = new window.google.maps.Geocoder();
     let _this = this;
-    geocoder.geocode({ "location": latlng }, function(results, status) {
-
-      console.log(results);
-
-      if (status === "OK") {
-	if (results[0]) {
-
-	  _this.setState({
-	    address: results[0].formatted_address
-	  });
-
-
-	} else {
-	  window.alert("No results found");
-	}
-      } else {
-	//window.alert("Geocoder failed due to: " + status);
-      }
+    getReverseGeocode(latlng.lat, latlng.lng, (result) => {
+      _this.setState({
+	address: result.address
+      });
     });
-
   }
 
   getStateByGooglePlace = this.getStateByGooglePlace.bind(this);

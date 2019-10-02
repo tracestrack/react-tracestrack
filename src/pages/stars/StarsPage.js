@@ -2,7 +2,7 @@ import React from "react";
 import { SiteHeader, SiteFooter } from "../common/Page.js";
 import CloudDatastore from "../../datastore/CloudDatastore.js";
 //import CloudDatastore from "../../datastore/Mock.js";
-import { formatCoordinate, formatDate } from "../../utils/Formatter.js";
+import { formatDate } from "../../utils/Formatter.js";
 import $ from "jquery";
 import SessionManager from '../common/SessionManager.js';
 
@@ -136,13 +136,12 @@ class StarsPage extends React.Component {
         clearInterval(updateInterval);
         alert("done");
       }
+      return false;
     }, 2000);
   }
 
   renderRecords = this.renderRecords.bind(this);
   renderRecords(records) {
-
-    console.debug(records);
 
     var countries_visited = this.state.countries_visited;
     this.loading = false;
@@ -156,7 +155,6 @@ class StarsPage extends React.Component {
         type: records[i].fields.type ? (records[i].fields.type.value === 1 ? "Visisted" : "Want to visit") : "Nil",
         recordName: records[i].recordName,
         datetime: formatDate(date),
-        coordinate: formatCoordinate(records[i].fields.location.value.latitude, records[i].fields.location.value.longitude),
         countryCode: records[i].fields.countryCode ? records[i].fields.countryCode.value : null,
         countrySubdivision: records[i].fields.countrySubdivision ? records[i].fields.countrySubdivision.value : null
       });
