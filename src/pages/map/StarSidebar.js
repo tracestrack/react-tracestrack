@@ -43,10 +43,6 @@ class StarSidebar extends Component {
 	editMode: false
       };
 
-      if (!ret.address) {
-
-      }
-
       let _this = this;
       switch (props.star.type) {
       case MarkerType.googlePlace:
@@ -177,6 +173,8 @@ class StarSidebar extends Component {
     star.fields.note = this.newNote ? this.newNote : this.state.note;
     star.fields.type = this.state.type;
     star.fields.url = this.newURL ? this.newURL : this.state.url;
+    star.fields.countryCode = this.state.countryCode;
+    star.fields.countrySubdivision = this.state.countrySubdivision;
 
     console.log(star);
 

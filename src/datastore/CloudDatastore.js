@@ -151,7 +151,7 @@ export default class CloudDatastore extends IDatastore {
     var databaseScope = "PRIVATE";
     var ownerRecordName = null;
     var recordType = "Star";
-    var desiredKeys = ["type", "location", "title", "countryCode"];
+    var desiredKeys = ["type", "location", "title", "countryCode", "countrySubdivision"];
     var sortByField = "___createTime";
     var ascending = false;
     var latitude = null;

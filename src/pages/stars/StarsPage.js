@@ -34,7 +34,7 @@ class Table extends React.Component {
                                   <td>{row.title}</td>
                                   <td>{row.datetime}</td>
                                   <td>{row.type}</td>
-                                  <td>{row.countryCode}</td>
+                                  <td>{row.countrySubdivision}, {row.countryCode}</td>
                                   <td><button className="btn btn-sm btn-outline-danger" record={row.recordName} onClick={this.delete.bind(this, row.recordName, row.title)}>Delete</button></td>
                                 </tr>
 
