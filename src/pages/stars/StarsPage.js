@@ -94,52 +94,6 @@ class StarsPage extends React.Component {
     }
   }
 
-  updateCountryCode = this.updateCountryCode.bind(this);
-  updateCountryCode() {
-
-    if (window.confirm("Updating country code requires this page to be open. It may take a few minutes. Status can be seen in the country column. Continue?") === false) {
-      return;
-    }
-
-    var _this = this;
-    var updateInterval = setInterval(function() {
-      var modified = false;
-      for (var i in _this.stars) {
-        var it = _this.stars[i];
-        if (it.countryCode === null) {
-
-          modified = true;
-
-          // eslint-disable-next-line
-          $.getJSON("https://api.tomtom.com/search/2/reverseGeocode/" + it.coordinate + ".json?key=rAdhraHZaRG4cJg9j9umkAW8u9tZRxs1", function(data) {
-
-            CloudDatastore.getRecord(it.recordName, re => {
-              re.fields.type = re.fields.type.value;
-              re.fields.location = re.fields.location.value;
-              re.fields.note = re.fields.note ? re.fields.note.value : null;
-              re.fields.title = re.fields.title.value;
-              re.fields.url = re.fields.url ? re.fields.url.value : null;
-              re.fields.countryCode = data.addresses.length > 0 ? data.addresses[0].address.countryCode : "-";
-              re.fields.countrySubdivision = data.addresses.length > 0 ? data.addresses[0].address.countrySubdivision : "-";
-
-              CloudDatastore.saveRecord(re, function(re2) {
-                _this.stars[i].countryCode = re.fields.countryCode;
-                _this.setState({ stars: _this.stars });
-              });
-            });
-          });
-
-          return it;
-        }
-      }
-      if (modified === false) {
-        clearInterval(updateInterval);
-        alert("done");
-      }
-      return false;
-    }, 2000);
-  }
-
   renderRecords = this.renderRecords.bind(this);
   renderRecords(records) {
 
@@ -183,32 +137,18 @@ class StarsPage extends React.Component {
 
         <SiteHeader selected="stars" />
 
-        <main role="main" className="container">
+        <main role="main">
+          <div className="col">
           <h1 className="mt-5">Your star list</h1>
-          <p className="lead"></p>
+            <p className="lead">all your stars are listed here</p>
 
           <Table onDelete={this.onDelete} stars={this.state.stars} />
-
-          <div className="countriesVisisted">
-            <p className="lead">Countries visited in the above list [{this.state.countries_visited.length}]:</p>
-            {this.state.countries_visited.map((row, i) =>
-                                              <span>{row}</span>
-                                             )}
-          </div>
 
           <center>
             {this.state.moreComing && (<button type="button" className="btn btn-primary" onClick={this.loadMore}>Load More</button>)}
 
           </center>
-
-          <h3>Actions</h3>
-          <p>
-
-            <button type="button" className="btn btn-secondary" onClick={this.updateCountryCode}>Update country code</button>
-
-          </p>
-
-          <p>Country code is powered by TomTom API</p>
+          </div>
         </main>
         <SiteFooter />
       </div>

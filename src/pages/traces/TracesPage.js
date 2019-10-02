@@ -140,9 +140,10 @@ class TracesPage extends React.Component {
 
         <SiteHeader selected='traces' />
 
-        <main role="main" className="container">
+        <main role="main">
+          <div className="col">
           <h1 className="mt-5">Your trace list</h1>
-          <p className="lead"></p>
+          <p className="lead">all your traces are listed here</p>
 
           {this.state.traces.length > 0 && (
             <div>
@@ -158,6 +159,7 @@ class TracesPage extends React.Component {
             <center>There is no traces yet.</center>
           )}
 
+          </div>
         </main>
 
         <SiteFooter />
