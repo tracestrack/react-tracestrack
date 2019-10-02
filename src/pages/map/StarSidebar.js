@@ -5,10 +5,10 @@ import GreenStarImg from "../../resources/img/star_green.png";
 import RedStarImg from "../../resources/img/star_red.png";
 import "../../resources/Sidebar.css";
 import { formatDate } from "../../utils/Formatter.js";
-import $ from "jquery";
 //import CloudDatastore from "../../datastore/Mock.js";
 import CloudDatastore from "../../datastore/CloudDatastore.js";
 import {getReverseGeocode} from '../../services/tomtom.js';
+import {getGooglePlaceById} from '../../services/google.js';
 
 
 class StarSidebar extends Component {
@@ -47,9 +47,12 @@ class StarSidebar extends Component {
 
       }
 
+      let _this = this;
       switch (props.star.type) {
       case MarkerType.googlePlace:
-	this.loadGooglePlace(data.data);
+        getGooglePlaceById(data.data, (result) => {
+          _this.setState(_this.getStateByGooglePlace(result));
+        });
 	break;
       case MarkerType.new:
 	ret.editMode = true;
@@ -75,7 +78,6 @@ class StarSidebar extends Component {
   save = this.save.bind(this);
 
   loadStar = this.loadStar.bind(this);
-  loadGooglePlace = this.loadGooglePlace.bind(this);
   loadAddress = this.loadAddress.bind(this);
 
   titleChange = this.titleChange.bind(this);
@@ -127,48 +129,15 @@ class StarSidebar extends Component {
   getStateByGooglePlace(place) {
     let state = {
       title: place.name,
-      address: place.formatted_address,
-      url: place.website,
-      note: createNoteFromGooglePlace(place),
+      address: place.address,
+      countryCode: place.countryCode,
+      countrySubdivision: place.countrySubdivision,
+      url: place.url,
+      note: place.note,
       creation: null
-
     };
 
     return state;
-
-    function createNoteFromGooglePlace(place) {
-
-      var photos = place.photos;
-      var md = "";
-      var count = 3;
-      console.log(place);
-      for (var it in photos) {
-	var photo = photos[it];
-	var el = $(photo.html_attributions[0]);
-
-	md += `![Photo credit: [` + el.text() + `]](` + photo.getUrl({ maxWidth: 300 }) + `)`;
-	if (count-- === 0)
-	  break;
-
-      }
-      return `[View on Google Maps](` + place.url + `)` + md;
-    }
-  }
-
-  loadGooglePlace(id) {
-    var request = {
-      placeId: id
-    };
-
-    let _this = this;
-    let MAP = "__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED";
-    var service = new window.google.maps.places.PlacesService(window.map.context[MAP]);
-    service.getDetails(request, function(place, status) {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-	_this.setState(_this.getStateByGooglePlace(place));
-      }
-    });
-
   }
 
   enterEditMode() {
@@ -282,6 +251,9 @@ class StarSidebar extends Component {
 
 	  <div><span>Address</span>
 	    {this.state.address}</div>
+
+	  <div><span>Country</span>
+            {this.state.countrySubdivision}, {this.state.countryCode}</div>
 
 	  <div><span>Coordinate</span>
 	    {this.state.coordinate.lat.toFixed(6)}, {this.state.coordinate.lng.toFixed(6)}</div>

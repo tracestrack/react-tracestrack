@@ -1,4 +1,4 @@
-import { getReverseGeocodingAPIURL } from "../services/tomtom.js";
+import { getReverseGeocodingAPIURL } from "../../services/tomtom.js";
 
 process.env.REACT_APP_TomTom_key = "SAMPLEKEY";
 
