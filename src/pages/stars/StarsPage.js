@@ -3,7 +3,6 @@ import { SiteHeader, SiteFooter } from "../common/Page.js";
 import CloudDatastore from "../../datastore/CloudDatastore.js";
 //import CloudDatastore from "../../datastore/Mock.js";
 import { formatDate } from "../../utils/Formatter.js";
-import $ from "jquery";
 import SessionManager from '../common/SessionManager.js';
 
 class Table extends React.Component {
