@@ -91,6 +91,8 @@ class StarSidebar extends Component {
 	  title: re.fields.title.value ? re.fields.title.value : "non",
 	  note: re.fields.note ? re.fields.note.value : "",
 	  url: re.fields.url ? re.fields.url.value : "",
+          countryCode: re.fields.countryCode ? re.fields.countryCode.value : "",
+          countrySubdivision: re.fields.countrySubdivision ? re.fields.countrySubdivision.value : "",
 	  creation: formatDate(new Date(re.created.timestamp))
 	};
 	_this.setState(state);

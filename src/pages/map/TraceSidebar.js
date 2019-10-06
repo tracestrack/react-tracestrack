@@ -180,7 +180,7 @@ class TraceSidebar extends Component {
           <tbody>
 
             <tr>
-              <td className='td-trace'>Local Date Time</td><td>{this.state.startDate}</td>
+              <td className='td-trace'>Local Time</td><td>{this.state.startDate}</td>
             </tr>
 
             <tr>
