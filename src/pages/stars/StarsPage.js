@@ -54,7 +54,6 @@ class StarsPage extends React.Component {
 
     this.stars = [];
 
-    let _this = this;
     SessionManager.checkAuth((u) => {
       CloudDatastore.getStars().then(this.handleResponse);
     }, (e) => {

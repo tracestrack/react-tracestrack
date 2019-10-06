@@ -158,7 +158,7 @@ class TracesPage extends React.Component {
             </div>
 
 
-            {this.state.loading == false && this.state.traces.length === 0 && (
+            {this.state.loading === false && this.state.traces.length === 0 && (
               <center>There is no traces yet.</center>
             )}
 
