@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function formatDistance(v) {
   v = v / 1000;
   return v.toFixed(2) + " KM";
@@ -17,7 +19,7 @@ function padZeroForTwoDigits(num) {
 }
 
 export function formatDate(date) {
-    return date.getUTCFullYear() + "/" + padZeroForTwoDigits(date.getUTCMonth() + 1) + "/" + padZeroForTwoDigits(date.getUTCDate()) + " " + padZeroForTwoDigits(date.getUTCHours()) + ":" + padZeroForTwoDigits(date.getUTCMinutes());
+  return moment(date).format('LL, LT');
 }
 
 export function formatDuration(sec_num) {

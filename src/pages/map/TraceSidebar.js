@@ -123,19 +123,17 @@ class TraceSidebar extends Component {
 
         _this.trace = re;
 
-        let date = new Date(data.startDate.value + data.secondsFromGMT.value * 1000);
-
         var states = {
           title: data.title.value,
           distance: formatDistance(data.distance.value),
           averageSpeed: formatSpeed(data.averageSpeed.value),
           duration: formatDuration(data.duration.value),
-          startDate: formatDate(date),
+          startDate: formatDate(data.startDate.value),
           note: data.note.value ? data.note.value : '',
           elevation: data.elevation.value,
           type: data.type.value,
           linkingId: data.linkingId.value,
-          lastUpdate: new Date(re.modified.timestamp).toLocaleString(),
+          lastUpdate: formatDate(re.modified),
           fileSize: data.gpxFile ? (data.gpxFile.value.size / 1000).toFixed(2) : null,
           // eslint-disable-next-line
           downloadURL: data.gpxFile ? data.gpxFile.value.downloadURL.replace("${f}", filename) : null
