@@ -50,11 +50,11 @@ class StarsPage extends React.Component {
     super(props);
     this.state = { stars: [], moreComing: false, countries_visited: [] };
     this.countries_visited_dict = {};
-    this.loading = false;
     this.continuationMarker = null;
 
     this.stars = [];
 
+    let _this = this;
     SessionManager.checkAuth((u) => {
       CloudDatastore.getStars().then(this.handleResponse);
     }, (e) => {
@@ -68,15 +68,10 @@ class StarsPage extends React.Component {
     this.renderRecords(results.records);
     this.continuationMarker = results.continuationMarker;
     this.setState({moreComing: results.continuationMarker !== undefined});
-    this.loading = false;
   }
 
   loadMore = this.loadMore.bind(this);
   loadMore() {
-    if (this.loading) return;
-
-    this.loading = true;
-
     CloudDatastore.getStars({continuationMarker: this.continuationMarker}).then(this.handleResponse);
   }
 
@@ -97,7 +92,6 @@ class StarsPage extends React.Component {
   renderRecords(records) {
 
     var countries_visited = this.state.countries_visited;
-    this.loading = false;
 
     for (var i in records) {
 

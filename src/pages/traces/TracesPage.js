@@ -76,8 +76,10 @@ class TracesPage extends React.Component {
     this.traces = [];
     this.state = { traces: [] };
 
+    let _this = this;
     SessionManager.checkAuth((u) => {
       CloudDatastore.getTraces().then(this.handleResponse);
+      _this.setState({loading: true});    
     }, (e) => {
       alert("Please login.");
       window.location.href = "/login";
@@ -93,8 +95,7 @@ class TracesPage extends React.Component {
   handleResponse(results) {
     this.renderRecords(results.records);
     this.continuationMarker = results.continuationMarker;
-    this.setState({moreComing: results.continuationMarker !== undefined});    
-    this.loading = false;
+    this.setState({moreComing: results.continuationMarker !== undefined, loading: false});    
     console.log(results.continuationMarker);
   }
 
@@ -146,22 +147,20 @@ class TracesPage extends React.Component {
 
         <main role="main">
           <div className="col">
-          <h1 className="mt-5">Your trace list</h1>
-          <p className="lead">all your traces are listed here</p>
+            <h1 className="mt-5">Your trace list</h1>
+            <p className="lead">all your traces are listed here</p>
 
-          {this.state.traces.length > 0 && (
             <div>
               <Table onDelete={this.onDelete} traces={this.state.traces} />
               <center>
-
                 {this.state.moreComing && (<button className="btn btn-primary" onClick={this.loadMore}>Load More</button>)}
-              </center></div>)
-          }
+              </center>
+            </div>
 
 
-          {this.state.traces.length === 0 && (
-            <center>There is no traces yet.</center>
-          )}
+            {this.state.loading == false && this.state.traces.length === 0 && (
+              <center>There is no traces yet.</center>
+            )}
 
           </div>
         </main>
