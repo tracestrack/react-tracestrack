@@ -27,9 +27,9 @@ function getImageURLForType(type) {
 
 class Table extends React.Component {
 
-  delete(rn, title) {
+  delete(recordName, title) {
     console.log(this.props);
-    this.props.onDelete(rn, title);
+    this.props.onDelete(recordName, title);
   }
 
   render() {
@@ -93,8 +93,9 @@ class TracesPage extends React.Component {
   handleResponse(results) {
     this.renderRecords(results.records);
     this.continuationMarker = results.continuationMarker;
-    this.setState({moreComing: results.continuationMarker !== null});    
+    this.setState({moreComing: results.continuationMarker !== undefined});    
     this.loading = false;
+    console.log(results.continuationMarker);
   }
 
   onDelete = this.onDelete.bind(this);
@@ -102,9 +103,12 @@ class TracesPage extends React.Component {
     var _this = this;
     if (window.confirm("You're going to delete trace: \n" + title)) {
       CloudDatastore.removeRecord(recordName).then(
-        re => {
+        (re) => {
           _this.traces = [];
           CloudDatastore.getTraces().then(_this.handleResponse);
+        },
+        (err) => {
+          console.log(err);
         }
       );
     }
@@ -123,7 +127,7 @@ class TracesPage extends React.Component {
         type: records[i].fields.type.value,
         title: records[i].fields.title.value,
         date: formatDate(date),
-        recordName: records[i].recordName.value,
+        recordName: records[i].recordName,
         distance: formatDistance(records[i].fields.distance.value),
         duration: formatDuration(records[i].fields.duration.value),
         avgSpeed: formatSpeed(records[i].fields.averageSpeed.value),

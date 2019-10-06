@@ -67,7 +67,7 @@ class StarsPage extends React.Component {
   handleResponse(results) {
     this.renderRecords(results.records);
     this.continuationMarker = results.continuationMarker;
-    this.setState({moreComing: results.continuationMarker !== null});
+    this.setState({moreComing: results.continuationMarker !== undefined});
     this.loading = false;
   }
 
