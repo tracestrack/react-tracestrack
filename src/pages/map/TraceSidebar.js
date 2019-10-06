@@ -128,7 +128,7 @@ class TraceSidebar extends Component {
           distance: formatDistance(data.distance.value),
           averageSpeed: formatSpeed(data.averageSpeed.value),
           duration: formatDuration(data.duration.value),
-          startDate: formatDate(data.startDate.value),
+          startDate: formatDate(data.startDate.value + data.secondsFromGMT.value * 1000 + new Date(data.startDate.value).getTimezoneOffset() * 1000 * 60),
           note: data.note.value ? data.note.value : '',
           elevation: data.elevation.value,
           type: data.type.value,
