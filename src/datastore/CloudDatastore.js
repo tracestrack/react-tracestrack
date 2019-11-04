@@ -477,4 +477,20 @@ export default class CloudDatastore extends IDatastore {
     });
   }
 
+  static getKeyValues() {
+    var databaseScope = "PRIVATE";
+    var ownerRecordName = null;
+    var recordType = "KeyValues";
+    var desiredKeys = ['key', 'value'];
+
+    // private database
+    return new Promise((resolve, reject) => {
+      CloudDatastore.performQuery(
+        databaseScope, zoneName, ownerRecordName, recordType,
+        desiredKeys, null, null, null, null, [], null, function(re) {
+          resolve(re);
+        }, true);      
+    });
+  }
+
 }
