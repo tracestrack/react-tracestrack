@@ -9,6 +9,10 @@ class SettingManager {
       result => {
         let re = result.records[0];
         _this.record = re;
+        if (!re) {
+          done();
+          return;
+        }
 
         if ('lastMapLocation' in re.fields && re.fields['lastMapLocation'].value !== null) {
           _this.lastMapLocation = re.fields.lastMapLocation.value;
@@ -40,13 +44,22 @@ class SettingManager {
   }
 
   packRecord() {
-    this.record.fields = {
+
+    let record = {};
+    if (this.record !== undefined) {
+      record = this.record;
+    }
+    else {
+      record = {recordName: "", recordType: "Setting", fields: {}};
+    }
+    
+    record.fields = {
       lastMapLocation: this.getLastMapLocation(),
       lastMapZoom: this.getLastMapZoom(),
       types: this.getTypes()
     };
 
-    return this.record;
+    return record;
   }
 
 }

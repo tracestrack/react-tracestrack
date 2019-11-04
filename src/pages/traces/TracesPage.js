@@ -96,7 +96,6 @@ class TracesPage extends React.Component {
     this.renderRecords(results.records);
     this.continuationMarker = results.continuationMarker;
     this.setState({moreComing: results.continuationMarker !== undefined, loading: false});    
-    console.log(results.continuationMarker);
   }
 
   onDelete = this.onDelete.bind(this);
