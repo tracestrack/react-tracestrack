@@ -2,16 +2,9 @@ import React from 'react';
 import {SiteHeader, SiteFooter} from '../common/Page.js';
 import SessionManager from '../common/SessionManager.js';
 import CloudDatastore from "../../datastore/CloudDatastore.js";
+import {getValueFromCKKeyValues} from "../../datastore/Accessor.js";
 import './AccountPage.css';
 
-
-function getValueFromCKKeyValues(key, results) {
-  for (var it in results) {
-    if (results[it].fields.key.value === key) {
-      return results[it].fields.value.value;
-    }
-  }
-}
 
 class AccountPage extends React.Component {
 
