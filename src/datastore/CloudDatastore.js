@@ -114,7 +114,11 @@ export default class CloudDatastore extends IDatastore {
     // Execute the query.
 
     database.performQuery(query, options)
-      .then(handleResponse);
+      .then(handleResponse).catch(err => {
+        if (err.ckErrorCode === "ZONE_NOT_FOUND") {
+          alert("Database uninitialized. Please run Tracestrack on your iOS device first. If there are still errors, please reinstall the app.");
+        }
+      });
 
   }
 
