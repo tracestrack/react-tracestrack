@@ -121,7 +121,7 @@ class TracesPage extends React.Component {
 
     for (var i in records) {
 
-      let date = new Date(records[i].fields.startDate.value + records[i].fields.secondsFromGMT.value * 1000);
+      let date = new Date(records[i].fields.startDate.value + records[i].fields.secondsFromGMT.value * 1000 + new Date(records[i].fields.startDate.value).getTimezoneOffset() * 1000 * 60);
 
       this.traces.push({
         type: records[i].fields.type.value,
