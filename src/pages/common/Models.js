@@ -78,8 +78,8 @@ export function TraceTypes() {
 
 export function StarTypes() {
   return {
-    "Visited": 7,
-    "Want to visit": 8
+    "Want to visit": 7,
+    "Visited": 8
   };
 
 }

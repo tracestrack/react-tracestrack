@@ -97,14 +97,8 @@ class MapPage extends Component {
       _this.handleMapBoundsChanged();
     });
 
-    if (b.indexOf(7) || b.indexOf(8)) {
-	CloudDatastore.getStars().then(
-	  result => {
-	    _this.handleStarsLoad(result.records);
-	  }
-	);
-    }
 
+    this.handleStarsLoad(this.starsRecords);
   }
 
   /** OnLoad */
@@ -249,25 +243,11 @@ class MapPage extends Component {
   /** Stars are loaded */
   handleStarsLoad(re) {
 
-    console.log(re);
-
-    var markers = this.state.markers;
+    var markers = [];
     var showS0 = (this.types.indexOf(7) > -1 ? true : false);
     var showS1 = (this.types.indexOf(8) > -1 ? true : false);
 
-    showS0 = true;
-    showS1 = true;
-
     for (var it in re) {
-      var shouldCont = false;
-      for (var m in markers) {
-	if (markers[m].recordName === re[it].recordName) {
-	  shouldCont = true;
-	  break;
-	}
-      }
-      if (shouldCont) continue;
-
       var fields = re[it].fields;
 
       if (fields.type === undefined) {
@@ -393,6 +373,7 @@ class MapPage extends Component {
     var _t = this;
     var pos;
 
+    var starsRecords;
     settingManager = new SettingManager(() => {
       var loc = settingManager.getLastMapLocation();
       pos = Coord(loc.latitude, loc.longitude);
@@ -402,10 +383,11 @@ class MapPage extends Component {
       _t.setState({ zoom: settingManager.getLastMapZoom() });
       _t.types = settingManager.getTypes();
 
-      if (_t.types.indexOf(7) || _t.types.indexOf(8)) {
+      if (_t.types.indexOf(7) + _t.types.indexOf(8) >= -1) {
 	CloudDatastore.getStars().then(
 	  result => {
-	    _t.handleStarsLoad(result.records);
+            _t.starsRecords = result.records;
+	    _t.handleStarsLoad(_t.starsRecords);
 	  }
 	);
       }
