@@ -102,7 +102,7 @@ export default class CloudDatastore extends IDatastore {
         console.log('got ' + records.length + ' records');
 
         callback(response);
-        
+
         if (response.moreComing && autoLoadMore) {
           console.log('auto load more');
           database.performQuery(response).then(handleResponse);
@@ -139,7 +139,7 @@ export default class CloudDatastore extends IDatastore {
         .then(gotoAuthenticatedState)
         .catch(gotoUnauthenticatedState);
     }
-    
+
     return container.setUpAuth()
       .then(function(userIdentity) {
         if(userIdentity) {
@@ -151,7 +151,7 @@ export default class CloudDatastore extends IDatastore {
   }
 
   static getStars(params = {continuationMarker: null}) {
-    
+
     var databaseScope = "PRIVATE";
     var ownerRecordName = null;
     var recordType = "Star";
@@ -210,7 +210,7 @@ export default class CloudDatastore extends IDatastore {
       databaseScope, recordName, zoneName, callback
     );
   }
-  
+
   static getTraces(params = {continuationMarker: null}) {
     var databaseScope = "PRIVATE";
     var ownerRecordName = null;
@@ -248,6 +248,11 @@ export default class CloudDatastore extends IDatastore {
 
     let gt = 'GREATER_THAN';
     let lt = 'LESS_THAN';
+
+    if (types.length == 0) {
+      tracesLoadedCallback([]);
+      return;
+    }
 
     var filters = [
       { fieldName: 'maxLat', comparator: gt, fieldValue: minLat },
@@ -464,7 +469,7 @@ export default class CloudDatastore extends IDatastore {
         }
       });
   }
-  
+
   static getSettings() {
     var databaseScope = "PRIVATE";
     var ownerRecordName = null;
@@ -477,7 +482,7 @@ export default class CloudDatastore extends IDatastore {
         databaseScope, zoneName, ownerRecordName, recordType,
         desiredKeys, null, null, null, null, [], null, function(re) {
           resolve(re);
-        }, true);      
+        }, true);
     });
   }
 
@@ -493,7 +498,7 @@ export default class CloudDatastore extends IDatastore {
         databaseScope, zoneName, ownerRecordName, recordType,
         desiredKeys, null, null, null, null, [], null, function(re) {
           resolve(re);
-        }, true);      
+        }, true);
     });
   }
 
