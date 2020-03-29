@@ -249,7 +249,7 @@ export default class CloudDatastore extends IDatastore {
     let gt = 'GREATER_THAN';
     let lt = 'LESS_THAN';
 
-    if (types.length == 0) {
+    if (types.length === 0) {
       tracesLoadedCallback([]);
       return;
     }

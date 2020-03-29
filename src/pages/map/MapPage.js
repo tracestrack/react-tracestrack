@@ -373,7 +373,6 @@ class MapPage extends Component {
     var _t = this;
     var pos;
 
-    var starsRecords;
     settingManager = new SettingManager(() => {
       var loc = settingManager.getLastMapLocation();
       pos = Coord(loc.latitude, loc.longitude);
