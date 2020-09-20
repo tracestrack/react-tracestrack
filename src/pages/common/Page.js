@@ -98,7 +98,7 @@ export class SiteFooter extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-12 col-md">
-              <small className="d-block mb-3 text-muted">© Tracestrack 2015-2019</small>
+              <small className="d-block mb-3 text-muted">© Tracestrack 2015-2020</small>
               <img className="mb-2 rounded" src="/images/logo-sm.png" alt="" width="24" height="24" /><small className="mb-3 text-muted"> Build: {packageJson["version"]}</small>
               </div>
               <div className="col-6 col-md">

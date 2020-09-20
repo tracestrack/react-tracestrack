@@ -88,7 +88,7 @@ class MapPage extends Component {
   gotoCurrentLocation() {
     function showPosition(position) {
       let pos = Coord(position.coords.latitude, position.coords.longitude);
-      window.map.panToo(pos);
+      window.map.panTo(pos);
     }
     
     if (navigator.geolocation) {
