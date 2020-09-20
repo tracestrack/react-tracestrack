@@ -61,6 +61,7 @@ class MapPage extends Component {
   handleAddStar = this.handleAddStar.bind(this);
   handleStarRecordCreated = this.handleStarRecordCreated.bind(this);
   handleStarRecordRemoved = this.handleStarRecordRemoved.bind(this);
+  gotoCurrentLocation = this.gotoCurrentLocation.bind(this);
 
   onFilterApply = this.onFilterApply.bind(this);
   onSetStartMap = this.onSetStartMap.bind(this);
@@ -82,6 +83,19 @@ class MapPage extends Component {
     this.loadedAreaManager.clear();
     this.overlayManager.clear();
     this.setState({ traces: [], isLoadingTraces: false, showFilterBox: false });
+  }
+
+  gotoCurrentLocation() {
+    function showPosition(position) {
+      let pos = Coord(position.coords.latitude, position.coords.longitude);
+      window.map.panToo(pos);
+    }
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      console.log("Browser doesn't support");
+    }
   }
 
   onFilterApply(b) {
@@ -630,6 +644,8 @@ class MapPage extends Component {
 	    <button className="btn btn-info btn-sm" onClick={this.onSetStartMap}>Set current map region as default</button>
 
 	    <button className="btn btn-info btn-sm" onClick={this.showUpload}>Upload GPX</button>
+
+	    <button className="btn btn-info btn-sm" onClick={this.gotoCurrentLocation}>Go to current location</button>
 	  </div>
 
 	</div>
