@@ -56,9 +56,6 @@ class StarsPage extends React.Component {
 
     SessionManager.checkAuth((u) => {
       CloudDatastore.getStars().then(this.handleResponse);
-    }, (e) => {
-      alert("Please login.");
-      window.location.href = "/login";
     });
   }
 

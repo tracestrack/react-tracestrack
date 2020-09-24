@@ -15,8 +15,6 @@ class AccountPage extends React.Component {
 
     SessionManager.checkAuth((user) => {
         this.setState({username: SessionManager.getUserName()});
-    }, (e) => {
-      window.location.href ="/";
     });
 
     CloudDatastore.getKeyValues().then(

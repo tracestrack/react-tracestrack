@@ -9,6 +9,14 @@ class SessionManager {
 
   static isLogin = false;
   static checkAuth(onAuthenticated, onUnAuthenticated) {
+
+    let redirectToLoginPage = function() {
+      document.write("Please login. Redirecting to login page in 3 seconds");
+      setTimeout(function(){
+        window.location.href = "/login";
+      }, 3000);
+    };
+
     if (SessionManager.isLogin === false) {
 
       CloudDatastore.login((user)=> {
@@ -17,6 +25,7 @@ class SessionManager {
         if (onAuthenticated) onAuthenticated(user);
       }, (err)=> {
         if (onUnAuthenticated) onUnAuthenticated(err);
+        else redirectToLoginPage();
       });
     }
   }

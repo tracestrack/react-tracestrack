@@ -117,10 +117,7 @@ class MapPage extends Component {
 
   /** OnLoad */
   componentDidMount() {
-    SessionManager.checkAuth(null, (e) => {
-      alert("Please login.");
-      window.location.href = "/login";
-    });
+    SessionManager.checkAuth(null);
   }
 
   handleDragStart(e) {
