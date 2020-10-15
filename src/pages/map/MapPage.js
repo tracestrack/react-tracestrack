@@ -21,8 +21,8 @@ var settingManager;
 
 class MapPage extends Component {
 
-  selectedTrace = ""
-  selectedStar = ""
+  selectedTrace = null
+  selectedStar = null
   
   constructor() {
     super();
@@ -40,8 +40,9 @@ class MapPage extends Component {
 
     const queryString = require('query-string');
     const parsed = queryString.parse(window.location.hash);
-    console.log(parsed);
-    this.selectedTrace = parsed["trace"];
+    if (parsed["trace"] != undefined) {
+      this.selectedTrace = parsed["trace"];
+    }
   }
 
   state = {
@@ -402,11 +403,10 @@ class MapPage extends Component {
     var pos;
 
     settingManager = new SettingManager(() => {
-      if (this.selectedTrace === "") {
+      if (this.selectedTrace === null) {
         var loc = settingManager.getLastMapLocation();
         pos = Coord(loc.latitude, loc.longitude);
         window.map.panTo(pos);
-
       }
       else {
         CloudDatastore.getRecord(this.selectedTrace, (record) => {
