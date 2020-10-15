@@ -40,7 +40,7 @@ class MapPage extends Component {
 
     const queryString = require('query-string');
     const parsed = queryString.parse(window.location.hash);
-    if (parsed["trace"] != undefined) {
+    if (parsed["trace"] !== undefined) {
       this.selectedTrace = parsed["trace"];
     }
   }
