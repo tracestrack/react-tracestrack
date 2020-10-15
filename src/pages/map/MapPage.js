@@ -21,11 +21,15 @@ var settingManager;
 
 class MapPage extends Component {
 
+  selectedTrace = ""
+  selectedStar = ""
+  
   constructor() {
     super();
 
     var lang = "en";
-    this.mapURL = "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_GoogleMap_key + "&libraries=places&language=" + lang;
+    this.mapURL = "https://maps.googleapis.com/maps/api/js?key=" +
+      process.env.REACT_APP_GoogleMap_key + "&libraries=places&language=" + lang;
 
     this.lastResetTime = Date.now();
 
@@ -33,6 +37,11 @@ class MapPage extends Component {
     this.loadedAreaManager = new LoadedAreaManager();
     this.types = [0];
     this.is_dragging = false;
+
+    const queryString = require('query-string');
+    const parsed = queryString.parse(window.location.hash);
+    console.log(parsed);
+    this.selectedTrace = parsed["trace"];
   }
 
   state = {
@@ -174,7 +183,8 @@ class MapPage extends Component {
 
     if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
 
-      CloudDatastore.queryTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail, this.types, function(result) {
+      CloudDatastore.queryTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail,
+                                 this.types, function(result) {
 	  _t.setState({ isLoadingTraces: false });
 	  _t.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
 	  _t.handleTracesLoad(result.records);
@@ -224,9 +234,11 @@ class MapPage extends Component {
 
 	let isDetail = re[it].fields.detail !== undefined;
 	if (_this.overlayManager.shouldRedraw(re[it].recordName, isDetail)) {
-	  let pts = re[it].fields.detail === undefined ? re[it].fields.medium.value : re[it].fields.detail.value;
+	  let pts = re[it].fields.detail === undefined ? re[it].fields.medium.value
+              : re[it].fields.detail.value;
 
-	  let trace = Trace(pts, re[it].fields.type.value, re[it].recordName, re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
+	  let trace = Trace(pts, re[it].fields.type.value, re[it].recordName,
+                            re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
 
 	  for (var it2 in ret) {
 	    if (ret[it2].recordName === re[it].recordName) {
@@ -234,7 +246,13 @@ class MapPage extends Component {
 	      break;
 	    }
 	  }
+
+          if (re[it].recordName === _this.selectedTrace) {
+            trace.selected = true;
+          }
+          
 	  ret.push(trace);
+          
 	  _this.overlayManager.add(re[it].recordName, isDetail);
           console.log("overlay added");
 	}
@@ -267,7 +285,8 @@ class MapPage extends Component {
       if ((showS0 && fields.type.value === 0) ||
 	  (showS1 && fields.type.value === 1)) {
 
-	var marker = Star(Coord(fields.location.value.latitude, fields.location.value.longitude), fields.type.value, re[it].recordName);
+	var marker = Star(Coord(fields.location.value.latitude, fields.location.value.longitude),
+                          fields.type.value, re[it].recordName);
 
 	markers.push(marker);
       }
@@ -344,9 +363,7 @@ class MapPage extends Component {
 	/** Unselect traces */
 	let traces = this.state.traces;
 	for (var it in traces) {
-	  if (traces[it].linkingId === -this.state.selectedTrace.linkingId) {
 	    traces[it].selected = false;
-	  }
 	}
 	state.selectedTrace = null;
       }
@@ -385,14 +402,31 @@ class MapPage extends Component {
     var pos;
 
     settingManager = new SettingManager(() => {
-      var loc = settingManager.getLastMapLocation();
-      pos = Coord(loc.latitude, loc.longitude);
+      if (this.selectedTrace === "") {
+        var loc = settingManager.getLastMapLocation();
+        pos = Coord(loc.latitude, loc.longitude);
+        window.map.panTo(pos);
 
-      window.map.panTo(pos);
+      }
+      else {
+        CloudDatastore.getRecord(this.selectedTrace, (record) => {
+          let r = record.fields;
+          const bounds = new google.maps.LatLngBounds({lat: r.minLat.value / 1000000,
+                                                       lng: r.minLng.value / 1000000},
+                                                      {lat: r.maxLat.value / 1000000,
+                                                       lng: r.maxLng.value / 1000000});
+          window.map.fitBounds(bounds);
 
-      _t.setState({ zoom: settingManager.getLastMapZoom() });
+          _t.setState({ selectedTrace: record });
+          
+          console.log(bounds);
+          console.log(r);          
+        });
+      }
+      
       _t.types = settingManager.getTypes();
-
+      _t.setState({ zoom: settingManager.getLastMapZoom() });
+      
       if (_t.types.indexOf(7) + _t.types.indexOf(8) >= -1) {
 	CloudDatastore.getStars().then(
 	  result => {
@@ -460,7 +494,8 @@ class MapPage extends Component {
 	  console.log("Returned place contains no geometry");
 	}
 
-	var marker = Star(Coord(place.geometry.location.lat(), place.geometry.location.lng()), MarkerType.searchHit, '', place);
+	var marker = Star(Coord(place.geometry.location.lat(), place.geometry.location.lng()),
+                          MarkerType.searchHit, '', place);
 
 	markers.push(marker);
 
@@ -518,7 +553,9 @@ class MapPage extends Component {
       if (this.state.selectedTrace && traces[it].recordName === this.state.selectedTrace.recordName) {
 	traces[it].selected = false;
       }
-      if ((traces[it].recordName === trace.recordName) || ((trace.linkingId !== 0) && (traces[it].linkingId === trace.linkingId)) || ((trace.linkingId !== 0) && traces[it].linkingId === -trace.linkingId)) {
+      if ((traces[it].recordName === trace.recordName) ||
+          ((trace.linkingId !== 0) && (traces[it].linkingId === trace.linkingId)) ||
+          ((trace.linkingId !== 0) && traces[it].linkingId === -trace.linkingId)) {
 	traces[it].selected = true;
 	if (traces[it].linkingId >= 0) {
 	  selectedTrace = traces[it];
@@ -547,9 +584,11 @@ class MapPage extends Component {
   /** Star is created */
   handleStarRecordCreated(e) {
 
-    var markers = this.state.markers.filter(it => it.type !== MarkerType.new && it.recordName !== e.recordName);
+    var markers = this.state.markers.filter(it => it.type !== MarkerType.new &&
+                                            it.recordName !== e.recordName);
     var fields = e.fields;
-    var star = Star(Coord(fields.location.value.latitude, fields.location.value.longitude), Math.round(fields.type.value), e.recordName);
+    var star = Star(Coord(fields.location.value.latitude, fields.location.value.longitude),
+                    Math.round(fields.type.value), e.recordName);
 
     markers.push(star);
 
@@ -603,7 +642,10 @@ class MapPage extends Component {
   onUploadPreview = this.onUploadPreview.bind(this);
   onUploadPreview(ckModel) {
     this.setState({ uploadedTrace: ckModel });
-    const bounds = new google.maps.LatLngBounds({lat: ckModel.minLat / 1000000, lng: ckModel.minLng / 1000000}, {lat: ckModel.maxLat / 1000000, lng: ckModel.maxLng / 1000000});
+    const bounds = new google.maps.LatLngBounds({lat: ckModel.minLat / 1000000,
+                                                 lng: ckModel.minLng / 1000000},
+                                                {lat: ckModel.maxLat / 1000000,
+                                                 lng: ckModel.maxLng / 1000000});
     window.map.fitBounds(bounds);
   }
 

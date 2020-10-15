@@ -52,7 +52,7 @@ class Table extends React.Component {
                                         <tr key={row.recordName}>
                                           <td>{id}</td>
                                           <td>{getImageURLForType(row.type)}</td>
-                                          <td>{row.title}</td>
+                                          <td><a href={"map#trace=" + row.recordName}>{row.title}</a></td>
                                           <td>{row.date}</td>
                                           <td>{row.distance}</td>
                                           <td>{row.duration}</td>
