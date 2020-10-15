@@ -1,7 +1,7 @@
 {
   "name": "tracestrack.com",
   "homepage": "http://www.tracestrack.com/",
-  "version": "0.5.23",
+  "version": "0.5.24",
   "private": false,
   "dependencies": {
     "css-loader": "2.1.1",
