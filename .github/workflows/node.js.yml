@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -27,6 +26,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run build --if-present
+      env:
+        REACT_APP_CloudKit_environment: production
+        REACT_APP_CloudKit_apiToken: ${{ secrets.CK_API_TOKEN }}
+        REACT_APP_GoogleMap_key: ${{ secrets.GM_API_TOKEN }}
 
     - name: Automated Version Bump
       if: github.ref == 'refs/heads/master'
