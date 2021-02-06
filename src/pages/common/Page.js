@@ -55,9 +55,9 @@ export class SiteHeader extends React.Component {
                 <li className="nav-item">
                   {
                     ((this.state.selected === 'account') &&
-                     (<a className="nav-link active" href="/account">Account</a>))
+                     (<a className="nav-link active" href="/">Account</a>))
                       ||
-                      (<a className="nav-link " href="/account">Account</a>)
+                      (<a className="nav-link " href="/">Account</a>)
                   }
                 </li>
               </ul>

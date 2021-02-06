@@ -10,27 +10,12 @@ import TracesPage from './pages/traces/TracesPage.js';
 import StarsPage from './pages/stars/StarsPage.js';
 import LoginPage from './pages/account/LoginPage.js';
 
-class DevIndex extends Component {
-
-  render() {
-    return (<center>
-              <ul>
-                <li><a href='/real_index.html'>Real index</a></li>
-                <li><a href='/map'>Map</a></li>
-                <li><a href='/traces'>Trace list</a></li>
-                <li><a href='/stars'>Star list</a></li>
-              </ul>
-            </center>);
-  }
-}
-
 const Routing = () => (
   <Router>
     <div>
-      <Route exact path="/" component={DevIndex} />
       <Route exact path="/map" component={MapPage} />
       <Route path="/login" component={LoginPage} />
-      <Route path="/account" component={AccountPage} />
+      <Route exact path="/" component={AccountPage} />
       <Route path="/traces" component={TracesPage} />
       <Route path="/stars" component={StarsPage} />
     </div>
