@@ -235,7 +235,7 @@ export default class CloudDatastore extends IDatastore {
     var databaseScope = "PRIVATE";
     var ownerRecordName = null;
     var recordType = "Trace";
-    var desiredKeys = [loadDetail ? "detail" : "medium", 'type', 'linkingId'];
+    var desiredKeys = [loadDetail ? "detail" : "medium", 'type'];
     var sortByField = null;
     var ascending = null;
     var latitude = null;

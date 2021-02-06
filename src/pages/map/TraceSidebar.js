@@ -132,7 +132,6 @@ class TraceSidebar extends Component {
           note: data.note.value ? data.note.value : '',
           elevation: data.elevation.value,
           type: data.type.value,
-          linkingId: data.linkingId.value,
           lastUpdate: formatDate(re.modified),
           fileSize: data.gpxFile ? (data.gpxFile.value.size / 1000).toFixed(2) : null,
           // eslint-disable-next-line

@@ -37,7 +37,6 @@ function readGPXFile(strGPX) {
   model.lowAlt = calculateLowAlt(points);
   model.highAlt = calculateHighAlt(points);
   model.elevation = calculateElevation(points);
-  model.linkingId = 0;
   model.note = "";
   model.hashString = calculateSHA256(strGPX);
   let bbox = calculateBoundingBox(points);

@@ -18,14 +18,13 @@ export function Star(coord, type, recordName, data) {
 }
 
 /** Trace Model */
-export function Trace(detail, type, recordName, zoneRecordName, share, linkingId) {
+export function Trace(detail, type, recordName, zoneRecordName, share) {
   return {
     detail: detail,
     recordName: recordName,
     zoneRecordName: zoneRecordName,
     share: share,
-    type: type,
-    linkingId: linkingId
+    type: type
   };
 }
 
@@ -47,7 +46,6 @@ export function CKTraceModel() {
     elevation: 0,
     note: "",
     secondsFromGMT: 0,
-    linkingId: 0,
     coarse: [],
     medium: [],
     detail: [],

@@ -239,7 +239,7 @@ class MapPage extends Component {
               : re[it].fields.detail.value;
 
 	  let trace = Trace(pts, re[it].fields.type.value, re[it].recordName,
-                            re[it].zoneRecordName, re[it].share, re[it].fields.linkingId.value);
+                            re[it].zoneRecordName, re[it].share);
 
 	  for (var it2 in ret) {
 	    if (ret[it2].recordName === re[it].recordName) {
@@ -553,13 +553,9 @@ class MapPage extends Component {
       if (this.state.selectedTrace && traces[it].recordName === this.state.selectedTrace.recordName) {
 	traces[it].selected = false;
       }
-      if ((traces[it].recordName === trace.recordName) ||
-          ((trace.linkingId !== 0) && (traces[it].linkingId === trace.linkingId)) ||
-          ((trace.linkingId !== 0) && traces[it].linkingId === -trace.linkingId)) {
+      if (traces[it].recordName === trace.recordName) {
 	traces[it].selected = true;
-	if (traces[it].linkingId >= 0) {
-	  selectedTrace = traces[it];
-	}
+	selectedTrace = traces[it];
       }
     }
 
