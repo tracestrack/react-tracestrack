@@ -1,26 +1,19 @@
 'strict';
-const assert = require('assert').strict;
 
-export default class IDatastore {
+import MockDatastore from './MockDatastore.js';
+import CloudDatastore from './CloudDatastore.js';
 
-  login() { assert(false); }
-  
-  getStars() { assert(false); }
+export default class Datastore {
+  static getInstance() {
+    if (process.env.REACT_APP_OFFLINE_DEV == "true") {
+      return MockDatastore;
+    }
+    else {
+      return CloudDatastore;
+    }
+  }
 
-  getTrace() { assert(false); }
-  getTraces() { assert(false); }
-
-  getSettings() { assert(false); }
-
-  addStar() { assert(false); }
-
-  addTrace() { assert(false); }
-
-  saveRecord() { assert(false); }
-
-  uploadStar() { assert(false); }
-
-  uploadTrace() { assert(false); }
-  
+  static getCloudInstance() {
+    return CloudDatastore;
+  }
 }
-

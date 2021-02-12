@@ -1,4 +1,4 @@
-import IDatastore from './Datastore.js';
+import IDatastore from './IDatastore.js';
 
 const CloudKit = window.CloudKit;
 const zoneName = "Traces";
@@ -116,14 +116,12 @@ export default class CloudDatastore extends IDatastore {
     database.performQuery(query, options)
       .then(handleResponse).catch(err => {
         if (err.ckErrorCode === "ZONE_NOT_FOUND") {
-          alert("Database uninitialized. Please run Tracestrack on your iOS device first. If there are still errors, please reinstall the app.");
+          alert("Database uninitialized. Please run Tracestrack on your iOS device first to initialize the database. If there are still errors, please reinstall the app.");
         }
       });
-
   }
 
   static login(onAuth, onUnauth) {
-
     let container = CloudKit.getDefaultContainer();
 
     function gotoAuthenticatedState(userIdentity) {
@@ -132,6 +130,7 @@ export default class CloudDatastore extends IDatastore {
         .whenUserSignsOut()
         .then(gotoUnauthenticatedState);
     }
+
     function gotoUnauthenticatedState(error) {
       onUnauth(error);
       container
@@ -144,6 +143,7 @@ export default class CloudDatastore extends IDatastore {
       .then(function(userIdentity) {
         if(userIdentity) {
           gotoAuthenticatedState(userIdentity);
+          console.log(userIdentity);
         } else {
           gotoUnauthenticatedState();
         }
@@ -497,6 +497,7 @@ export default class CloudDatastore extends IDatastore {
       CloudDatastore.performQuery(
         databaseScope, zoneName, ownerRecordName, recordType,
         desiredKeys, null, null, null, null, [], null, function(re) {
+          console.log(re);
           resolve(re);
         }, true);
     });

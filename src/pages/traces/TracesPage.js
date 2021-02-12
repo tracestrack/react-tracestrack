@@ -1,7 +1,6 @@
 import React from 'react';
 import { SiteHeader, SiteFooter } from '../common/Page.js';
-import CloudDatastore from '../../datastore/CloudDatastore.js';
-//import CloudDatastore from '../../datastore/Mock.js';
+import Datastore from '../../datastore/Datastore.js';
 import { formatDistance, formatSpeed, formatDate, formatDuration, formatAltitude } from '../../utils/Formatter.js';
 import SessionManager from '../common/SessionManager.js';
 import icon_walking from "../../resources/img/walking.png";
@@ -78,14 +77,14 @@ class TracesPage extends React.Component {
 
     let _this = this;
     SessionManager.checkAuth((u) => {
-      CloudDatastore.getTraces().then(this.handleResponse);
+      Datastore.getInstance().getTraces().then(this.handleResponse);
       _this.setState({loading: true});    
     });
   }
 
   loadMore = this.loadMore.bind(this);
   loadMore() {
-    CloudDatastore.getTraces({continuationMarker: this.continuationMarker}).then(this.handleResponse);
+    Datastore.getInstance().getTraces({continuationMarker: this.continuationMarker}).then(this.handleResponse);
   }
 
   handleResponse = this.handleResponse.bind(this);
@@ -99,13 +98,13 @@ class TracesPage extends React.Component {
   onDelete(recordName, title) {
     var _this = this;
     if (window.confirm("You're going to delete trace: \n" + title)) {
-      CloudDatastore.removeRecord(recordName).then(
+      Datastore.getInstance().removeRecord(recordName).then(
         (re) => {
           _this.traces = [];
-          CloudDatastore.getTraces().then(_this.handleResponse);
+          Datastore.getInstance().getTraces().then(_this.handleResponse);
         },
         (err) => {
-          console.log(err);
+          alert(err);
         }
       );
     }

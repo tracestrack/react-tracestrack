@@ -1,7 +1,6 @@
 import React from "react";
 import { SiteHeader, SiteFooter } from "../common/Page.js";
-import CloudDatastore from "../../datastore/CloudDatastore.js";
-//import CloudDatastore from "../../datastore/Mock.js";
+import Datastore from "../../datastore/Datastore.js";
 import { formatDate } from "../../utils/Formatter.js";
 import SessionManager from '../common/SessionManager.js';
 
@@ -55,7 +54,7 @@ class StarsPage extends React.Component {
     this.stars = [];
 
     SessionManager.checkAuth((u) => {
-      CloudDatastore.getStars().then(this.handleResponse);
+      Datastore.getInstance().getStars().then(this.handleResponse);
     });
   }
 
@@ -68,17 +67,20 @@ class StarsPage extends React.Component {
 
   loadMore = this.loadMore.bind(this);
   loadMore() {
-    CloudDatastore.getStars({continuationMarker: this.continuationMarker}).then(this.handleResponse);
+    Datastore.getInstance().getStars({continuationMarker: this.continuationMarker}).then(this.handleResponse);
   }
 
   onDelete = this.onDelete.bind(this);
   onDelete(recordName, title) {
     var _this = this;
     if (window.confirm("You're going to delete trace: \n" + title)) {
-      CloudDatastore.removeRecord(recordName).then(
+      Datastore.getInstance().removeRecord(recordName).then(
         re => {
           _this.stars = [];
-          CloudDatastore.getStars().then(_this.handleResponse);
+          Datastore.getInstance().getStars().then(_this.handleResponse);
+        },
+        err => {
+          alert(err);
         }
       );
     }

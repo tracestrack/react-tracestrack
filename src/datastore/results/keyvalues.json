@@ -1,0 +1,189 @@
+{
+  "records" : [ {
+    "recordName" : "1B2F7608-5BB5-4DBD-A6DF-717781D28850",
+    "recordType" : "KeyValues",
+    "fields" : {
+      "value" : {
+        "value" : "0",
+        "type" : "STRING"
+      },
+      "key" : {
+        "value" : "numTraces",
+        "type" : "STRING"
+      }
+    },
+    "pluginFields" : { },
+    "recordChangeTag" : "xc",
+    "created" : {
+      "timestamp" : 1573986983063,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "modified" : {
+      "timestamp" : 1573986983063,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "deleted" : false,
+    "zoneID" : {
+      "zoneName" : "Traces",
+      "ownerRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "zoneType" : "REGULAR_CUSTOM_ZONE"
+    }
+  }, {
+    "recordName" : "34C697D7-F565-4BE1-A2FB-1A89CE1CAA61",
+    "recordType" : "KeyValues",
+    "fields" : {
+      "value" : {
+        "value" : "0",
+        "type" : "STRING"
+      },
+      "key" : {
+        "value" : "numStars",
+        "type" : "STRING"
+      }
+    },
+    "pluginFields" : { },
+    "recordChangeTag" : "xf",
+    "created" : {
+      "timestamp" : 1573987367159,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "modified" : {
+      "timestamp" : 1573987367159,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "deleted" : false,
+    "zoneID" : {
+      "zoneName" : "Traces",
+      "ownerRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "zoneType" : "REGULAR_CUSTOM_ZONE"
+    }
+  }, {
+    "recordName" : "4E8A972B-D3F7-4A46-BC0B-4CA244068682",
+    "recordType" : "KeyValues",
+    "fields" : {
+      "value" : {
+        "value" : "1",
+        "type" : "STRING"
+      },
+      "key" : {
+        "value" : "numStars",
+        "type" : "STRING"
+      }
+    },
+    "pluginFields" : { },
+    "recordChangeTag" : "x6",
+    "created" : {
+      "timestamp" : 1569705726436,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "modified" : {
+      "timestamp" : 1572898598955,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "deleted" : false,
+    "zoneID" : {
+      "zoneName" : "Traces",
+      "ownerRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "zoneType" : "REGULAR_CUSTOM_ZONE"
+    }
+  }, {
+    "recordName" : "54FE1076-8ADD-43DF-A770-01E657AA0B95",
+    "recordType" : "KeyValues",
+    "fields" : {
+      "value" : {
+        "value" : "2",
+        "type" : "STRING"
+      },
+      "key" : {
+        "value" : "numStars",
+        "type" : "STRING"
+      }
+    },
+    "pluginFields" : { },
+    "recordChangeTag" : "xl",
+    "created" : {
+      "timestamp" : 1573986983456,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "modified" : {
+      "timestamp" : 1574002503016,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "deleted" : false,
+    "zoneID" : {
+      "zoneName" : "Traces",
+      "ownerRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "zoneType" : "REGULAR_CUSTOM_ZONE"
+    }
+  }, {
+    "recordName" : "88D040ED-302B-4DB5-BEEE-B0C19442E3F4",
+    "recordType" : "KeyValues",
+    "fields" : {
+      "value" : {
+        "value" : "0",
+        "type" : "STRING"
+      },
+      "key" : {
+        "value" : "numTraces",
+        "type" : "STRING"
+      }
+    },
+    "pluginFields" : { },
+    "recordChangeTag" : "xe",
+    "created" : {
+      "timestamp" : 1573987366784,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "modified" : {
+      "timestamp" : 1573987366784,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "deleted" : false,
+    "zoneID" : {
+      "zoneName" : "Traces",
+      "ownerRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "zoneType" : "REGULAR_CUSTOM_ZONE"
+    }
+  }, {
+    "recordName" : "BBFC92CA-440E-4A85-BA79-73C35FBB9B57",
+    "recordType" : "KeyValues",
+    "fields" : {
+      "value" : {
+        "value" : "1161",
+        "type" : "STRING"
+      },
+      "key" : {
+        "value" : "numTraces",
+        "type" : "STRING"
+      }
+    },
+    "pluginFields" : { },
+    "recordChangeTag" : "xk",
+    "created" : {
+      "timestamp" : 1568394287545,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "modified" : {
+      "timestamp" : 1574002501947,
+      "userRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "deviceID" : "922074423DF8CC13E36BF5443D0C5DD7B45F4D6C3D290F61EEDA35F685740EBD"
+    },
+    "deleted" : false,
+    "zoneID" : {
+      "zoneName" : "Traces",
+      "ownerRecordName" : "_6aaa94beced6b3274711f6fe1dc6ea37",
+      "zoneType" : "REGULAR_CUSTOM_ZONE"
+    }
+  } ]
+}

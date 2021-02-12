@@ -1,10 +1,9 @@
 import React from 'react';
 import {SiteHeader, SiteFooter} from '../common/Page.js';
 import SessionManager from '../common/SessionManager.js';
-import CloudDatastore from "../../datastore/CloudDatastore.js";
+import Datastore from "../../datastore/Datastore.js";
 import {getValueFromCKKeyValues} from "../../datastore/Accessor.js";
 import './AccountPage.css';
-
 
 class AccountPage extends React.Component {
 
@@ -14,10 +13,11 @@ class AccountPage extends React.Component {
     this.state = { username: "" };
 
     SessionManager.checkAuth((user) => {
+      console.log()
         this.setState({username: SessionManager.getUserName()});
     });
 
-    CloudDatastore.getKeyValues().then(
+    Datastore.getInstance().getKeyValues().then(
       result => {
         let re = result;
         this.setState({

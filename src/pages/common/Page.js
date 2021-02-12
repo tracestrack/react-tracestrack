@@ -98,14 +98,14 @@ export class SiteFooter extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-12 col-md">
-              <small className="d-block mb-3 text-muted">© Tracestrack 2015-2020</small>
+              <small className="d-block mb-3 text-muted">© Tracestrack 2015-2021</small>
               <img className="mb-2 rounded" src="/images/logo-sm.png" alt="" width="24" height="24" /><small className="mb-3 text-muted"> Build: {packageJson["version"]}</small>
               </div>
               <div className="col-6 col-md">
                 <h5>Features</h5>
                 <ul className="list-unstyled text-small">
-                  <li><a className="text-muted" href="/placeholder">iOS App</a></li>
-                  <li><a className="text-muted" href="/placeholder">Web</a></li>
+                  <li><a className="text-muted" href=".">iOS App</a></li>
+                  <li><a className="text-muted" href=".">Web</a></li>
                 </ul>
               </div>
               <div className="col-6 col-md">
@@ -118,8 +118,8 @@ export class SiteFooter extends React.Component {
               <div className="col-6 col-md">
                 <h5>About</h5>
                 <ul className="list-unstyled text-small">
-                  <li><a className="text-muted" href="/privacy">Privacy</a></li>
-                  <li><a className="text-muted" href="/terms">Terms</a></li>
+                  <li><a className="text-muted" href=".">Privacy</a></li>
+                  <li><a className="text-muted" href=".">Terms</a></li>
                 </ul>
               </div>
             </div>

@@ -1,5 +1,5 @@
 'strict';
-import CloudDatastore from '../../datastore/CloudDatastore.js';
+import Datastore from '../../datastore/Datastore.js';
 
 /**
    SessionManager takes care of logging into iCloud and maintains states.
@@ -9,7 +9,6 @@ class SessionManager {
 
   static isLogin = false;
   static checkAuth(onAuthenticated, onUnAuthenticated) {
-
     let redirectToLoginPage = function() {
       document.write("Please login. Redirecting to login page in 3 seconds");
       setTimeout(function(){
@@ -18,8 +17,7 @@ class SessionManager {
     };
 
     if (SessionManager.isLogin === false) {
-
-      CloudDatastore.login((user)=> {
+      Datastore.getInstance().login((user)=> {
         SessionManager.setUserName(user.nameComponents.givenName + " " + user.nameComponents.familyName);
         SessionManager.isLogin = true;
         if (onAuthenticated) onAuthenticated(user);
