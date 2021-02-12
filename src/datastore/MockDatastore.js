@@ -51,12 +51,8 @@ export default class MockCloudDatastore extends IDatastore {
     });
   }
   
-  static queryTraces(maxLat, maxLng, minLat, minLng, loadDetail, types) {
-    return new Promise((resolve, reject) => {
-      setTimeout(function(){
-        resolve(TRACES_MAP_RESULT);
-      }, 500);
-    });
+  static queryTraces(maxLat, maxLng, minLat, minLng, loadDetail, types, tracesLoadedCallback) {
+    tracesLoadedCallback(TRACES_MAP_RESULT);
   }
 
   static getSettings() {

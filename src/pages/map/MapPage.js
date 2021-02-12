@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ContextMenu from './ContextMenu.js';
 import { SiteHeader } from '../common/Page.js';
-import CloudDatastore from '../../datastore/CloudDatastore.js';
-//import CloudDatastore from '../../datastore/Mock.js';
+import Datastore from '../../datastore/Datastore.js';
 import StarSidebar from './StarSidebar.js';
 import TraceSidebar from './TraceSidebar.js';
 import FilterBox from './FilterBox.js';
@@ -11,9 +10,6 @@ import SettingManager from '../common/SettingManager.js';
 import { Map, OverlayManager, LoadedAreaManager } from './Map.js';
 import { Star, Trace, MarkerType, Coord } from '../common/Models.js';
 import SessionManager from '../common/SessionManager.js';
-//import AppleStyle from '../../resources/mapstyles/apple.json';
-//import GrayStyle from '../../resources/mapstyles/grayscale.json';
-
 
 var google = window.google;
 
@@ -83,7 +79,7 @@ class MapPage extends Component {
     settingManager.lastMapZoom = window.map.getZoom();
     console.log(settingManager.lastMapLocation);
 
-    CloudDatastore.saveRecord(settingManager.packRecord(), function(re) {
+    Datastore.getInstance().saveRecord(settingManager.packRecord(), function(re) {
       alert("Default region set.");
     });
 
@@ -117,7 +113,7 @@ class MapPage extends Component {
 
     settingManager.types = b;
 
-    CloudDatastore.saveRecord(settingManager.packRecord(), function(re) {
+    Datastore.getInstance().saveRecord(settingManager.packRecord(), function(re) {
       _this.handleMapBoundsChanged();
     });
 
@@ -184,11 +180,13 @@ class MapPage extends Component {
 
     if (!this.loadedAreaManager.isLoaded(maxLat, maxLng, minLat, minLng, loadDetail)) {
 
-      CloudDatastore.queryTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail,
+      Datastore.getInstance().queryTraces(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail,
                                  this.types, function(result) {
 	  _t.setState({ isLoadingTraces: false });
 	  _t.loadedAreaManager.addLoaded(nMaxLat, nMaxLng, nMinLat, nMinLng, loadDetail);
 	  _t.handleTracesLoad(result.records);
+
+                                   console.log(result.records);
 	}
       );
     }
@@ -409,7 +407,7 @@ class MapPage extends Component {
         window.map.panTo(pos);
       }
       else {
-        CloudDatastore.getRecord(this.selectedTrace, (record) => {
+        Datastore.getInstance().getRecord(this.selectedTrace, (record) => {
           let r = record.fields;
           const bounds = new google.maps.LatLngBounds({lat: r.minLat.value / 1000000,
                                                        lng: r.minLng.value / 1000000},
@@ -428,7 +426,7 @@ class MapPage extends Component {
       _t.setState({ zoom: settingManager.getLastMapZoom() });
       
       if (_t.types.indexOf(7) + _t.types.indexOf(8) >= -1) {
-	CloudDatastore.getStars().then(
+	Datastore.getInstance().getStars().then(
 	  result => {
             _t.starsRecords = result.records;
 	    _t.handleStarsLoad(_t.starsRecords);
@@ -620,7 +618,7 @@ class MapPage extends Component {
     
     console.log(trace);
 
-    CloudDatastore.saveRecord(trace, re => {
+    Datastore.getInstance().saveRecord(trace, re => {
       console.log("SAVE RE: ", re);
       _this.setState({ uploadedTrace: null });
       _this.reset();

@@ -1,11 +1,10 @@
 'strict';
-//import CloudDatastore from '../../datastore/Mock.js';
-import CloudDatastore from '../../datastore/CloudDatastore.js';
+import Datastore from '../../datastore/Datastore.js';
 
 class SettingManager {
   constructor(done) {
     var _this = this;
-    CloudDatastore.getSettings().then(
+    Datastore.getInstance().getSettings().then(
       result => {
         let re = result.records[0];
         _this.record = re;

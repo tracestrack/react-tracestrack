@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { LiveMarkedArea } from '../../components/LiveMarkedArea.js';
 import { formatDistance, formatSpeed, formatDate, formatDuration, formatGPXDownloadFilename } from '../../utils/Formatter.js';
-//import CloudDatastore from '../../datastore/Mock.js';
-import CloudDatastore from '../../datastore/CloudDatastore.js';
+import Datastore from '../../datastore/Datastore.js';
 
 class TraceSidebar extends Component {
 
@@ -59,7 +58,7 @@ class TraceSidebar extends Component {
       var rn = this.state.recordName;
 
       var _this = this;
-        CloudDatastore.removeRecord(rn).then(records => {
+        Datastore.getInstance().removeRecord(rn).then(records => {
                                            _this.props.onTraceDeleted(rn);
         });
 
@@ -77,7 +76,7 @@ class TraceSidebar extends Component {
     trace.fields.title = this.state.title;
     trace.fields.note = this.state.note;
 
-    CloudDatastore.saveRecord(trace, function(re) {
+    Datastore.getInstance().saveRecord(trace, function(re) {
       console.log(re);
       _this.setState({ editMode: false });
     });
@@ -115,7 +114,7 @@ class TraceSidebar extends Component {
   loadTrace(trace) {
 
     let _this = this;
-      CloudDatastore.getRecord(trace.recordName,
+      Datastore.getInstance().getRecord(trace.recordName,
       re => {
 
         let data = re.fields;
