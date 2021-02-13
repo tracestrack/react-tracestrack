@@ -5,7 +5,7 @@ import CloudDatastore from './CloudDatastore.js';
 
 export default class Datastore {
   static getInstance() {
-    if (process.env.REACT_APP_OFFLINE_DEV == "true") {
+    if (process.env.REACT_APP_OFFLINE_DEV === "true") {
       return MockDatastore;
     }
     else {
