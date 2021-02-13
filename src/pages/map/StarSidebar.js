@@ -5,8 +5,7 @@ import GreenStarImg from "../../resources/img/star_green.png";
 import RedStarImg from "../../resources/img/star_red.png";
 import "../../resources/Sidebar.css";
 import { formatDate } from "../../utils/Formatter.js";
-//import CloudDatastore from "../../datastore/Mock.js";
-import CloudDatastore from "../../datastore/CloudDatastore.js";
+import Datastore from "../../datastore/Datastore.js";
 import {getReverseGeocode} from '../../services/tomtom.js';
 import {getGooglePlaceById} from '../../services/google.js';
 
@@ -86,7 +85,7 @@ class StarSidebar extends Component {
   loadStar(star) {
     let _this = this;
 
-    CloudDatastore.getRecord(star.recordName, (re) => {
+    Datastore.getInstance().getRecord(star.recordName, (re) => {
 	var state = {
 	  title: re.fields.title.value ? re.fields.title.value : "non",
 	  note: re.fields.note ? re.fields.note.value : "",
@@ -150,7 +149,7 @@ class StarSidebar extends Component {
     var rn = this.props.star.recordName;
     let _this = this;
 
-    CloudDatastore.removeRecord(rn).then(
+    Datastore.getInstance().removeRecord(rn).then(
       re => {
 	_this.props.onStarRemoved(re);
       }
@@ -180,7 +179,7 @@ class StarSidebar extends Component {
 
     console.log(star);
 
-    CloudDatastore.saveRecord(star, re => {
+    Datastore.getInstance().saveRecord(star, re => {
 	_this.setState({ isSaving: false });
 
 	console.log("SAVE RE: ", re);

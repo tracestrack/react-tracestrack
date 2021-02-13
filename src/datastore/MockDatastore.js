@@ -1,6 +1,7 @@
 'strict';
 import IDatastore from './IDatastore.js';
 import STAR_RESULT from './results/stars.json';
+import TRACE_RESULT from './results/trace.json';
 import TRACES_RESULT from './results/traces.json';
 import TRACES_MAP_RESULT from './results/traces_on_map.json';
 import SETTING_RESULT from './results/settings.json';
@@ -29,12 +30,10 @@ export default class MockCloudDatastore extends IDatastore {
     });
   }
 
-  static getTrace(recordName) {
-    return new Promise((resolve, reject) => {
-      setTimeout(function(){
-        resolve(TRACES_RESULT);
-      }, 500);
-    });
+  static getRecord(recordName, callback) {
+    setTimeout(function(){
+      callback(TRACE_RESULT.records[0]);
+    }, 500);
   }
 
   static getTraces() {

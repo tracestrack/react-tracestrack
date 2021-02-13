@@ -118,6 +118,7 @@ class TraceSidebar extends Component {
       re => {
 
         let data = re.fields;
+        console.log(re);
         let filename = formatGPXDownloadFilename(data.title.value);
 
         _this.trace = re;
