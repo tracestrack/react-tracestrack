@@ -390,6 +390,32 @@ class MapPage extends Component {
     window.map = map;
     google = window.google;
 
+
+
+    var TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    // Name the layer anything you like.
+    var layerID = 'OSM';
+
+    // Create a new ImageMapType layer.
+    var layer = new google.maps.ImageMapType({
+      name: layerID,
+      getTileUrl: function(coord, zoom) {
+        console.log(coord);
+        var url = TILE_URL
+            .replace('{x}', coord.x)
+            .replace('{y}', coord.y)
+            .replace('{z}', zoom);
+        return url;
+      },
+      tileSize: new google.maps.Size(256, 256),
+      minZoom: 1,
+      maxZoom: 20
+    });
+
+    map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.mapTypes.set(layerID, layer);
+    map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setMapTypeId(layerID);    
+
     /** Disable default infoWindow */
     if (google) {
       google.maps.InfoWindow.prototype.set = function() {

@@ -105,7 +105,8 @@ export const Map = withScriptjs(withGoogleMap((props) =>
                                                 defaultOptions={{
                                                     mapTypeControlOptions: {
                                                         style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-                                                        position: window.google.maps.ControlPosition.TOP_RIGHT
+                                                      position: window.google.maps.ControlPosition.TOP_RIGHT,
+                                                      mapTypeIds: ['OSM', "roadmap", 'satellite', 'terrain', 'hybrid']
                                                     },
                                                   styles: LightStyle,
                                                     zoomControl: true,
